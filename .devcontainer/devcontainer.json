@@ -1,0 +1,15 @@
+{
+  "name": "hermes-site",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:1-22",
+  "forwardPorts": [4321],
+  "postCreateCommand": "yarn install",
+  "customizations": {
+    "vscode": {
+      "extensions": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode"],
+      "settings": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.tabSize": 2
+      }
+    }
+  }
+}

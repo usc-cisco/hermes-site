@@ -1,0 +1,27 @@
+# dependencies
+node_modules
+
+# build
+dist
+dist-ssr
+
+# logs
+*.log
+logs
+yarn-debug.log*
+yarn-error.log*
+
+# editor settings directories
+.idea
+.vscode
+.zed
+
+# misc
+*.local
+*.njsproj
+*.ntvs*
+*.sln
+*.suo
+*.sw?
+.DS_Store
+Thumbs.db
