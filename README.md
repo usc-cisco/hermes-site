@@ -36,7 +36,7 @@ Open the project in Visual Studio Code:
 Once the environment is ready, start the development server:
 
 ```sh
-yarn dev
+npm run dev
 ```
 
 ## FAQ
