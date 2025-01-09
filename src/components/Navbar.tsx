@@ -1,5 +1,3 @@
-import { useState } from "react"
-
 import classes from "./Navbar.module.css"
 
 const data = [
@@ -8,8 +6,6 @@ const data = [
 ]
 
 export function Navbar() {
-  const [active, setActive] = useState("Billing")
-
   return (
     <nav className={`flex px-6 py-6 bg-[#1752F0]`}>
       <div className={`${classes.navbarMain} flex`}>
@@ -18,7 +14,6 @@ export function Navbar() {
           {data.map((navLink) => (
             <a
               className={`${classes.link} text-white font-roboto ring-white focus:ring-1 focus:ring-opacity-75 focus:outline-none p-2`}
-              data-active={navLink.label === active || undefined}
               href={navLink.link}
               key={navLink.label}
               // onClick={(event) => {
