@@ -1,4 +1,4 @@
-name: Deploy Frontend to dcism.org
+name: Deploy Frontend to dcism.org via Github
 
 on:
     push:
