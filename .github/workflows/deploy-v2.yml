@@ -13,7 +13,7 @@ jobs:
             - name: Execute remote command
               uses: appleboy/ssh-action@v1.2.0
               with:
-                host: web.dcism.org
+                host: "web.dcism.org"
                 username: s20101466
                 password: ${{ secrets.SSH_PASSWORD_20101466 }}
                 port: 22077
