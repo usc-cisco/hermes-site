@@ -1,0 +1,21 @@
+name: Deploy Frontend to dcism.org
+
+on:
+    push:
+        branches:
+            - master
+            - bs-code/ci-cd
+
+jobs:
+    deploy:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Execute remote command
+              uses: appleboy/ssh-action@v1.2.0
+              with:
+                host: web.dcism.org
+                username: s20101466
+                password: ${{ secrets.SSH_PASSWORD_20101466 }}
+                port: 22077
+                script: |
+                  mkdir -p /data/users/s20101466/appleboy
