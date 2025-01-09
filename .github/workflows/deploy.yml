@@ -4,9 +4,15 @@ on:
     push:
         branches:
             - master
-            - bs-code/ci-cd
+            # - bs-code/ci-cd
 
 jobs:
+    build: 
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout latest code
+              uses: actions/checkout@v4
+
     deploy:
         runs-on: ubuntu-latest
         steps:
@@ -22,6 +28,6 @@ jobs:
                   rm -rf test.dcism.org
                   git clone https://github.com/usc-cisco/hermes-site.git test.dcism.org
                   cd test.dcism.org
-                  git pull origin bs-code/ci-cd
+                  git checkout bs-code/ci-cd
                   npm install
                   npm run build
