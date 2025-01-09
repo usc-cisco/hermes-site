@@ -39,6 +39,17 @@ jobs:
               with:
                 name: dist-artifacts
             
+            - name: Clone repo
+              uses: appleboy/ssh-action@v1.2.0
+              with:
+                host: web.dcism.org
+                username: s20101466
+                password: ${{ secrets.SSH_PSSWD_20101466 }}
+                port: ${{ secrets.SSH_PORT }}
+                script: |
+                    cd /data/users/s20101466
+                    rm -rf test.dcism.org/*
+            
             - name: SFTP Deploy to server
               uses: wlixcc/SFTP-Deploy-Action@v1.2.5
               with:
@@ -48,7 +59,7 @@ jobs:
                   port: ${{ secrets.SSH_PORT}}
                   sftp_only: true
                   remote_path: /data/users/s20101466/test.dcism.org/
-                  delete_remote_files: true
+
 
             # - name: Deploy to server
             #   uses: burnett01/rsync-deployments@7.0.1
