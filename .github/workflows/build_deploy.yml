@@ -48,7 +48,7 @@ jobs:
                   port: ${{ secrets.SSH_PORT}}
                   sftp_only: true
                   remote_path: /data/users/s20101466/test.dcism.org
-                  rsyncArgs: --delete
+                  rsyncArgs: "--delete-before"
 
             # - name: Deploy to server
             #   uses: burnett01/rsync-deployments@7.0.1
