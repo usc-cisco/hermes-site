@@ -2,26 +2,41 @@ import React from "react"
 
 import { Card, Flex, Text, Title } from "@mantine/core"
 
+import { Program } from "../types/Programs"
 import { TeacherStatus } from "../types/TeacherStatus"
 import QueueButton from "./QueueButton"
 import QueueStatus from "./QueueStatus"
 
 interface QueueCardProps {
-  course: string
+  program: Program
   current: number
   total: number
   status: TeacherStatus
   teacher: string
 }
 
-const QueueCard: React.FC<QueueCardProps> = ({ course, current, total, status, teacher }) => {
+const QueueCard: React.FC<QueueCardProps> = ({ program, current, total, status, teacher }) => {
   const disabled = status === TeacherStatus.UNAVAILABLE
+
+  let programName = ""
+
+  switch (program) {
+    case Program.CS:
+      programName = "CS"
+      break
+    case Program.IT:
+      programName = "IT"
+      break
+    case Program.IS:
+      programName = "IS"
+      break
+  }
 
   return (
     <Card shadow="sm" padding="lg" radius="lg" maw="22rem" w="100%">
       <Flex justify="center">
         <Title size="h3" c={disabled ? "#ADB5BD" : "black"}>
-          {course}
+          {programName}
         </Title>
       </Flex>
       <Flex direction="column" align="center" mt="lg" mb="xl" gap="md">
