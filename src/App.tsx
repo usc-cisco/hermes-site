@@ -5,7 +5,7 @@ import { Program } from "./types/Programs"
 import { TeacherStatus } from "./types/TeacherStatus"
 
 function App() {
-  const [count, setCount] = useState(2)
+  const [count, setCount] = useState(0)
 
   return (
     <>
