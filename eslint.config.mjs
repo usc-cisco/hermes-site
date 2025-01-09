@@ -7,6 +7,7 @@ import reactRefresh from "eslint-plugin-react-refresh"
 import globals from "globals"
 import { version } from "typescript"
 import tseslint from "typescript-eslint"
+import unusedImports from 'eslint-plugin-unused-imports'
 
 export default tseslint.config(
   { ignores: ["dist"] },
@@ -22,12 +23,25 @@ export default tseslint.config(
       "react-hooks": reactHooks,
       "react-refresh": reactRefresh,
       react,
+      "unused-imports": unusedImports
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
       "react-refresh/only-export-components": ["warn", { allowConstantExport: true }],
       ...react.configs.recommended.rules,
       ...react.configs["jsx-runtime"].rules,
+      "no-unused-vars": "off",
+      "@typescript-eslint/no-unused-vars": "off",
+      "unused-imports/no-unused-imports": "warn",
+      "unused-imports/no-unused-vars": [
+          "warn",
+          {
+              "vars": "all",
+              "varsIgnorePattern": "^_",
+              "args": "after-used",
+              "argsIgnorePattern": "^_",
+          },
+      ]
     },
   },
 )
