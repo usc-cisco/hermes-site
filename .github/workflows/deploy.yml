@@ -45,4 +45,4 @@ jobs:
                   password: ${{ secrets.FTP_PASSWORD_20101466 }}
                   port: 22077
                   sftp_only: true
-                  remote_path: /data/users/s20101466/cisco/hermes
+                  remote_path: /data/users/s20101466/test.dcism.org
