@@ -18,19 +18,7 @@ interface QueueCardProps {
 const QueueCard: React.FC<QueueCardProps> = ({ program, current, total, status, teacher }) => {
   const disabled = status === TeacherStatusEnum.UNAVAILABLE
 
-  let programName = ""
-
-  switch (program) {
-    case ProgramEnum.CS:
-      programName = "CS"
-      break
-    case ProgramEnum.IT:
-      programName = "IT"
-      break
-    case ProgramEnum.IS:
-      programName = "IS"
-      break
-  }
+  const programName: string = program
 
   return (
     <Card shadow="sm" padding="lg" radius="lg" maw="22rem" w="100%">

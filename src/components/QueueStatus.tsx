@@ -7,7 +7,7 @@ import { TeacherStatusEnum } from "../types/TeacherStatusEnum"
 interface IStatus {
   label: string
   color: string
-  disabled?: true
+  disabled: boolean
 }
 
 interface StatusProps {
@@ -19,17 +19,20 @@ const QueueStatus: React.FC<StatusProps> = ({ status, teacher }) => {
   let s: IStatus = {
     label: "",
     color: "",
+    disabled: false,
   }
 
   switch (status) {
     case TeacherStatusEnum.AVAILABLE:
       s = {
+        ...s,
         label: "Available",
         color: "#12B886",
       }
       break
     case TeacherStatusEnum.AWAY:
       s = {
+        ...s,
         label: "Away",
         color: "#FAB005",
       }
