@@ -1,25 +1,19 @@
-import classes from "./Navbar.module.css"
-
-const data = [
+const navLinks = [
   { link: "/", label: "Home" },
   { link: "/faqs", label: "FAQs" },
 ]
 
 export function Navbar() {
   return (
-    <nav className={`flex px-6 py-6 bg-[#1752F0]`}>
-      <div className={`${classes.navbarMain} flex`}>
-        <img className="w-auto h-6 mr-auto" src="src/assets/cisco-logo-white.png" alt="" />
+    <nav className={`px-6 py-6 bg-[#1752F0]`}>
+      <div className="flex">
+        <img className="w-auto h-6 mr-auto" src="./public/cisco-logo-white.png" alt="" />
         <div className="space-x-6">
-          {data.map((navLink) => (
+          {navLinks.map((navLink) => (
             <a
-              className={`${classes.link} text-white font-roboto ring-white focus:ring-1 focus:ring-opacity-75 focus:outline-none p-2`}
+              className="text-white font-roboto ring-white focus:ring-1 focus:ring-opacity-75 focus:outline-none p-2"
               href={navLink.link}
               key={navLink.label}
-              // onClick={(event) => {
-              //   event.preventDefault()
-              //   setActive(navLink.label)
-              // }}
             >
               <span>{navLink.label}</span>
             </a>

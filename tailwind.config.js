@@ -2,10 +2,9 @@
 export default {
   content: ["./index.html", "./src/**/*.{ts,tsx}"],
   theme: {
-    extend: {
-      fontFamily: {
-        roboto: ["Roboto"],
-      },
+    extend: {},
+    fontFamily: {
+      sans: ["Poppins"],
     },
   },
   plugins: [],
