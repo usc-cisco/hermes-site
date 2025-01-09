@@ -27,20 +27,20 @@ const QueueStatus: React.FC<StatusProps> = ({ status, teacher }) => {
       s = {
         ...s,
         label: "Available",
-        color: "#12B886",
+        color: "green",
       }
       break
     case TeacherStatusEnum.AWAY:
       s = {
         ...s,
         label: "Away",
-        color: "#FAB005",
+        color: "yellowOrange",
       }
       break
     case TeacherStatusEnum.UNAVAILABLE:
       s = {
         label: "Unavailable",
-        color: "#FA5252",
+        color: "red",
         disabled: true,
       }
       break

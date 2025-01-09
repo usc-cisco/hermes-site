@@ -23,19 +23,19 @@ const QueueCard: React.FC<QueueCardProps> = ({ program, current, total, status, 
   return (
     <Card shadow="sm" padding="lg" radius="lg" maw="22rem" w="100%">
       <Flex justify="center">
-        <Title size="h3" c={disabled ? "#ADB5BD" : "black"}>
+        <Title size="h3" c={disabled ? "darkGray" : "black"}>
           {programName}
         </Title>
       </Flex>
       <Flex direction="column" align="center" mt="lg" mb="xl" gap="md">
-        <Text size="sm" c="gray">
+        <Text size="sm" c="darkGray">
           Currently serving
         </Text>
         <Flex align="flex-end" gap="0.5rem">
-          <Text size="4rem" fw={700} c={disabled ? "#ADB5BD" : "black"}>
+          <Text size="4rem" fw={700} c={disabled ? "darkGray" : "black"}>
             #{current}
           </Text>
-          <Text c="#ADB5BD" mb="0.2rem" fw={700}>
+          <Text c="darkGray" mb="0.2rem" fw={700}>
             /{total}
           </Text>
         </Flex>

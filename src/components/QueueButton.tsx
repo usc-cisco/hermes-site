@@ -15,7 +15,8 @@ const QueueButton: React.FC<QueueButtonProps> = ({ disabled = false, handleClick
       fullWidth
       radius="md"
       size="md"
-      bg={disabled ? "#E9ECEF" : "#1752F0"}
+      c={disabled ? "darkGray" : "white"}
+      bg={disabled ? "gray" : "primary"}
     >
       {disabled ? "Cannot join queue" : "Join queue"}
     </Button>
