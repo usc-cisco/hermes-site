@@ -5,6 +5,7 @@ on:
     push:
         branches:
             - main
+            - bs-code/ci-cd
 
 jobs:
     build:
