@@ -29,7 +29,7 @@ Use Dev Containers if you're on a UNIX-based system (macOS, Linux, WSL 2, etc.) 
   - [Dev Containers Extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers)
 - [Docker](https://docs.docker.com/engine/install/)
 
-### Open the Project
+### Open the Project in VSCode
 
 1. Open the Command Palette (`Ctrl + Shift + P` or `Cmd + Shift + P` on macOS).
 2. Run `Dev Containers: Reopen in Container`.
