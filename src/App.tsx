@@ -2,6 +2,7 @@ import { useState } from "react"
 
 import "./App.css"
 import reactLogo from "./assets/react.svg"
+import Test from "./test"
 import viteLogo from "/vite.svg"
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
         </p>
       </div>
       <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
+      <Test />
     </>
   )
 }
