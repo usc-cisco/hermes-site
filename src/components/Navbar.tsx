@@ -7,7 +7,7 @@ export function Navbar() {
   return (
     <nav className="px-6 py-6 bg-[#1752F0]">
       <div className="flex">
-        <img className="w-auto h-6 mr-auto" src="./public/cisco-logo-white.png" alt="" />
+        <img className="w-auto h-6 mr-auto" src="/cisco-logo-white.png" alt="" />
         <div className="space-x-6">
           {navLinks.map((navLink) => (
             <a
