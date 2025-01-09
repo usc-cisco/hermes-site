@@ -18,4 +18,9 @@ jobs:
                 password: ${{ secrets.FTP_PASSWORD_20101466 }}
                 port: 22077
                 script: |
-                  mkdir -p /data/users/s20101466/appleboy
+                  cd /data/users/s20101466
+                  git clone https://github.com/usc-cisco/hermes-site.git appleboy
+                  cd appleboy
+                  npm install
+                  npm run build
+                  npm run start
