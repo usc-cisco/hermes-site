@@ -44,4 +44,4 @@ jobs:
                   server: web.dcism.org
                   password: ${{ secrets.FTP_PASSWORD_20101466 }}
                   port: 22077
-                  remote_path: /data/users/s20101466/cisco/hermes
+                  remote_path: /data/users/s20101466
