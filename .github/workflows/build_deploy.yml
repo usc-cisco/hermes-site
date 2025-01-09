@@ -43,8 +43,7 @@ jobs:
                 port: ${{ secrets.SSH_PORT }}
                 script: |
                     cd /data/users/${{ secrets.DCISM_EMAIL }}
-                    rm -rf ${{ secrets.DCISM_DOMAIN }}
-                    mkdir ${{ secrets.DCISM_DOMAIN }}
+                    rm -rf ${{ secrets.DCISM_DOMAIN }}/{*,.*}
 
             - name: Download artifacts
               uses: actions/download-artifact@v4
@@ -59,6 +58,6 @@ jobs:
                   password: ${{ secrets.DCISM_PASSWORD }}
                   port: ${{ secrets.SSH_PORT}}
                   sftp_only: true
-                  remote_path: /data/users/${{ secrets.DCISM_EMAIL }}/${{ secrets.DCISM_DOMAIN }}/
+                  remote_path: /data/users/${{ secrets.DCISM_EMAIL }}/${{ secrets.DCISM_DOMAIN }}
 
               
