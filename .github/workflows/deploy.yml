@@ -22,5 +22,6 @@ jobs:
                   rm -rf test.dcism.org
                   git clone https://github.com/usc-cisco/hermes-site.git test.dcism.org
                   cd test.dcism.org
+                  git checkout bs--code/ci-cd
                   npm install
                   npm run build
