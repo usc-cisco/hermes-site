@@ -1,8 +1,8 @@
 import { useState } from "react"
 
 import QueueCard from "./components/QueueCard"
-import { Program } from "./types/ProgramsEnum"
-import { TeacherStatus } from "./types/TeacherStatusEnum"
+import { ProgramEnum } from "./types/ProgramsEnum"
+import { TeacherStatusEnum } from "./types/TeacherStatusEnum"
 
 function App() {
   const [count, setCount] = useState(0)
@@ -13,20 +13,26 @@ function App() {
       {/* For display purposes. Just remove this. */}
       <div className="flex flex-col items-center gap-4">
         <QueueCard
-          program={Program.CS}
+          program={ProgramEnum.CS}
           current={42}
           total={130}
-          status={TeacherStatus.UNAVAILABLE}
+          status={TeacherStatusEnum.UNAVAILABLE}
           teacher="Archival Sebial"
         />
         <QueueCard
-          program={Program.IT}
+          program={ProgramEnum.IT}
           current={100}
           total={130}
-          status={TeacherStatus.AVAILABLE}
+          status={TeacherStatusEnum.AVAILABLE}
           teacher="Gran Sabandal"
         />
-        <QueueCard program={Program.IS} current={20} total={130} status={TeacherStatus.AWAY} teacher="Glenn Pepito" />
+        <QueueCard
+          program={ProgramEnum.IS}
+          current={20}
+          total={130}
+          status={TeacherStatusEnum.AWAY}
+          teacher="Glenn Pepito"
+        />
       </div>
     </>
   )

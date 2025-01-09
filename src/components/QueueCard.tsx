@@ -2,32 +2,32 @@ import React from "react"
 
 import { Card, Flex, Text, Title } from "@mantine/core"
 
-import { Program } from "../types/ProgramsEnum"
-import { TeacherStatus } from "../types/TeacherStatusEnum"
+import { ProgramEnum } from "../types/ProgramsEnum"
+import { TeacherStatusEnum } from "../types/TeacherStatusEnum"
 import QueueButton from "./QueueButton"
 import QueueStatus from "./QueueStatus"
 
 interface QueueCardProps {
-  program: Program
+  program: ProgramEnum
   current: number
   total: number
-  status: TeacherStatus
+  status: TeacherStatusEnum
   teacher: string
 }
 
 const QueueCard: React.FC<QueueCardProps> = ({ program, current, total, status, teacher }) => {
-  const disabled = status === TeacherStatus.UNAVAILABLE
+  const disabled = status === TeacherStatusEnum.UNAVAILABLE
 
   let programName = ""
 
   switch (program) {
-    case Program.CS:
+    case ProgramEnum.CS:
       programName = "CS"
       break
-    case Program.IT:
+    case ProgramEnum.IT:
       programName = "IT"
       break
-    case Program.IS:
+    case ProgramEnum.IS:
       programName = "IS"
       break
   }

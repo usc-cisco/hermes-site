@@ -2,7 +2,7 @@ import React from "react"
 
 import { Card, Flex, Text } from "@mantine/core"
 
-import { TeacherStatus } from "../types/TeacherStatusEnum"
+import { TeacherStatusEnum } from "../types/TeacherStatusEnum"
 
 interface IStatus {
   label: string
@@ -11,7 +11,7 @@ interface IStatus {
 }
 
 interface StatusProps {
-  status: TeacherStatus
+  status: TeacherStatusEnum
   teacher: string
 }
 
@@ -22,19 +22,19 @@ const QueueStatus: React.FC<StatusProps> = ({ status, teacher }) => {
   }
 
   switch (status) {
-    case TeacherStatus.AVAILABLE:
+    case TeacherStatusEnum.AVAILABLE:
       s = {
         label: "Available",
         color: "#12B886",
       }
       break
-    case TeacherStatus.AWAY:
+    case TeacherStatusEnum.AWAY:
       s = {
         label: "Away",
         color: "#FAB005",
       }
       break
-    case TeacherStatus.UNAVAILABLE:
+    case TeacherStatusEnum.UNAVAILABLE:
       s = {
         label: "Unavailable",
         color: "#FA5252",
