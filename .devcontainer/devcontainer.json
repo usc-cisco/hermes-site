@@ -5,10 +5,16 @@
   "postCreateCommand": "npm install",
   "customizations": {
     "vscode": {
-      "extensions": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode"],
+      "extensions": ["bradlc.vscode-tailwindcss", "dbaeumer.vscode-eslint", "esbenp.prettier-vscode"],
       "settings": {
         "editor.defaultFormatter": "esbenp.prettier-vscode",
-        "editor.tabSize": 2
+        "editor.quickSuggestions": {
+          "strings": "on"
+        },
+        "editor.tabSize": 2,
+        "files.associations": {
+          "*.css": "tailwindcss"
+        }
       }
     }
   }
