@@ -2,7 +2,7 @@ import React from "react"
 
 import { Card, Flex, Text } from "@mantine/core"
 
-import { TeacherStatus } from "../types/TeacherStatus"
+import { TeacherStatus } from "../types/TeacherStatusEnum"
 
 interface IStatus {
   label: string

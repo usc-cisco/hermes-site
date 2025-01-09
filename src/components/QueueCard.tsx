@@ -2,8 +2,8 @@ import React from "react"
 
 import { Card, Flex, Text, Title } from "@mantine/core"
 
-import { Program } from "../types/Programs"
-import { TeacherStatus } from "../types/TeacherStatus"
+import { Program } from "../types/ProgramsEnum"
+import { TeacherStatus } from "../types/TeacherStatusEnum"
 import QueueButton from "./QueueButton"
 import QueueStatus from "./QueueStatus"
 

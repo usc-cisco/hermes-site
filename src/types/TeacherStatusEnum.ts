@@ -1,4 +1,4 @@
-export enum TeacherStatus {
+export enum TeacherStatusEnum {
   AVAILABLE,
   AWAY,
   UNAVAILABLE,

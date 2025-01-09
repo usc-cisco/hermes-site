@@ -1,8 +1,8 @@
 import { useState } from "react"
 
 import QueueCard from "./components/QueueCard"
-import { Program } from "./types/Programs"
-import { TeacherStatus } from "./types/TeacherStatus"
+import { Program } from "./types/ProgramsEnum"
+import { TeacherStatus } from "./types/TeacherStatusEnum"
 
 function App() {
   const [count, setCount] = useState(0)
