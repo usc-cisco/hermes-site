@@ -1,10 +1,10 @@
 name: Deploy Frontend Build
 
 on:
+    workflow_dispatch: 
     push:
         branches:
-            - master
-            - bs-code/ci-cd
+            - main
 
 jobs:
     build:
@@ -12,8 +12,6 @@ jobs:
         steps:
             - name: Get latest code
               uses: actions/checkout@v4
-              with:
-                ref: bs-code/ci-cd
 
             - name: Set up Node
               uses: actions/setup-node@v4
