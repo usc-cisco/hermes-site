@@ -10,7 +10,7 @@ jobs:
     deploy:
         runs-on: ubuntu-latest
         steps:
-            - name: Execute remote command
+            - name: Clone repo
               uses: appleboy/ssh-action@v1.2.0
               with:
                 host: web.dcism.org
@@ -19,8 +19,8 @@ jobs:
                 port: 22077
                 script: |
                   cd /data/users/s20101466
-                  git clone https://github.com/usc-cisco/hermes-site.git appleboy
-                  cd appleboy
+                  rm -r test.dcism.org/{*,.*}
+                  git clone https://github.com/usc-cisco/hermes-site.git test.dcism.org
+                  cd test.dcism.org
                   npm install
                   npm run build
-                  npm run start
