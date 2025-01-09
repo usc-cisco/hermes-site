@@ -47,7 +47,7 @@ jobs:
                   password: ${{ secrets.SSH_PSSWD_20101466 }}
                   port: ${{ secrets.SSH_PORT}}
                   sftp_only: true
-                  remote_path: /data/users/s20101466/test.dcism.org
+                  remote_path: /data/users/s20101466/test.dcism.org/
                   delete_remote_files: true
 
             # - name: Deploy to server
