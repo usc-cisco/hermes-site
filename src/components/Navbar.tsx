@@ -1,7 +1,5 @@
 import { useState } from "react"
 
-import { Code, Group } from "@mantine/core"
-
 import classes from "./Navbar.module.css"
 
 const data = [
@@ -14,7 +12,7 @@ export function Navbar() {
 
   const links = data.map((item) => (
     <a
-      className={classes.link}
+      className={`${classes.link} text-white`}
       data-active={item.label === active || undefined}
       href={item.link}
       key={item.label}
@@ -28,12 +26,10 @@ export function Navbar() {
   ))
 
   return (
-    <nav className={classes.navbar}>
-      <div className={classes.navbarMain}>
-        <Group className={classes.header} justify="space-between">
-          <Code fw={700}>v3.1.2</Code>
-        </Group>
-        {links}
+    <nav className={`flex px-4 py-6 bg-[#1752F0]`}>
+      <div className={`${classes.navbarMain} flex`}>
+        <img className="w-auto h-8 mr-auto" src="src/assets/cisco-logo-white.png" alt="" />
+        <div className="space-x-6">{links}</div>
       </div>
     </nav>
   )
