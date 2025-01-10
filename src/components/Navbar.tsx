@@ -5,7 +5,7 @@ const navLinks = [
 
 export function Navbar() {
   return (
-    <nav className="px-6 py-6 bg-[#1752F0]">
+    <nav className="px-6 py-6 bg-primary">
       <div className="flex">
         <img className="w-auto h-6 mr-auto" src="/cisco-logo-white.png" alt="" />
         <div className="space-x-6">

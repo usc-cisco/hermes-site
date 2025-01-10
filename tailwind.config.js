@@ -2,14 +2,15 @@
 export default {
   content: ["./index.html", "./src/**/*.{ts,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        primary: "#1752F0",
+        background: "#d7e2fd",
+      },
+    },
     fontFamily: {
       sans: ["Poppins"],
     },
-    // colors: {
-    //   primary: "#1752F0",
-    //   background: "#d7e2fd",
-    // },
   },
   plugins: [],
 }
