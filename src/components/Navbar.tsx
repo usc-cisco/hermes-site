@@ -5,13 +5,13 @@ const navLinks = [
 
 export function Navbar() {
   return (
-    <nav className="px-6 py-6 bg-primary">
+    <nav className="mb-8 bg-primary px-6 py-6">
       <div className="flex">
-        <img className="w-auto h-6 mr-auto" src="/cisco-logo-white.png" alt="" />
+        <img className="mr-auto h-6 w-auto" src="/cisco-logo-white.png" alt="" />
         <div className="space-x-6">
           {navLinks.map((navLink) => (
             <a
-              className="text-white ring-white focus:ring-1 rounded-md focus:outline-none p-2 focus:ring-opacity-75"
+              className="rounded-md p-2 text-white ring-white focus:outline-none focus:ring-1 focus:ring-opacity-75"
               href={navLink.link}
               key={navLink.label}
             >
