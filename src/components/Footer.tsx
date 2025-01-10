@@ -10,7 +10,7 @@ export default function Footer() {
         © {new Date().getFullYear()}{" "}
         <a
           href="https://github.com/usc-cisco/hermes-site"
-          className="underline"
+          className="underline focus:outline-none focus:ring-1 ring-white rounded-md focus:ring-opacity-75"
           target="_blank"
           rel="noopener noreferrer"
         >

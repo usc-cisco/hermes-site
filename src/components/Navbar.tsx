@@ -11,7 +11,7 @@ export function Navbar() {
         <div className="space-x-6">
           {navLinks.map((navLink) => (
             <a
-              className="text-white ring-white focus:ring-1 focus:ring-opacity-75 focus:outline-none p-2"
+              className="text-white ring-white focus:ring-1 rounded-md focus:outline-none p-2 focus:ring-opacity-75"
               href={navLink.link}
               key={navLink.label}
             >
