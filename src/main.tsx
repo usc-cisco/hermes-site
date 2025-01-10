@@ -2,16 +2,13 @@ import { StrictMode } from "react"
 
 import { MantineProvider } from "@mantine/core"
 import "@mantine/core/styles.css"
-
 import { ModalsProvider } from "@mantine/modals"
-
-import { theme } from "./config/theme.ts"
 import { createRoot } from "react-dom/client"
 import { BrowserRouter, Route, Routes } from "react-router"
 
 import App from "./App.tsx"
-
 import Layout from "./components/Layout.tsx"
+import { theme } from "./config/theme.ts"
 import "./index.css"
 import FAQ from "./pages/FAQ.tsx"
 
