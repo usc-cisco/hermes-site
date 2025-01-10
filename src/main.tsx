@@ -2,6 +2,7 @@ import { StrictMode } from "react"
 
 import { MantineProvider } from "@mantine/core"
 import "@mantine/core/styles.css"
+import { ModalsProvider } from "@mantine/modals"
 import { createRoot } from "react-dom/client"
 
 import App from "./App.tsx"
@@ -11,7 +12,9 @@ import "./index.css"
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <MantineProvider theme={theme}>
-      <App />
+      <ModalsProvider labels={{ confirm: "Confirm", cancel: "Cancel" }}>
+        <App />
+      </ModalsProvider>
     </MantineProvider>
   </StrictMode>,
 )
