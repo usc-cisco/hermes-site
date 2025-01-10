@@ -6,6 +6,7 @@ import { createRoot } from "react-dom/client"
 import { BrowserRouter, Route, Routes } from "react-router"
 
 import App from "./App.tsx"
+import Layout from "./components/Layout.tsx"
 import "./index.css"
 import FAQ from "./pages/FAQ.tsx"
 
@@ -14,10 +15,11 @@ createRoot(document.getElementById("root")!).render(
     <MantineProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<App />} />
-          <Route path="/faqs" element={<FAQ />} />
+          <Route element={<Layout />}>
+            <Route path="/" element={<App />} />
+            <Route path="/faqs" element={<FAQ />} />
+          </Route>
         </Routes>
-        <App />
       </BrowserRouter>
     </MantineProvider>
   </StrictMode>,

@@ -1,5 +1,7 @@
-import React from "react"
-
 export default function FAQ() {
-  return <div>This is the FAQs page.</div>
+  return (
+    <>
+      <h1 className="text-xl text-black">This is the FAQ page.</h1>
+    </>
+  )
 }
