@@ -25,7 +25,7 @@ const UserQueueInfoCard: React.FC<UserQueueInfoProps> = ({ userNumber, current, 
 
   return (
     <Card shadow="sm" padding="lg" radius="lg" maw="22rem" w="100%">
-      <Flex justify="left">
+      <Flex justify="center">
         <Title size="h3" c="black" fw={600} mb="md">
           Your Information
         </Title>
