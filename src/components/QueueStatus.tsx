@@ -12,7 +12,7 @@ interface IStatus {
 
 interface StatusProps {
   status: TeacherStatusEnum
-  teacher?: string
+  teacher: string
 }
 
 const QueueStatus: React.FC<StatusProps> = ({ status, teacher }) => {

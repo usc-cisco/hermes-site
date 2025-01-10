@@ -1,4 +1,4 @@
-import { Card, Flex, Stack, Text, Title } from "@mantine/core"
+import { Card, Center, Flex, Stack, Text, Title } from "@mantine/core"
 
 import { TeacherStatusEnum } from "../types/TeacherStatusEnum"
 import QueueStatus from "./QueueStatus"
@@ -6,9 +6,11 @@ import QueueStatus from "./QueueStatus"
 export default function CoordinatorCard() {
   return (
     <Card shadow="sm" padding="lg" radius="lg" w="100%" maw="22rem">
-      <Title size="h3" mb="md">
-        Coordinator Information
-      </Title>
+      <Center>
+        <Title size="h3" mb="md">
+          Coordinator Information
+        </Title>
+      </Center>
       <Flex justify="space-between">
         <Stack gap="xs">
           <Text size="sm">Name:</Text>
@@ -21,7 +23,6 @@ export default function CoordinatorCard() {
             Doriz Roa
           </Text>
           <QueueStatus status={TeacherStatusEnum.UNAVAILABLE} teacher="" />
-          {/* <Text size="sm">Unavailable</Text> */}
           <Text size="sm" c="darkGray">
             dorix.roa@usc.edu.ph
           </Text>
