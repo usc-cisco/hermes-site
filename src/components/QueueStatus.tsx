@@ -12,7 +12,7 @@ interface IStatus {
 
 interface StatusProps {
   status: TeacherStatusEnum
-  teacher: string
+  teacher?: string
 }
 
 const QueueStatus: React.FC<StatusProps> = ({ status, teacher }) => {
@@ -47,7 +47,7 @@ const QueueStatus: React.FC<StatusProps> = ({ status, teacher }) => {
   }
 
   return (
-    <Flex align="center" justify="center" gap="xs">
+    <Flex align="center" justify="center" gap={teacher && "xs"}>
       <Card py="0.05rem" px="0.7rem" radius="xl" bg={s.color} c="white">
         <Text size="xs" fw={600}>
           {s.label.toUpperCase()}

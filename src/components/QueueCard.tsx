@@ -21,7 +21,7 @@ const QueueCard: React.FC<QueueCardProps> = ({ program, current, total, status, 
   const programName: string = program
 
   return (
-    <Card shadow="sm" padding="lg" radius="lg" maw="22rem" w="100%">
+    <Card shadow="sm" padding="lg" radius="lg" w="100%">
       <Flex justify="center">
         <Title size="h3" c={disabled ? "darkGray" : "black"}>
           {programName}

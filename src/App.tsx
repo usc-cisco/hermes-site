@@ -1,5 +1,6 @@
 import { useState } from "react"
 
+import CoordinatorCard from "./components/CoordinatorCard"
 import QueueCard from "./components/QueueCard"
 import UserQueueInfoCard from "./components/UserQueueInfoCard"
 import { ProgramEnum } from "./types/ProgramsEnum"
@@ -10,7 +11,8 @@ function App() {
 
   return (
     <>
-      <div className="flex flex-col items-center gap-4">
+      <div className="mx-8 flex flex-col items-center gap-4 py-8">
+        <CoordinatorCard />
         <QueueCard
           program={ProgramEnum.CS}
           current={42}
