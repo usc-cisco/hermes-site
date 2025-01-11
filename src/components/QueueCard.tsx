@@ -43,7 +43,7 @@ const QueueCard: React.FC<QueueCardProps> = ({
       maw="22rem"
       w="100%"
       style={{
-        border: isAdmin && status === TeacherStatusEnum.UNAVAILABLE ? "2px solid red" : "none",
+        outline: isAdmin && status === TeacherStatusEnum.UNAVAILABLE ? "2px solid red" : "none",
       }}
     >
       <Flex justify="center">
