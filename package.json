@@ -22,6 +22,7 @@
     "@mantine/notifications": "^7.15.3",
     "@mantine/nprogress": "^7.15.3",
     "@mantine/spotlight": "^7.15.3",
+    "axios": "^1.7.9",
     "dayjs": "^1.11.13",
     "lucide-react": "^0.469.0",
     "react": "^18.3.1",
