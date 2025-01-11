@@ -1,5 +1,9 @@
+import { useEffect } from "react"
+
 import { Card, Center, Flex, Stack, Text, Title } from "@mantine/core"
 
+import { CoordinatorService } from "../services/coordinator.service"
+import { CourseNameEnum } from "../types/enums/CourseNameEnum"
 import { ProgramEnum } from "../types/enums/ProgramsEnum"
 import { TeacherStatusEnum } from "../types/enums/TeacherStatusEnum"
 import QueueStatus from "./QueueStatus"
@@ -30,6 +34,19 @@ export default function CoordinatorCard({
   coordinatorEmail,
   studentProgram,
 }: CoordinatorProps) {
+  useEffect(() => {
+    async function pollForCoordinatorInfo() {
+      try {
+        // Fetch data with axios
+        const data = await CoordinatorService.getCoordinatorInfo(CourseNameEnum.BSCS)
+        // If data is present, update state
+        // If data is not present, setTimer in
+      } catch (error) {
+        console.log(error)
+        throw new Error("Something went wrong!")
+      }
+    }
+  })
   return (
     <Card shadow="sm" padding="lg" radius="lg" w="100%" maw="22rem">
       <Center>
