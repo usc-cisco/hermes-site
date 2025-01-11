@@ -1,9 +1,35 @@
 import { Card, Center, Flex, Stack, Text, Title } from "@mantine/core"
 
+import { ProgramEnum } from "../types/ProgramsEnum"
 import { TeacherStatusEnum } from "../types/TeacherStatusEnum"
 import QueueStatus from "./QueueStatus"
 
-export default function CoordinatorCard() {
+type CoordinatorProps = {
+  coordinatorTeacher: string
+  coordinatorStatus: TeacherStatusEnum
+  coordinatorEmail: string
+  studentProgram: ProgramEnum
+}
+
+const resolveProgramName = (studentProgram: ProgramEnum) => {
+  switch (studentProgram) {
+    case ProgramEnum.CS:
+      return "Computer Science"
+    case ProgramEnum.IT:
+      return "Information Technology"
+    case ProgramEnum.IS:
+      return "Information Science"
+    default:
+      return "Invalid Value"
+  }
+}
+
+export default function CoordinatorCard({
+  coordinatorTeacher,
+  coordinatorStatus,
+  coordinatorEmail,
+  studentProgram,
+}: CoordinatorProps) {
   return (
     <Card shadow="sm" padding="lg" radius="lg" w="100%" maw="22rem">
       <Center>
@@ -20,14 +46,14 @@ export default function CoordinatorCard() {
         </Stack>
         <Stack align="flex-end" gap="xs">
           <Text size="sm" c="darkGray">
-            Doriz Roa
+            {coordinatorTeacher}
           </Text>
-          <QueueStatus status={TeacherStatusEnum.UNAVAILABLE} teacher="" />
+          <QueueStatus status={coordinatorStatus} teacher="" />
           <Text size="sm" c="darkGray">
-            dorix.roa@usc.edu.ph
+            {coordinatorEmail}
           </Text>
           <Text size="sm" c="darkGray">
-            Computer Science
+            {resolveProgramName(studentProgram)}
           </Text>
         </Stack>
       </Flex>
