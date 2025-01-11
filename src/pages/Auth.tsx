@@ -4,12 +4,16 @@ import { AuthForm } from "../components/auth/AuthForm"
 import { useAuth } from "../contexts/AuthContext"
 
 export default function Auth() {
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated, isAdmin } = useAuth()
   const location = useLocation()
   const navigate = useNavigate()
+
   const from = location.state?.from?.pathname || "/"
 
-  // If already authenticated, redirect to the intended page
+  if (isAdmin) {
+    return navigate("/admin")
+  }
+
   if (isAuthenticated) {
     return navigate(from, { replace: true })
   }

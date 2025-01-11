@@ -34,7 +34,14 @@ createRoot(document.getElementById("root")!).render(
                 />
                 <Route path="/faq" element={<FAQ />} />
                 <Route path="/auth" element={<Auth />} />
-                <Route path="/admin" element={<AdminPage />} />
+                <Route
+                  path="/admin"
+                  element={
+                    <ProtectedRoute requireAdmin>
+                      <AdminPage />
+                    </ProtectedRoute>
+                  }
+                />
               </Route>
             </Routes>
           </HashRouter>

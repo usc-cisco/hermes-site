@@ -4,7 +4,7 @@ interface AuthContextType {
   jwtToken: string | null
   basicAuthToken: string | null
   setJwtAuth: (token: string) => void
-  setBasicAuth: (username: string, password: string) => void
+  setBasicAuth: (token: string) => void
   clearAuth: () => void
   isAdmin: boolean
   isAuthenticated: boolean
@@ -24,8 +24,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setIsAuthenticated(true)
   }
 
-  const setBasicAuth = (username: string, password: string) => {
-    const token = btoa(`${username}:${password}`)
+  const setBasicAuth = (token: string) => {
     localStorage.setItem("basicToken", token)
     setBasicAuthToken(token)
     setIsAuthenticated(true)
@@ -50,7 +49,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           clearAuth()
           setIsAuthenticated(false)
         }
-        console.log(jwtToken)
       } catch (error) {
         console.error("Error parsing JWT token:", error)
         clearAuth()
