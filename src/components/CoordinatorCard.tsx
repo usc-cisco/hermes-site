@@ -1,14 +1,15 @@
-import { useEffect, useState } from "react"
-
 import { Card, Center, Flex, Stack, Text, Title } from "@mantine/core"
+import useSWR from "swr"
 
 import { CoordinatorService } from "../services/coordinator.service"
 import { Coordinator } from "../types/entities/Coordinator"
 import { CourseNameEnum } from "../types/enums/CourseNameEnum"
 import { ProgramEnum } from "../types/enums/ProgramsEnum"
+import { TeacherStatusEnum } from "../types/enums/TeacherStatusEnum"
 import QueueStatus from "./QueueStatus"
 
-const resolveProgramName = (studentProgram: ProgramEnum) => {
+// Function to resolve program names
+const resolveProgramName = (studentProgram: string) => {
   switch (studentProgram) {
     case ProgramEnum.CS:
       return "Computer Science"
@@ -21,36 +22,45 @@ const resolveProgramName = (studentProgram: ProgramEnum) => {
   }
 }
 
+const resolveStatusEnum = (status: string) => {
+  switch (status) {
+    case "available":
+      return TeacherStatusEnum.AVAILABLE
+    case "away":
+      return TeacherStatusEnum.AWAY
+    case "unavailable":
+      return TeacherStatusEnum.UNAVAILABLE
+    default:
+      return TeacherStatusEnum.UNAVAILABLE
+  }
+}
+
+// Fetcher function for SWR
+const fetcher = async (course: CourseNameEnum) => {
+  const data = await CoordinatorService.getCoordinatorInfo(course)
+  console.log(data)
+  return data
+}
+
 export default function CoordinatorCard() {
-  const [coordinatorInfo, setCoordinatorInfo] = useState<Coordinator>({
-    id: -1,
-    name: "",
-    courseName: "",
-    status: "unavailable",
-    email: "",
+  const { data, error } = useSWR(CourseNameEnum.BSCS, fetcher, {
+    refreshInterval: 1000,
   })
 
-  useEffect(() => {
-    async function pollForCoordinatorInfo() {
-      try {
-        console.log("Polling started...")
-        const data = await CoordinatorService.getCoordinatorInfo(CourseNameEnum.BSCS)
-        if (!data) return
-        console.log(data)
-        setCoordinatorInfo({ ...data })
-      } catch (error) {
-        console.log(error)
-      }
-    }
-    pollForCoordinatorInfo()
+  // Log data and error for debugging
+  console.log("Fetched data:", data)
+  if (error) {
+    console.error("Error fetching coordinator info:", error)
+    return <Text>Error loading coordinator info.</Text>
+  }
 
-    const intervalId = setInterval(pollForCoordinatorInfo, 1000)
+  // Check if data is still loading
+  if (!data) {
+    return <Text>Fetching coordinator info...</Text>
+  }
 
-    return () => {
-      console.log("Polling stopped...")
-      clearInterval(intervalId)
-    }
-  }, [])
+  // Use the fetched data directly
+  const coordinatorInfo: Coordinator = data
 
   return (
     <Card shadow="sm" padding="lg" radius="lg" w="100%" maw="22rem">
@@ -70,13 +80,12 @@ export default function CoordinatorCard() {
           <Text size="sm" c="darkGray">
             {coordinatorInfo.name}
           </Text>
-          <QueueStatus status={coordinatorInfo.status} teacher="" />
+          <QueueStatus status={resolveStatusEnum(coordinatorInfo.status)} teacher="" />
           <Text size="sm" c="darkGray">
             {coordinatorInfo.email}
           </Text>
           <Text size="sm" c="darkGray">
-            Missing student program
-            {/* {resolveProgramName(studentProgram)} */}
+            {resolveProgramName(coordinatorInfo.courseName)} {/* Assuming courseName is part of coordinatorInfo */}
           </Text>
         </Stack>
       </Flex>
