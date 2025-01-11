@@ -2,8 +2,8 @@ import { useState } from "react"
 
 import QueueCard from "./components/QueueCard"
 import UserQueueInfoCard from "./components/UserQueueInfoCard"
-import { ProgramEnum } from "./types/ProgramsEnum"
-import { TeacherStatusEnum } from "./types/TeacherStatusEnum"
+import { ProgramEnum } from "./types/enums/ProgramsEnum"
+import { TeacherStatusEnum } from "./types/enums/TeacherStatusEnum"
 
 function App() {
   const [count, setCount] = useState(0)
