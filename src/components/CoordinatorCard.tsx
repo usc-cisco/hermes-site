@@ -1,7 +1,7 @@
 import { Card, Center, Flex, Stack, Text, Title } from "@mantine/core"
 
-import { ProgramEnum } from "../types/ProgramsEnum"
-import { TeacherStatusEnum } from "../types/TeacherStatusEnum"
+import { ProgramEnum } from "../types/enums/ProgramsEnum"
+import { TeacherStatusEnum } from "../types/enums/TeacherStatusEnum"
 import QueueStatus from "./QueueStatus"
 
 type CoordinatorProps = {
