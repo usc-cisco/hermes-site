@@ -1,19 +1,12 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
 import { Card, Center, Flex, Stack, Text, Title } from "@mantine/core"
 
 import { CoordinatorService } from "../services/coordinator.service"
+import { Coordinator } from "../types/entities/Coordinator"
 import { CourseNameEnum } from "../types/enums/CourseNameEnum"
 import { ProgramEnum } from "../types/enums/ProgramsEnum"
-import { TeacherStatusEnum } from "../types/enums/TeacherStatusEnum"
 import QueueStatus from "./QueueStatus"
-
-type CoordinatorProps = {
-  coordinatorTeacher: string
-  coordinatorStatus: TeacherStatusEnum
-  coordinatorEmail: string
-  studentProgram: ProgramEnum
-}
 
 const resolveProgramName = (studentProgram: ProgramEnum) => {
   switch (studentProgram) {
@@ -28,25 +21,37 @@ const resolveProgramName = (studentProgram: ProgramEnum) => {
   }
 }
 
-export default function CoordinatorCard({
-  coordinatorTeacher,
-  coordinatorStatus,
-  coordinatorEmail,
-  studentProgram,
-}: CoordinatorProps) {
+export default function CoordinatorCard() {
+  const [coordinatorInfo, setCoordinatorInfo] = useState<Coordinator>({
+    id: -1,
+    name: "",
+    courseName: "",
+    status: "unavailable",
+    email: "",
+  })
+
   useEffect(() => {
     async function pollForCoordinatorInfo() {
       try {
-        // Fetch data with axios
+        console.log("Polling started...")
         const data = await CoordinatorService.getCoordinatorInfo(CourseNameEnum.BSCS)
-        // If data is present, update state
-        // If data is not present, setTimer in
+        if (!data) return
+        console.log(data)
+        setCoordinatorInfo({ ...data })
       } catch (error) {
         console.log(error)
-        throw new Error("Something went wrong!")
       }
     }
-  })
+    pollForCoordinatorInfo()
+
+    const intervalId = setInterval(pollForCoordinatorInfo, 1000)
+
+    return () => {
+      console.log("Polling stopped...")
+      clearInterval(intervalId)
+    }
+  }, [])
+
   return (
     <Card shadow="sm" padding="lg" radius="lg" w="100%" maw="22rem">
       <Center>
@@ -63,14 +68,15 @@ export default function CoordinatorCard({
         </Stack>
         <Stack align="flex-end" gap="xs">
           <Text size="sm" c="darkGray">
-            {coordinatorTeacher}
+            {coordinatorInfo.name}
           </Text>
-          <QueueStatus status={coordinatorStatus} teacher="" />
+          <QueueStatus status={coordinatorInfo.status} teacher="" />
           <Text size="sm" c="darkGray">
-            {coordinatorEmail}
+            {coordinatorInfo.email}
           </Text>
           <Text size="sm" c="darkGray">
-            {resolveProgramName(studentProgram)}
+            Missing student program
+            {/* {resolveProgramName(studentProgram)} */}
           </Text>
         </Stack>
       </Flex>
