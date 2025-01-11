@@ -10,11 +10,11 @@ import QueueStatus from "./QueueStatus"
 // Function to resolve program names
 const resolveProgramName = (program: string) => {
   switch (program) {
-    case "CS":
+    case "BSCS":
       return "Computer Science"
-    case "IT":
+    case "BSIT":
       return "Information Technology"
-    case "IS":
+    case "BSIS":
       return "Information Science"
     default:
       return "Invalid Value"
