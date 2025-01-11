@@ -12,5 +12,5 @@ export default {
       sans: ["Poppins"],
     },
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/typography")],
 }

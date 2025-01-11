@@ -4,7 +4,7 @@ import { MantineProvider } from "@mantine/core"
 import "@mantine/core/styles.css"
 import { ModalsProvider } from "@mantine/modals"
 import { createRoot } from "react-dom/client"
-import { BrowserRouter, Route, Routes } from "react-router"
+import { HashRouter, Route, Routes } from "react-router"
 
 import App from "./App.tsx"
 import { ProtectedRoute } from "./components/auth/ProtectedRoute"
@@ -21,7 +21,7 @@ createRoot(document.getElementById("root")!).render(
     <AuthProvider>
       <MantineProvider theme={theme}>
         <ModalsProvider labels={{ confirm: "Confirm", cancel: "Cancel" }}>
-          <BrowserRouter>
+          <HashRouter>
             <Routes>
               <Route element={<Layout />}>
                 <Route
@@ -34,17 +34,10 @@ createRoot(document.getElementById("root")!).render(
                 />
                 <Route path="/faqs" element={<FAQ />} />
                 <Route path="/auth" element={<Auth />} />
-                <Route
-                  path="/admin"
-                  element={
-                    <ProtectedRoute requireAdmin>
-                      <AdminPage />
-                    </ProtectedRoute>
-                  }
-                />
+                <Route path="/admin" element={<AdminPage />} />
               </Route>
             </Routes>
-          </BrowserRouter>
+          </HashRouter>
         </ModalsProvider>
       </MantineProvider>
     </AuthProvider>
