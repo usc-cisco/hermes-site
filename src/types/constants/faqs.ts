@@ -1,4 +1,4 @@
-import { FAQs } from "../types/entities/FAQ"
+import { FAQs } from "../entities/FAQ"
 
 const faqs: FAQs[] = [
   {

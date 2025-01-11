@@ -1,7 +1,7 @@
 import { Accordion } from "@mantine/core"
 import ReactMarkdown from "react-markdown"
 
-import faqs from "../constants/faqs"
+import faqs from "../types/constants/faqs"
 import { FAQs } from "../types/entities/FAQ"
 
 export default function FAQ() {
