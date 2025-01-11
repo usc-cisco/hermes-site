@@ -20,7 +20,7 @@ export class CoordinatorService {
 
   static async updateStatus(course: CourseNameEnum, status: TeacherStatusEnum) {
     try {
-      const response = await api.put(`coordinator/admin/${course}/status`, { status })
+      const response = await api.patch(`coordinator/admin/${course}/status`, { status })
       return response.data
     } catch (error) {
       if (error instanceof AxiosError) {
