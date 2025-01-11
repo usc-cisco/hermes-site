@@ -1,12 +1,13 @@
-import axios from "axios"
 import useSWR from "swr"
 
+import { api } from "../config/axios"
+import { CoordinatorService } from "../services/coordinator.service"
 import { CourseNameEnum } from "../types/enums/CourseNameEnum"
 
-const fetcher = (url: string) => axios.get(url).then((res) => res.data)
+const fetcher = (url: string) => api.get(url).then((res) => res.data)
 
 export const useQueueData = (course: CourseNameEnum) => {
-  const numberData = useSWR(`https://hermes.dcism.org/queue/${course}/number/current`, fetcher)
-  const coordinatorData = useSWR(`https://hermes.dcism.org/coordinator/${course}`, fetcher)
+  const numberData = useSWR(`queue/${course}/number/current`, fetcher)
+  const coordinatorData = useSWR(`coordinator/${course}`, () => CoordinatorService.getCoordinatorInfo(course))
   return { numberData, coordinatorData }
 }

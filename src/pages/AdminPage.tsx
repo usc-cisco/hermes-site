@@ -2,6 +2,7 @@ import React from "react"
 
 import QueueCard from "../components/QueueCard"
 import { useQueueData } from "../hooks/useQueueData"
+import { useStatusUpdate } from "../hooks/useStatusUpdate"
 import { CourseNameEnum } from "../types/enums/CourseNameEnum"
 import { ProgramEnum } from "../types/enums/ProgramsEnum"
 import { TeacherStatusEnum } from "../types/enums/TeacherStatusEnum"
@@ -17,9 +18,17 @@ const AdminPage: React.FC = () => {
   const csQueueData = useQueueData(CourseNameEnum.BSCS)
   const itQueueData = useQueueData(CourseNameEnum.BSIT)
   const isQueueData = useQueueData(CourseNameEnum.BSIS)
+  const { updateStatus } = useStatusUpdate()
 
   // Combine the data into an array after the hooks are called
   const queueData = [csQueueData, itQueueData, isQueueData]
+
+  const handleStatusUpdate = async (course: CourseNameEnum, newStatus: TeacherStatusEnum) => {
+    const result = await updateStatus(course, newStatus)
+    if (!result.success) {
+      console.log("Failed to update status. Please try again")
+    }
+  }
 
   return (
     <div className="flex w-full flex-1 items-center justify-center py-8 md:py-12">
@@ -43,7 +52,7 @@ const AdminPage: React.FC = () => {
                 status={teacherStatus}
                 teacher={coordinatorData.data.name}
                 onUpdateQueue={() => alert("Updated Queue!")}
-                onStatusChange={() => alert("Updated Status!")}
+                onStatusChange={(newStatus) => handleStatusUpdate(queues[index].course, newStatus)}
                 isAdmin={true}
               />
             )
