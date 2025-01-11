@@ -10,6 +10,7 @@ import App from "./App.tsx"
 import Layout from "./components/layout/Layout.tsx"
 import { theme } from "./config/theme.ts"
 import "./index.css"
+import AdminPage from "./pages/AdminPage.tsx"
 import Auth from "./pages/Auth.tsx"
 import FAQ from "./pages/FAQ.tsx"
 
@@ -23,6 +24,7 @@ createRoot(document.getElementById("root")!).render(
               <Route path="/" element={<App />} />
               <Route path="/faqs" element={<FAQ />} />
               <Route path="/auth" element={<Auth />} />
+              <Route path="/admin" element={<AdminPage />} />
             </Route>
           </Routes>
         </BrowserRouter>
