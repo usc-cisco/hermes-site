@@ -1,8 +1,8 @@
 import React, { useState } from "react"
 
 import QueueCard from "../components/QueueCard"
-import { ProgramEnum } from "../types/ProgramsEnum"
-import { TeacherStatusEnum } from "../types/TeacherStatusEnum"
+import { ProgramEnum } from "../types/enums/ProgramsEnum"
+import { TeacherStatusEnum } from "../types/enums/TeacherStatusEnum"
 
 const AdminPage: React.FC = () => {
   //-- STATIC VALUES -- Remove once proper fetching is done
