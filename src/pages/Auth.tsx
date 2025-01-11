@@ -1,7 +1,9 @@
-export default function FAQ() {
+import { AuthenticationForm } from "../components/auth/AuthForm"
+
+export default function Auth() {
   return (
-    <>
-      <h1 className="text-xl text-black">This is the FAQ page.</h1>
-    </>
+    <div className="flex flex-col items-center gap-4">
+      <AuthenticationForm />
+    </div>
   )
 }

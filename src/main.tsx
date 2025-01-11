@@ -7,9 +7,10 @@ import { createRoot } from "react-dom/client"
 import { BrowserRouter, Route, Routes } from "react-router"
 
 import App from "./App.tsx"
-import Layout from "./components/Layout.tsx"
+import Layout from "./components/layout/Layout.tsx"
 import { theme } from "./config/theme.ts"
 import "./index.css"
+import Auth from "./pages/Auth.tsx"
 import FAQ from "./pages/FAQ.tsx"
 
 createRoot(document.getElementById("root")!).render(
@@ -21,7 +22,7 @@ createRoot(document.getElementById("root")!).render(
             <Route element={<Layout />}>
               <Route path="/" element={<App />} />
               <Route path="/faqs" element={<FAQ />} />
-              <Route path="/auth" element={<FAQ />} />
+              <Route path="/auth" element={<Auth />} />
             </Route>
           </Routes>
         </BrowserRouter>
