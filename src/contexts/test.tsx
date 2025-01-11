@@ -2,11 +2,11 @@ import React, { createContext, useContext, useEffect, useState } from "react"
 
 interface AuthContextType {
   jwtToken: string | null
-  basicAuthToken: string | null
+  basicToken: string | null
+  isAdmin: boolean
   setJwtAuth: (token: string) => void
   setBasicAuth: (username: string, password: string) => void
   clearAuth: () => void
-  isAdmin: boolean
   isAuthenticated: boolean
 }
 
@@ -14,58 +14,48 @@ const AuthContext = createContext<AuthContextType | null>(null)
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [jwtToken, setJwtToken] = useState<string | null>(localStorage.getItem("jwtToken"))
-  const [basicAuthToken, setBasicAuthToken] = useState<string | null>(localStorage.getItem("basicToken"))
+  const [basicToken, setBasicToken] = useState<string | null>(localStorage.getItem("basicToken"))
   const [isAdmin, setIsAdmin] = useState<boolean>(false)
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
 
   const setJwtAuth = (token: string) => {
     localStorage.setItem("jwtToken", token)
     setJwtToken(token)
-    setIsAuthenticated(true)
+    // Check if token contains admin claim
+    try {
+      const payload = JSON.parse(atob(token.split(".")[1]))
+      setIsAdmin(payload.isAdmin === true)
+    } catch (error) {
+      console.error("Error parsing JWT token:", error)
+      setIsAdmin(false)
+    }
   }
 
   const setBasicAuth = (username: string, password: string) => {
     const token = btoa(`${username}:${password}`)
     localStorage.setItem("basicToken", token)
-    setBasicAuthToken(token)
-    setIsAuthenticated(true)
-    setIsAdmin(true)
+    setBasicToken(token)
+    // You might want to set admin status based on your requirements
+    setIsAdmin(username === "admin") // Example condition
   }
 
   const clearAuth = () => {
     localStorage.removeItem("jwtToken")
     localStorage.removeItem("basicToken")
     setJwtToken(null)
-    setBasicAuthToken(null)
+    setBasicToken(null)
+    setIsAdmin(false)
   }
 
-  // Check token expiration
-  useEffect(() => {
-    if (jwtToken) {
-      try {
-        const payload = JSON.parse(atob(jwtToken.split(".")[1]))
-        const expiration = payload.exp * 1000 // Convert to milliseconds
-
-        if (Date.now() >= expiration) {
-          clearAuth()
-          setIsAuthenticated(false)
-        }
-        console.log(jwtToken)
-      } catch (error) {
-        console.error("Error parsing JWT token:", error)
-        clearAuth()
-      }
-    }
-  }, [jwtToken])
+  const isAuthenticated = Boolean(jwtToken || basicToken)
 
   const value = {
     jwtToken,
-    basicAuthToken,
+    basicToken,
+    isAdmin,
     setJwtAuth,
     setBasicAuth,
     clearAuth,
     isAuthenticated,
-    isAdmin,
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

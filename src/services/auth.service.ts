@@ -13,7 +13,7 @@ export class AuthService {
     }
   }
 
-  static async adminLogin(payload: { basicAuthToken: string }) {
+  static async adminLogin(payload: { username: string; password: string }) {
     try {
       const response = await api.post("auth/sign-in", payload)
 

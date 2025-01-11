@@ -7,6 +7,7 @@ import { createRoot } from "react-dom/client"
 import { BrowserRouter, Route, Routes } from "react-router"
 
 import App from "./App.tsx"
+import { ProtectedRoute } from "./components/auth/ProtectedRoute"
 import Layout from "./components/layout/Layout.tsx"
 import { theme } from "./config/theme.ts"
 import { AuthProvider } from "./contexts/AuthContext"
@@ -23,10 +24,24 @@ createRoot(document.getElementById("root")!).render(
           <BrowserRouter>
             <Routes>
               <Route element={<Layout />}>
-                <Route path="/" element={<App />} />
+                <Route
+                  path="/"
+                  element={
+                    <ProtectedRoute>
+                      <App />
+                    </ProtectedRoute>
+                  }
+                />
                 <Route path="/faqs" element={<FAQ />} />
                 <Route path="/auth" element={<Auth />} />
-                <Route path="/admin" element={<AdminPage />} />
+                <Route
+                  path="/admin"
+                  element={
+                    <ProtectedRoute requireAdmin>
+                      <AdminPage />
+                    </ProtectedRoute>
+                  }
+                />
               </Route>
             </Routes>
           </BrowserRouter>

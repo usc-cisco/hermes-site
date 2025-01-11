@@ -1,11 +1,11 @@
-import { Anchor, Button, Container, Paper, Select, TextInput } from "@mantine/core"
+import { Button, Container, Paper, Select, TextInput } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import { ChevronDown } from "lucide-react"
 
 import { useAuth } from "../../contexts/AuthContext"
 import { AuthService } from "../../services/auth.service"
 import { CourseNameEnum } from "../../types/enums/CourseNameEnum"
-import AdminAuthModal from "./AdminAuthModal"
+import AdminModal from "./AdminModal"
 
 interface AuthFormProps {
   onRevoke?: () => void
@@ -30,20 +30,10 @@ export function AuthForm({ onRevoke }: AuthFormProps) {
     try {
       const response = await AuthService.studentLogin(form.values)
 
-      setJwtAuth(response)
+      setJwtAuth(response.token)
     } catch (error) {
       console.log(error)
     }
-  }
-
-  const handleOpenAdminAuthModal = () => {
-    AdminAuthModal.open({
-      onConfirm: () => {
-        if (onRevoke) {
-          onRevoke()
-        }
-      },
-    })
   }
 
   return (
@@ -88,9 +78,7 @@ export function AuthForm({ onRevoke }: AuthFormProps) {
             </Button>
           </form>
           <div className="mt-3 flex w-full items-center justify-center">
-            <Anchor size="sm" component="button" ta="center" onClick={handleOpenAdminAuthModal}>
-              Admin Sign in
-            </Anchor>
+            <AdminModal />
           </div>
         </Paper>
       </Container>
