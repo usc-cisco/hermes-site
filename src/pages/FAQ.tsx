@@ -1,7 +1,35 @@
+import { Accordion } from "@mantine/core"
+import ReactMarkdown from "react-markdown"
+
+import faqs from "../types/constants/faqs"
+import { FAQs } from "../types/entities/FAQ"
+
 export default function FAQ() {
+  const items = faqs.map((item: FAQs) => (
+    <Accordion.Item key={item.id} value={item.question} className="w-full bg-white py-4">
+      <Accordion.Control styles={{ label: { fontWeight: 600, fontSize: 18 } }}>{item.question}</Accordion.Control>
+      <Accordion.Panel className="text-lg text-gray-700">
+        <ReactMarkdown>{item.answer}</ReactMarkdown>
+      </Accordion.Panel>
+    </Accordion.Item>
+  ))
+
   return (
-    <>
-      <h1 className="text-xl text-black">This is the FAQ page.</h1>
-    </>
+    <section className="mx-4 sm:mx-4 lg:mx-20">
+      <div className="rounded-lg bg-white py-8">
+        <h1 className="py-4 text-center text-6xl font-bold leading-tight">FAQs</h1>
+        <Accordion
+          styles={{
+            root: {
+              padding: "20px",
+              borderRadius: "12px",
+              overflow: "hidden",
+            },
+          }}
+        >
+          {items}
+        </Accordion>
+      </div>
+    </section>
   )
 }

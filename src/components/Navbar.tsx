@@ -1,6 +1,8 @@
+import { Link } from "react-router"
+
 const navLinks = [
   { link: "/", label: "Home" },
-  { link: "/faqs", label: "FAQs" },
+  { link: "/faq", label: "FAQs" },
 ]
 
 export function Navbar() {
@@ -10,13 +12,13 @@ export function Navbar() {
         <img className="mr-auto h-6 w-auto" src="/cisco-logo-white.png" alt="" />
         <div className="space-x-6">
           {navLinks.map((navLink) => (
-            <a
+            <Link
               className="rounded-md p-2 text-white ring-white focus:outline-none focus:ring-1 focus:ring-opacity-75"
-              href={navLink.link}
+              to={navLink.link}
               key={navLink.label}
             >
               <span>{navLink.label}</span>
-            </a>
+            </Link>
           ))}
         </div>
       </div>
