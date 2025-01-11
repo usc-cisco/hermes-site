@@ -7,7 +7,7 @@ import { CourseNameEnum } from "../types/enums/CourseNameEnum"
 import { TeacherStatusEnum } from "../types/enums/TeacherStatusEnum"
 import QueueStatus from "./QueueStatus"
 
-// Function to resolve program names
+// Resolves and returns the proper program name based on fetched 'courseName' from backend
 const resolveProgramName = (program: string) => {
   switch (program) {
     case "BSCS":
@@ -21,6 +21,7 @@ const resolveProgramName = (program: string) => {
   }
 }
 
+// Resolves and returns the proper Enum value based on fetched 'status' from backend
 const resolveStatusEnum = (status: string) => {
   switch (status) {
     case "available":
