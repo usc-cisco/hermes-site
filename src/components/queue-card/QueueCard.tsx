@@ -3,8 +3,8 @@ import React from "react"
 import { Card, Flex, Select, Text, Title } from "@mantine/core"
 import { ChevronDown } from "lucide-react"
 
-import { ProgramEnum } from "../types/enums/ProgramsEnum"
-import { TeacherStatusEnum } from "../types/enums/TeacherStatusEnum"
+import { ProgramEnum } from "../../types/enums/ProgramsEnum"
+import { TeacherStatusEnum } from "../../types/enums/TeacherStatusEnum"
 import QueueButton from "./QueueButton"
 import QueueStatus from "./QueueStatus"
 

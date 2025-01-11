@@ -1,6 +1,6 @@
 import React from "react"
 
-import QueueCard from "../components/QueueCard"
+import QueueCard from "../components/queue-card/QueueCard"
 import { useQueueData } from "../hooks/useQueueData"
 import { useStatusUpdate } from "../hooks/useStatusUpdate"
 import { CourseNameEnum } from "../types/enums/CourseNameEnum"
