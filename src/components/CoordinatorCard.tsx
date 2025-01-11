@@ -4,18 +4,17 @@ import useSWR from "swr"
 import { CoordinatorService } from "../services/coordinator.service"
 import { Coordinator } from "../types/entities/Coordinator"
 import { CourseNameEnum } from "../types/enums/CourseNameEnum"
-import { ProgramEnum } from "../types/enums/ProgramsEnum"
 import { TeacherStatusEnum } from "../types/enums/TeacherStatusEnum"
 import QueueStatus from "./QueueStatus"
 
 // Function to resolve program names
-const resolveProgramName = (studentProgram: string) => {
-  switch (studentProgram) {
-    case ProgramEnum.CS:
+const resolveProgramName = (program: string) => {
+  switch (program) {
+    case "CS":
       return "Computer Science"
-    case ProgramEnum.IT:
+    case "IT":
       return "Information Technology"
-    case ProgramEnum.IS:
+    case "IS":
       return "Information Science"
     default:
       return "Invalid Value"
@@ -35,7 +34,6 @@ const resolveStatusEnum = (status: string) => {
   }
 }
 
-// Fetcher function for SWR
 const fetcher = async (course: CourseNameEnum) => {
   const data = await CoordinatorService.getCoordinatorInfo(course)
   console.log(data)
@@ -47,19 +45,16 @@ export default function CoordinatorCard() {
     refreshInterval: 1000,
   })
 
-  // Log data and error for debugging
-  console.log("Fetched data:", data)
   if (error) {
     console.error("Error fetching coordinator info:", error)
     return <Text>Error loading coordinator info.</Text>
   }
 
-  // Check if data is still loading
+  // Load State
   if (!data) {
     return <Text>Fetching coordinator info...</Text>
   }
 
-  // Use the fetched data directly
   const coordinatorInfo: Coordinator = data
 
   return (
@@ -78,14 +73,14 @@ export default function CoordinatorCard() {
         </Stack>
         <Stack align="flex-end" gap="xs">
           <Text size="sm" c="darkGray">
-            {coordinatorInfo.name}
+            {coordinatorInfo?.name}
           </Text>
           <QueueStatus status={resolveStatusEnum(coordinatorInfo.status)} teacher="" />
           <Text size="sm" c="darkGray">
-            {coordinatorInfo.email}
+            {coordinatorInfo?.email}
           </Text>
           <Text size="sm" c="darkGray">
-            {resolveProgramName(coordinatorInfo.courseName)} {/* Assuming courseName is part of coordinatorInfo */}
+            {resolveProgramName(coordinatorInfo.courseName)}
           </Text>
         </Stack>
       </Flex>
