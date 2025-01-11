@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <footer className="bg-primary p-6 text-xl">
+    <footer className="space-y-3 bg-primary p-6 text-xl">
       <img
         className="mx-auto h-6 w-auto"
         src="/cisco-logo-white.png"
