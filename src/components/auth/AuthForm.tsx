@@ -1,93 +1,62 @@
-import {
-  Anchor,
-  Button,
-  Checkbox,
-  Divider,
-  Group,
-  Paper,
-  PaperProps,
-  PasswordInput,
-  Stack,
-  Text,
-  TextInput,
-} from "@mantine/core"
-import { useForm } from "@mantine/form"
-import { upperFirst, useToggle } from "@mantine/hooks"
+import { Anchor, Button, Container, Paper, Select, Text, TextInput, Title } from "@mantine/core"
+import { ChevronDown } from "lucide-react"
 
-export function AuthenticationForm(props: PaperProps) {
-  const [type, toggle] = useToggle(["login", "register"])
-  const form = useForm({
-    initialValues: {
-      email: "",
-      name: "",
-      password: "",
-      terms: true,
-    },
+import { CourseNameEnum } from "../../types/enums/CourseNameEnum"
+import AdminAuthModal from "./AdminAuthModal"
 
-    validate: {
-      email: (val) => (/^\S+@\S+$/.test(val) ? null : "Invalid email"),
-      password: (val) => (val.length <= 6 ? "Password should include at least 6 characters" : null),
-    },
-  })
+interface AuthFormProps {
+  onRevoke?: () => void
+}
+
+export function AuthForm({ onRevoke }: AuthFormProps) {
+  const handleOpenAdminAuthModal = () => {
+    AdminAuthModal.open({
+      onConfirm: () => {
+        if (onRevoke) {
+          onRevoke()
+        }
+      },
+    })
+  }
 
   return (
-    <Paper radius="md" p="xl" withBorder {...props}>
-      <div className="flex justify-center">
-        <Text size="xl" fw={500}>
-          Sign in
-        </Text>
-      </div>
-
-      <form onSubmit={form.onSubmit(() => {})}>
-        <Stack>
-          {type === "register" && (
-            <TextInput
-              label="Name"
-              placeholder="Your name"
-              value={form.values.name}
-              onChange={(event) => form.setFieldValue("name", event.currentTarget.value)}
-              radius="md"
-            />
-          )}
-
+    <div className="w-full">
+      <Container size={400} my={10}>
+        <h1 className="text-center text-4xl font-bold">Welcome!</h1>
+        <Paper withBorder shadow="lg" p={30} mt={20} radius="md">
           <TextInput
+            style={{
+              input: {
+                "&::placeholder": {
+                  color: "black",
+                },
+              },
+            }}
+            label="Student ID"
+            placeholder="Enter your student ID"
             required
-            label="Email"
-            placeholder="hello@mantine.dev"
-            value={form.values.email}
-            onChange={(event) => form.setFieldValue("email", event.currentTarget.value)}
-            error={form.errors.email && "Invalid email"}
-            radius="md"
           />
 
-          <PasswordInput
-            required
-            label="Password"
-            placeholder="Your password"
-            value={form.values.password}
-            onChange={(event) => form.setFieldValue("password", event.currentTarget.value)}
-            error={form.errors.password && "Password should include at least 6 characters"}
-            radius="md"
+          <Select
+            mt={15}
+            label="Course"
+            placeholder="Select course"
+            data={[CourseNameEnum.BSCS, CourseNameEnum.BSIT, CourseNameEnum.BSIS]}
+            rightSection={<ChevronDown size={14} color="black" />}
           />
 
-          {type === "register" && (
-            <Checkbox
-              label="I accept terms and conditions"
-              checked={form.values.terms}
-              onChange={(event) => form.setFieldValue("terms", event.currentTarget.checked)}
-            />
-          )}
-        </Stack>
-
-        <Group justify="space-between" mt="xl">
-          <Anchor component="button" type="button" c="dimmed" onClick={() => toggle()} size="xs">
-            {type === "register" ? "Already have an account? Login" : "Don't have an account? Register"}
-          </Anchor>
-          <Button type="submit" radius="xl">
-            {upperFirst(type)}
+          <Button fullWidth mt="xl">
+            Sign in
           </Button>
-        </Group>
-      </form>
-    </Paper>
+          <div className="mt-3 flex w-full items-center justify-center">
+            <Anchor size="sm" component="button" ta="center" onClick={handleOpenAdminAuthModal}>
+              Admin Sign in
+            </Anchor>
+          </div>
+        </Paper>
+      </Container>
+    </div>
   )
 }
+
+export default AuthForm
