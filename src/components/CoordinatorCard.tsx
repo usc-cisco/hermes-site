@@ -7,6 +7,10 @@ import { CourseNameEnum } from "../types/enums/CourseNameEnum"
 import { TeacherStatusEnum } from "../types/enums/TeacherStatusEnum"
 import QueueStatus from "./QueueStatus"
 
+interface CoordinatorCardProps {
+  course: CourseNameEnum
+}
+
 // Resolves and returns the proper program name based on fetched 'courseName' from backend
 const resolveProgramName = (program: string) => {
   switch (program) {
@@ -41,7 +45,7 @@ const fetcher = async (course: CourseNameEnum) => {
   return data
 }
 
-export default function CoordinatorCard(course: CourseNameEnum) {
+export default function CoordinatorCard({ course }: CoordinatorCardProps) {
   const { data, error } = useSWR(course, fetcher, {
     refreshInterval: 1000,
   })

@@ -1,6 +1,7 @@
 import CoordinatorCard from "./components/CoordinatorCard"
 import QueueCard from "./components/QueueCard"
 import UserQueueInfoCard from "./components/UserQueueInfoCard"
+import { CourseNameEnum } from "./types/enums/CourseNameEnum"
 import { ProgramEnum } from "./types/enums/ProgramsEnum"
 import { TeacherStatusEnum } from "./types/enums/TeacherStatusEnum"
 
@@ -8,7 +9,7 @@ function App() {
   return (
     <>
       <div className="mx-8 flex flex-col items-center gap-4 py-8">
-        <CoordinatorCard />
+        <CoordinatorCard course={CourseNameEnum.BSCS} />
         <QueueCard
           program={ProgramEnum.CS}
           current={42}
