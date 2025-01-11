@@ -41,14 +41,22 @@ const fetcher = async (course: CourseNameEnum) => {
   return data
 }
 
-export default function CoordinatorCard() {
-  const { data, error } = useSWR(CourseNameEnum.BSCS, fetcher, {
+export default function CoordinatorCard(course: CourseNameEnum) {
+  const { data, error } = useSWR(course, fetcher, {
     refreshInterval: 1000,
   })
 
   if (error) {
     console.error("Error fetching coordinator info:", error)
-    return <Text>Error loading coordinator info.</Text>
+    return (
+      <Card shadow="sm" padding="lg" radius="lg" w="100%" maw="22rem">
+        <Center>
+          <Text fw={500} c="red">
+            Error loading coordinator info.
+          </Text>
+        </Center>
+      </Card>
+    )
   }
 
   // Load State
