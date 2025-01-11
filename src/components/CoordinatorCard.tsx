@@ -76,12 +76,12 @@ export default function CoordinatorCard() {
           <Text size="sm" c="darkGray">
             {coordinatorInfo?.name}
           </Text>
-          <QueueStatus status={resolveStatusEnum(coordinatorInfo.status)} teacher="" />
+          <QueueStatus status={resolveStatusEnum(coordinatorInfo?.status)} teacher="" />
           <Text size="sm" c="darkGray">
             {coordinatorInfo?.email}
           </Text>
           <Text size="sm" c="darkGray">
-            {resolveProgramName(coordinatorInfo.courseName)}
+            {resolveProgramName(coordinatorInfo?.courseName)}
           </Text>
         </Stack>
       </Flex>

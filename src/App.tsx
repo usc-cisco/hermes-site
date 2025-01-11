@@ -8,12 +8,7 @@ function App() {
   return (
     <>
       <div className="mx-8 flex flex-col items-center gap-4 py-8">
-        <CoordinatorCard
-          coordinatorTeacher="Doris Roa"
-          coordinatorStatus={TeacherStatusEnum.UNAVAILABLE}
-          coordinatorEmail="doris.roa@usc.edu.ph"
-          studentProgram={ProgramEnum.CS}
-        />
+        <CoordinatorCard />
         <QueueCard
           program={ProgramEnum.CS}
           current={42}
