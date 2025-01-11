@@ -1,13 +1,9 @@
-import { useState } from "react"
-
 import QueueCard from "./components/QueueCard"
 import UserQueueInfoCard from "./components/UserQueueInfoCard"
 import { ProgramEnum } from "./types/enums/ProgramsEnum"
 import { TeacherStatusEnum } from "./types/enums/TeacherStatusEnum"
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
       <div className="flex flex-col items-center gap-4">
