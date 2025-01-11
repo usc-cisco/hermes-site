@@ -5,7 +5,7 @@ import { CoordinatorService } from "../services/coordinator.service"
 import { Coordinator } from "../types/entities/Coordinator"
 import { CourseNameEnum } from "../types/enums/CourseNameEnum"
 import { TeacherStatusEnum } from "../types/enums/TeacherStatusEnum"
-import QueueStatus from "./QueueStatus"
+import QueueStatus from "./queue-card/QueueStatus"
 
 interface CoordinatorCardProps {
   course: CourseNameEnum

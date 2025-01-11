@@ -5,3 +5,8 @@
 * {
   font-family: "Poppins";
 }
+
+::placeholder {
+  color: #7c7c7c !important;
+  opacity: 1;
+}
