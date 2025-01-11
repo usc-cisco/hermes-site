@@ -32,7 +32,7 @@ createRoot(document.getElementById("root")!).render(
                     </ProtectedRoute>
                   }
                 />
-                <Route path="/faqs" element={<FAQ />} />
+                <Route path="/faq" element={<FAQ />} />
                 <Route path="/auth" element={<Auth />} />
                 <Route path="/admin" element={<AdminPage />} />
               </Route>
