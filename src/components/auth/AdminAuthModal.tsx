@@ -8,7 +8,7 @@ interface RevokeModalProps {
 const AdminAuthModal = {
   open: ({ onConfirm }: RevokeModalProps) => {
     return modals.openConfirmModal({
-      title: "Remove from Queue",
+      title: "Admin Sign In",
       centered: true,
       children: (
         <div>
@@ -20,36 +20,39 @@ const AdminAuthModal = {
                 },
               },
             }}
-            label="Student ID"
-            placeholder="Enter your student ID"
+            label="Username"
+            placeholder="Enter your username"
             required
           />
 
-          <Select
-            mt={15}
-            label="Course"
-            placeholder="Select course"
-            clearable
-            data={["React", "Angular", "Vue", "Svelte"]}
+          <TextInput
+            style={{
+              input: {
+                "&::placeholder": {
+                  color: "black",
+                },
+              },
+            }}
+            label="Password"
+            placeholder="Enter your password"
+            required
+            mt={5}
           />
-
-          <Button fullWidth mt="xl">
-            Sign in
-          </Button>
         </div>
       ),
       labels: {
-        confirm: "Remove",
+        confirm: "Sign in",
         cancel: "Cancel",
       },
       confirmProps: {
-        color: "red",
+        color: "green",
         radius: "md",
+
         styles: {
           root: {
-            backgroundColor: "#FF5757",
+            backgroundColor: "#1752F0",
             "&:hover": {
-              backgroundColor: "#ff4242",
+              backgroundColor: "#1752F0",
             },
           },
         },
