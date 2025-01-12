@@ -118,6 +118,7 @@ const QueueCard: React.FC<QueueCardProps> = ({
       w="100%"
       style={{
         outline: isAdmin && status === TeacherStatusEnum.UNAVAILABLE ? "2px solid red" : "none",
+        aspectRatio: "1:2",
       }}
     >
       <QueueCardHeader program={program} current={current} total={total} disabled={disabled} />
