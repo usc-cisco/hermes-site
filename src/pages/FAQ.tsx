@@ -7,7 +7,9 @@ import { FAQs } from "../types/entities/FAQ"
 export default function FAQ() {
   const items = faqs.map((item: FAQs) => (
     <Accordion.Item key={item.id} value={item.question} className="w-full bg-white py-4">
-      <Accordion.Control styles={{ label: { fontWeight: 600, fontSize: 18 } }}>{item.question}</Accordion.Control>
+      <Accordion.Control styles={{ label: { fontWeight: 600, fontSize: 18, paddingBottom: 0 } }}>
+        {item.question}
+      </Accordion.Control>
       <Accordion.Panel className="text-lg text-gray-700">
         <ReactMarkdown>{item.answer}</ReactMarkdown>
       </Accordion.Panel>
@@ -21,7 +23,7 @@ export default function FAQ() {
         <Accordion
           styles={{
             root: {
-              padding: "20px",
+              paddingInline: "20px",
               borderRadius: "12px",
               overflow: "hidden",
             },
