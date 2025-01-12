@@ -6,7 +6,7 @@ export default function Footer() {
         src="/cisco-logo-white.png"
         alt="White transparent picture of the CISCO logo"
       />
-      <p className="text-center text-sm text-white">
+      <p className="pt-1 text-center text-sm text-white">
         © {new Date().getFullYear()}{" "}
         <a
           href="https://github.com/usc-cisco/hermes-site"
@@ -16,7 +16,8 @@ export default function Footer() {
         >
           Hermes Site
         </a>
-        <br />
+      </p>
+      <p className="text-center text-sm text-white">
         Developed by the USC Computer and Information Sciences Council. All rights reserved.
       </p>
     </footer>
