@@ -23,7 +23,7 @@ export class QueueService {
         "Content-Type": "application/json",
       }
 
-      const response = await api.post(`/queue/${course}/number`, {}, { headers })
+      const response = await api.post(`/queue/${course}/number`, undefined, { headers })
 
       return response.data
     } catch (error) {

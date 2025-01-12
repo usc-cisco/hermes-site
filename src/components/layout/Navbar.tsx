@@ -20,7 +20,7 @@ export function Navbar() {
             FAQs
           </Link>
           {isAuthenticated && (
-            <button onClick={() => clearAuth()}>
+            <button title="Sign out" onClick={() => clearAuth()}>
               <LogOut className="size-4 text-white" />
             </button>
           )}

@@ -22,7 +22,7 @@ export class AuthService {
         "Content-Type": "application/json",
       }
 
-      const response = await api.post("auth/admin/sign-in", {}, { headers })
+      const response = await api.post("auth/admin/sign-in", undefined, { headers })
 
       return response.data
     } catch (error) {
