@@ -7,7 +7,7 @@ export function Navbar() {
   const { isAuthenticated, clearAuth } = useAuth()
 
   return (
-    <nav className="bg-primary px-6 py-6">
+    <nav className="mb-4 bg-primary px-6 py-6">
       <div className="flex">
         <Link to="/" className="mr-auto w-auto">
           <img className="h-6 hover:cursor-pointer" src="/cisco-logo-white.png" alt="" />
