@@ -41,7 +41,7 @@ const resolveStatusEnum = (status: string) => {
 
 const fetcher = async (course: CourseNameEnum) => {
   const data = await CoordinatorService.getCoordinatorInfo(course)
-  console.log(data)
+
   return data
 }
 
