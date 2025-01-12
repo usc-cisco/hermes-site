@@ -13,8 +13,17 @@ const UserQueueInfoCard: React.FC<UserQueueInfoProps> = ({ userNumber, current, 
     return null
   }
 
+  // Check if userNumber === current
+  // If userNumber === current, change styles
+  // If userNumber !== current, as is
+
+  // Checks if the current priority number is the student's
+  const checkCurrentPriorityNumber = (currentNumber: number | undefined, userNumber: number | undefined) => {
+    // if (currentNumber === userNumber)
+  }
+
   return (
-    <Card shadow="sm" padding="lg" radius="lg" maw="22rem" w="100%">
+    <Card shadow="sm" padding="lg" radius="lg" maw="22rem" w="100%" className="border-4 border-primary">
       <Flex justify="center">
         <Title size="h3" c="black" fw={600} mb="md">
           Your Information
@@ -35,7 +44,7 @@ const UserQueueInfoCard: React.FC<UserQueueInfoProps> = ({ userNumber, current, 
             <Text size="sm" c="black">
               Currently Serving:
             </Text>
-            <Text size="sm" fw={500}>
+            <Text size="sm" fw={500} c="darkGray">
               {current ?? "???"}
             </Text>
           </Flex>
