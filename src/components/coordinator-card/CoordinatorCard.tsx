@@ -2,6 +2,7 @@ import { Card, Center, Text, Title } from "@mantine/core"
 import useSWR from "swr"
 
 import { CoordinatorService } from "../../services/coordinator.service"
+import { POLLING_INTERVAL } from "../../types/constants/polling-interval"
 import { Coordinator } from "../../types/entities/Coordinator"
 import { CourseNameEnum } from "../../types/enums/CourseNameEnum"
 import CoordinatorInformation from "./CoordinatorInformation"
@@ -18,7 +19,7 @@ const fetcher = async (course: CourseNameEnum) => {
 
 export default function CoordinatorCard({ course }: CoordinatorCardProps) {
   const { data, error } = useSWR(course, fetcher, {
-    refreshInterval: 1000,
+    refreshInterval: POLLING_INTERVAL,
   })
 
   if (error) {

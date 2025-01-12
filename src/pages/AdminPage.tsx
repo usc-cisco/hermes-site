@@ -1,7 +1,6 @@
 import React from "react"
 
-import { Card, Loader } from "@mantine/core"
-
+import CardLoader from "../components/layout/CardLoader"
 import QueueCard from "../components/queue-card/QueueCard"
 import { useAuth } from "../contexts/AuthContext"
 import { useQueueData } from "../hooks/useQueueData"
@@ -66,14 +65,7 @@ const AdminPage: React.FC = () => {
             const { numberData, coordinatorData } = data
 
             if (numberData.error || coordinatorData.error) return <div key={index}>Error Loading Data</div>
-            if (!numberData.data || !coordinatorData.data)
-              return (
-                <Card key={index} shadow="sm" padding="lg" h={200} radius="lg" maw="22rem" w="100%">
-                  <div className="flex h-full w-full items-center justify-center">
-                    <Loader color="blue" />
-                  </div>
-                </Card>
-              )
+            if (!numberData.data || !coordinatorData.data) return <CardLoader key={index} />
 
             const status = coordinatorData.data.status.toUpperCase() as keyof typeof TeacherStatusEnum
             const teacherStatus = TeacherStatusEnum[status]
