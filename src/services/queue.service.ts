@@ -14,4 +14,50 @@ export class QueueService {
       throw new Error(`Error updating queue for ${course}`)
     }
   }
+
+  static async enqueue(course: CourseNameEnum, accessToken: string) {
+    try {
+      const headers = {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      }
+
+      const response = await api.post(`/queue/${course}/number`, {}, { headers })
+
+      return response.data
+    } catch (error) {
+      console.log(error)
+      throw new Error("Something went wrong")
+    }
+  }
+  static async dequeue(accessToken: string) {
+    try {
+      const headers = {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      }
+
+      const response = await api.delete("/queue/number", { headers })
+
+      return response.data
+    } catch (error) {
+      console.log(error)
+      throw new Error("Something went wrong")
+    }
+  }
+
+  static async findQueueNumber(accessToken: string) {
+    try {
+      const headers = {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      }
+
+      const response = await api.get("/queue/number", { headers })
+
+      return response.data
+    } catch (err) {
+      throw new Error("Something went wrong")
+    }
+  }
 }
