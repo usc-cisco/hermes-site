@@ -10,7 +10,7 @@ export const useStatusUpdate = () => {
   const updateStatus = useCallback(
     async (course: CourseNameEnum, newStatus: TeacherStatusEnum, basicAuthToken: string) => {
       try {
-        await CoordinatorService.updateStatus(course, newStatus, basicAuthToken) // Pass the token here
+        await CoordinatorService.updateCoordinatorStatus(course, newStatus, basicAuthToken) // Pass the token here
 
         // Revalidates coordinator data after status update
         await mutate(`coordinator/${course}`)

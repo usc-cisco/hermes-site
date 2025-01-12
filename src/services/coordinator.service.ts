@@ -17,7 +17,7 @@ export class CoordinatorService {
     }
   }
 
-  static async updateStatus(course: CourseNameEnum, status: TeacherStatusEnum, basicAuthToken: string) {
+  static async updateCoordinatorStatus(course: CourseNameEnum, status: TeacherStatusEnum, basicAuthToken: string) {
     try {
       // Convert the enum value to its corresponding string representation
       const statusString = TeacherStatusEnum[status].toLowerCase() // Convert to lowercase to match expected values
