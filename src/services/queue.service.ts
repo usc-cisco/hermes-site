@@ -17,6 +17,21 @@ export class QueueService {
       throw new Error("Something went wrong")
     }
   }
+  static async dequeue(accessToken: string) {
+    try {
+      const headers = {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      }
+
+      const response = await api.delete("/queue/number", { headers })
+
+      return response.data
+    } catch (error) {
+      console.log(error)
+      throw new Error("Something went wrong")
+    }
+  }
 
   static async findQueueNumber(accessToken: string) {
     try {
@@ -28,8 +43,7 @@ export class QueueService {
       const response = await api.get("/queue/number", { headers })
 
       return response.data
-    } catch (error) {
-      console.log(error)
+    } catch (err) {
       throw new Error("Something went wrong")
     }
   }
