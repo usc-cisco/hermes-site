@@ -3,6 +3,7 @@ import React from "react"
 import QueueCard from "../components/queue-card/QueueCard"
 import { useAuth } from "../contexts/AuthContext"
 import { useQueueData } from "../hooks/useQueueData"
+import { useQueueUpdate } from "../hooks/useQueueUpdate"
 import { useStatusUpdate } from "../hooks/useStatusUpdate"
 import { CourseNameEnum } from "../types/enums/CourseNameEnum"
 import { ProgramEnum } from "../types/enums/ProgramsEnum"
@@ -22,9 +23,26 @@ const AdminPage: React.FC = () => {
   const itQueueData = useQueueData(CourseNameEnum.BSIT)
   const isQueueData = useQueueData(CourseNameEnum.BSIS)
   const { updateStatus } = useStatusUpdate()
+  const { updateQueue } = useQueueUpdate()
 
   // Combine the data into an array after the hooks are called
   const queueData = [csQueueData, itQueueData, isQueueData]
+
+  const handleQueueUpdate = async (course: CourseNameEnum) => {
+    console.log("update queue route:")
+
+    if (basicAuthToken) {
+      // Check if the token is not null
+      const result = await updateQueue(course, basicAuthToken)
+      if (!result.success) {
+        console.log("Failed to update queue. Please try again")
+      } else {
+        console.log(`Queue for ${course} updated successfully!`)
+      }
+    } else {
+      console.log("Authorization token is missing.")
+    }
+  }
 
   const handleStatusUpdate = async (course: CourseNameEnum, newStatus: TeacherStatusEnum) => {
     if (basicAuthToken) {
@@ -59,7 +77,7 @@ const AdminPage: React.FC = () => {
                 total={numberData.data.max}
                 status={teacherStatus}
                 teacher={coordinatorData.data.name}
-                onUpdateQueue={() => alert("Updated Queue!")}
+                onUpdateQueue={() => handleQueueUpdate(queues[index].course)} // Call handleQueueUpdate
                 onStatusChange={(newStatus) => handleStatusUpdate(queues[index].course, newStatus)}
                 isAdmin={true}
               />
