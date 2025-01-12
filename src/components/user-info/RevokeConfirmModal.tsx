@@ -17,7 +17,7 @@ const RevokeConfirmModal = {
         </Text>
       ),
       labels: {
-        confirm: "Remove",
+        confirm: "Leave Queue",
         cancel: "Cancel",
       },
       confirmProps: {

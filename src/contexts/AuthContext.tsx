@@ -1,5 +1,9 @@
 import React, { createContext, useContext, useEffect, useState } from "react"
 
+import { jwtDecode } from "jwt-decode"
+
+import { type CourseNameEnum } from "../types/enums/CourseNameEnum"
+
 interface AuthContextType {
   jwtToken: string | null
   basicAuthToken: string | null
@@ -8,6 +12,8 @@ interface AuthContextType {
   clearAuth: () => void
   isAdmin: boolean
   isAuthenticated: boolean
+  idNumber: string | undefined
+  course: CourseNameEnum | undefined
 }
 
 const AuthContext = createContext<AuthContextType | null>(null)
@@ -69,6 +75,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, [jwtToken, basicAuthToken])
 
+  const { idNumber, course } = jwtToken
+    ? jwtDecode<{ idNumber: string; course: CourseNameEnum }>(jwtToken)
+    : { idNumber: undefined, course: undefined }
+
   const value = {
     jwtToken,
     basicAuthToken,
@@ -77,6 +87,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     clearAuth,
     isAuthenticated,
     isAdmin,
+    idNumber,
+    course,
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

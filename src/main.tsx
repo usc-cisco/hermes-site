@@ -3,6 +3,8 @@ import { StrictMode } from "react"
 import { MantineProvider } from "@mantine/core"
 import "@mantine/core/styles.css"
 import { ModalsProvider } from "@mantine/modals"
+import { Notifications } from "@mantine/notifications"
+import "@mantine/notifications/styles.css"
 import { createRoot } from "react-dom/client"
 import { HashRouter, Route, Routes } from "react-router"
 
@@ -20,6 +22,7 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <AuthProvider>
       <MantineProvider theme={theme}>
+        <Notifications />
         <ModalsProvider labels={{ confirm: "Confirm", cancel: "Cancel" }}>
           <HashRouter>
             <Routes>
