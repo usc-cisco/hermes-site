@@ -47,9 +47,9 @@ function App() {
   return (
     <>
       <div className="mx-8 flex flex-col items-center gap-4 py-8">
-        {studentQueueData.data && !studentQueueData.error ? (
+        {studentQueueData.data && !studentQueueData.error && courseName ? (
           <>
-            <CoordinatorCard course={CourseNameEnum.BSCS} />
+            <CoordinatorCard course={courseName} />
             <UserQueueInfoCard userNumber={studentQueueData.data?.queueNumber} current={current} total={max} />
           </>
         ) : null}
