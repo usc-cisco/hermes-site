@@ -7,11 +7,7 @@ import { AuthService } from "../../services/auth.service"
 import { CourseNameEnum } from "../../types/enums/CourseNameEnum"
 import AdminModal from "./AdminModal"
 
-interface AuthFormProps {
-  onRevoke?: () => void
-}
-
-export function AuthForm({ onRevoke }: AuthFormProps) {
+export function AuthForm() {
   const { setJwtAuth } = useAuth()
 
   const form = useForm({

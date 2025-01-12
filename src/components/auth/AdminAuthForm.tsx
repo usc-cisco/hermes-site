@@ -27,7 +27,6 @@ export function AdminAuthForm({ close }: AdminAuthFormProps) {
     try {
       const response = await AuthService.adminLogin(form.values)
 
-      console.log(response)
       setBasicAuth(response.token)
     } catch (error) {
       console.log(error)
