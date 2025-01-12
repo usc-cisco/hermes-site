@@ -13,6 +13,7 @@ import { ProtectedRoute } from "./components/auth/ProtectedRoute"
 import Layout from "./components/layout/Layout.tsx"
 import { theme } from "./config/theme.ts"
 import { AuthProvider } from "./contexts/AuthContext"
+import { QueueProvider } from "./contexts/QueueContext.tsx"
 import "./index.css"
 import AdminPage from "./pages/AdminPage.tsx"
 import Auth from "./pages/Auth.tsx"
@@ -21,35 +22,37 @@ import FAQ from "./pages/FAQ.tsx"
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <AuthProvider>
-      <MantineProvider theme={theme}>
-        <Notifications />
-        <ModalsProvider labels={{ confirm: "Confirm", cancel: "Cancel" }}>
-          <HashRouter>
-            <Routes>
-              <Route element={<Layout />}>
-                <Route
-                  path="/"
-                  element={
-                    <ProtectedRoute>
-                      <App />
-                    </ProtectedRoute>
-                  }
-                />
-                <Route path="/faq" element={<FAQ />} />
-                <Route path="/auth" element={<Auth />} />
-                <Route
-                  path="/admin"
-                  element={
-                    <ProtectedRoute requireAdmin>
-                      <AdminPage />
-                    </ProtectedRoute>
-                  }
-                />
-              </Route>
-            </Routes>
-          </HashRouter>
-        </ModalsProvider>
-      </MantineProvider>
+      <QueueProvider>
+        <MantineProvider theme={theme}>
+          <Notifications />
+          <ModalsProvider labels={{ confirm: "Confirm", cancel: "Cancel" }}>
+            <HashRouter>
+              <Routes>
+                <Route element={<Layout />}>
+                  <Route
+                    path="/"
+                    element={
+                      <ProtectedRoute>
+                        <App />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route path="/faq" element={<FAQ />} />
+                  <Route path="/auth" element={<Auth />} />
+                  <Route
+                    path="/admin"
+                    element={
+                      <ProtectedRoute requireAdmin>
+                        <AdminPage />
+                      </ProtectedRoute>
+                    }
+                  />
+                </Route>
+              </Routes>
+            </HashRouter>
+          </ModalsProvider>
+        </MantineProvider>
+      </QueueProvider>
     </AuthProvider>
   </StrictMode>,
 )
