@@ -40,33 +40,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setIsAdmin(false)
   }
 
-  // Initialize auth state from localStorage
   useEffect(() => {
-    const storedJwtToken = localStorage.getItem("jwtToken")
-    const storedBasicToken = localStorage.getItem("basicToken")
-
-    if (storedBasicToken) {
+    // Handle basic auth
+    if (basicAuthToken) {
       setIsAuthenticated(true)
       setIsAdmin(true)
-    } else if (storedJwtToken) {
-      try {
-        const payload = JSON.parse(atob(storedJwtToken.split(".")[1]))
-        const expiration = payload.exp * 1000 // Convert to milliseconds
-
-        if (Date.now() < expiration) {
-          setIsAuthenticated(true)
-        } else {
-          clearAuth()
-        }
-      } catch (error) {
-        console.error("Error parsing JWT token:", error)
-        clearAuth()
-      }
+      return
     }
-  }, [])
 
-  // Check JWT token expiration
-  useEffect(() => {
+    // Handle JWT auth
     if (jwtToken) {
       try {
         const payload = JSON.parse(atob(jwtToken.split(".")[1]))
@@ -74,13 +56,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
         if (Date.now() >= expiration) {
           clearAuth()
+        } else {
+          setIsAuthenticated(true)
         }
       } catch (error) {
         console.error("Error parsing JWT token:", error)
         clearAuth()
       }
+    } else {
+      setIsAuthenticated(false)
+      setIsAdmin(false)
     }
-  }, [jwtToken])
+  }, [jwtToken, basicAuthToken])
 
   const value = {
     jwtToken,
