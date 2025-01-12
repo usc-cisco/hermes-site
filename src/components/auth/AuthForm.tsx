@@ -69,7 +69,7 @@ export function AuthForm() {
               rightSection={<ChevronDown size={14} color="black" />}
             />
 
-            <Button fullWidth mt="xl" type="submit">
+            <Button fullWidth mt="xl" type="submit" bg="primary">
               Sign in
             </Button>
           </form>

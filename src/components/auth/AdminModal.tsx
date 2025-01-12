@@ -20,7 +20,7 @@ export default function AdminModal() {
         <AdminAuthForm close={close} />
       </Modal>
 
-      <Anchor size="sm" component="button" ta="center" onClick={open}>
+      <Anchor size="sm" component="button" ta="center" onClick={open} c="primary">
         Admin Sign in
       </Anchor>
     </>
