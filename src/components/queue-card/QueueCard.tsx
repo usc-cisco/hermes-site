@@ -122,7 +122,7 @@ const QueueCard: React.FC<QueueCardProps> = ({
     >
       <QueueCardHeader program={program} current={current} total={total} disabled={disabled} />
 
-      <Flex direction="column" gap="xs">
+      <Flex direction="column" gap="md">
         <QueueStatus status={status} teacher={teacher} />
 
         {isAdmin ? (
