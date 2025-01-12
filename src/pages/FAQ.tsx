@@ -17,13 +17,13 @@ export default function FAQ() {
   ))
 
   return (
-    <section className="mx-4 sm:mx-4 lg:mx-20">
+    <section className="m-4 sm:mx-4 lg:mx-20">
       <div className="rounded-lg bg-white py-8">
-        <h1 className="py-4 text-center text-6xl font-bold leading-tight">FAQs</h1>
+        <h1 className="py-2 text-center text-6xl font-bold leading-tight">FAQs</h1>
         <Accordion
           styles={{
             root: {
-              paddingInline: "20px",
+              paddingInline: "30px",
               borderRadius: "12px",
               overflow: "hidden",
             },

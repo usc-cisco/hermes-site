@@ -71,7 +71,7 @@ export default function CoordinatorCard({ course }: CoordinatorCardProps) {
   const coordinatorInfo: Coordinator = data
 
   return (
-    <Card shadow="sm" padding="lg" radius="lg" w="100%" maw="22rem">
+    <Card shadow="sm" padding="xl" radius="lg" w="100%" maw="22rem">
       <Center>
         <Title size="h3" mb="md">
           Coordinator Information

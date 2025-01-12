@@ -1,12 +1,12 @@
 export default function Footer() {
   return (
-    <footer className="space-y-3 bg-primary p-6 text-xl">
+    <footer className="bg-primary p-6 text-xl">
       <img
         className="mx-auto h-6 w-auto"
         src="/cisco-logo-white.png"
         alt="White transparent picture of the CISCO logo"
       />
-      <p className="pt-1 text-center text-sm text-white">
+      <p className="pt-2 text-center text-sm text-white">
         © {new Date().getFullYear()}{" "}
         <a
           href="https://github.com/usc-cisco/hermes-site"
