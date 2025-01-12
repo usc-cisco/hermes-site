@@ -60,10 +60,8 @@ const RevokeConfirmModal = {
           },
         },
       },
-      onCancel: () => console.log("Revoke Cancelled!"),
       onConfirm: () => {
         onConfirm()
-        console.log("Remove from queue")
       },
     })
   },
