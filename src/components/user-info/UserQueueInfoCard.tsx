@@ -2,27 +2,13 @@ import React from "react"
 
 import { Card, Flex, Text, Title } from "@mantine/core"
 
-import RevokeButton from "./RevokeButton"
-import RevokeConfirmModal from "./RevokeConfirmModal"
-
 interface UserQueueInfoProps {
-  userNumber: number
-  current: number
-  total: number
-  onRevoke?: () => void
+  userNumber: number | undefined
+  current: number | undefined
+  total: number | undefined
 }
 
-const UserQueueInfoCard: React.FC<UserQueueInfoProps> = ({ userNumber, current, total, onRevoke }) => {
-  const handleOpenRevokeModal = () => {
-    RevokeConfirmModal.open({
-      onConfirm: () => {
-        if (onRevoke) {
-          onRevoke()
-        }
-      },
-    })
-  }
-
+const UserQueueInfoCard: React.FC<UserQueueInfoProps> = ({ userNumber, current, total }) => {
   return (
     <Card shadow="sm" padding="lg" radius="lg" maw="22rem" w="100%">
       <Flex justify="center">
@@ -36,7 +22,7 @@ const UserQueueInfoCard: React.FC<UserQueueInfoProps> = ({ userNumber, current, 
           Your Number
         </Text>
         <Text size="5rem" fw={700} mb="xl">
-          {userNumber}
+          {userNumber ?? "???"}
         </Text>
 
         {/* Currently Serving and Queue Size Info  */}
@@ -46,7 +32,7 @@ const UserQueueInfoCard: React.FC<UserQueueInfoProps> = ({ userNumber, current, 
               Currently Serving:
             </Text>
             <Text size="sm" fw={500}>
-              {current}
+              {current ?? "???"}
             </Text>
           </Flex>
           <Flex justify="space-between" w="100%">
@@ -54,13 +40,10 @@ const UserQueueInfoCard: React.FC<UserQueueInfoProps> = ({ userNumber, current, 
               Queue Size:
             </Text>
             <Text size="sm" fw={500}>
-              {total}
+              {total ?? "???"}
             </Text>
           </Flex>
         </Flex>
-
-        {/* Revoke/Cancel Queue Button  */}
-        <RevokeButton handleClick={handleOpenRevokeModal} />
       </Flex>
     </Card>
   )

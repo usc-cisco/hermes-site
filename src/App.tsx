@@ -1,39 +1,68 @@
 import CoordinatorCard from "./components/CoordinatorCard"
 import QueueCard from "./components/queue-card/QueueCard"
 import UserQueueInfoCard from "./components/user-info/UserQueueInfoCard"
+import { useAuth } from "./contexts/AuthContext"
+import { useQueueData } from "./hooks/useQueueData"
+import { useStudentQueueData } from "./hooks/useStudentQueueData"
 import { CourseNameEnum } from "./types/enums/CourseNameEnum"
 import { ProgramEnum } from "./types/enums/ProgramsEnum"
 import { TeacherStatusEnum } from "./types/enums/TeacherStatusEnum"
 
 function App() {
+  const { jwtToken } = useAuth()
+  const { studentQueueData } = useStudentQueueData(jwtToken as string)
+
+  const queues = [
+    { program: ProgramEnum.CS, course: CourseNameEnum.BSCS },
+    { program: ProgramEnum.IT, course: CourseNameEnum.BSIT },
+    { program: ProgramEnum.IS, course: CourseNameEnum.BSIS },
+  ]
+
+  // Call hooks individually at the top level
+  const csQueueData = useQueueData(CourseNameEnum.BSCS)
+  const itQueueData = useQueueData(CourseNameEnum.BSIT)
+  const isQueueData = useQueueData(CourseNameEnum.BSIS)
+
+  // Combine the data into an array after the hooks are called
+  const queueData = [csQueueData, itQueueData, isQueueData]
+
+  const getQueueStatus = (courseName: CourseNameEnum) => {
+    const queue = queueData.find((q) => q.coordinatorData.data?.courseName === courseName)
+
+    return { max: queue?.numberData.data?.max, current: queue?.numberData.data?.current }
+  }
+
+  const { max, current } = studentQueueData.data?.courseName ? getQueueStatus(studentQueueData.data?.courseName) : {}
+
   return (
     <>
       <div className="mx-8 flex flex-col items-center gap-4 py-8">
-        <CoordinatorCard course={CourseNameEnum.BSCS} />
-        <QueueCard
-          program={ProgramEnum.CS}
-          current={42}
-          total={130}
-          status={TeacherStatusEnum.UNAVAILABLE}
-          teacher="Doriz Roa"
-        />
-        <QueueCard
-          program={ProgramEnum.IT}
-          current={100}
-          total={130}
-          status={TeacherStatusEnum.AVAILABLE}
-          teacher="Gran Sabandal"
-        />
-        <QueueCard
-          program={ProgramEnum.IS}
-          current={20}
-          total={130}
-          status={TeacherStatusEnum.AWAY}
-          teacher="Glenn Pepito"
-        />
+        {studentQueueData.data ? (
+          <>
+            <CoordinatorCard course={CourseNameEnum.BSCS} />
+            <UserQueueInfoCard userNumber={studentQueueData.data?.queueNumber} current={current} total={max} />
+          </>
+        ) : null}
+        {queueData.map((data, index) => {
+          const { numberData, coordinatorData } = data
 
-        {/* Temporarily called, Please move this component to appropriate page */}
-        <UserQueueInfoCard userNumber={10} current={20} total={100} />
+          if (numberData.error || coordinatorData.error) return <div key={index}>Error Loading Data</div>
+          if (!numberData.data || !coordinatorData.data) return <div key={index}>Loading...</div>
+
+          const status = coordinatorData.data.status.toUpperCase() as keyof typeof TeacherStatusEnum
+          const teacherStatus = TeacherStatusEnum[status]
+
+          return (
+            <QueueCard
+              key={index}
+              program={queues[index].program}
+              current={numberData.data.current}
+              total={numberData.data.max}
+              status={teacherStatus}
+              teacher={coordinatorData.data.name}
+            />
+          )
+        })}
       </div>
     </>
   )

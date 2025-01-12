@@ -1,4 +1,5 @@
 import { api } from "../config/axios"
+import { QueueNumber } from "../types/entities/QueueNumber"
 import { CourseNameEnum } from "../types/enums/CourseNameEnum"
 
 export class QueueService {
@@ -7,10 +8,10 @@ export class QueueService {
       const headers = {
         Authorization: `Basic ${basicAuthToken}`,
       }
-      const response = await api.patch(`queue/admin/${course}/number/current`, { headers })
+      const response = await api.patch(`queue/admin/${course}/number/current`, undefined, { headers })
       return response.data
     } catch (error) {
-      console.error(`Error updating queue for ${course}`)
+      console.error(`Error updating queue for ${course}`, error)
       throw new Error(`Error updating queue for ${course}`)
     }
   }
@@ -26,7 +27,7 @@ export class QueueService {
 
       return response.data
     } catch (error) {
-      console.log(error)
+      console.error(error)
       throw new Error("Something went wrong")
     }
   }
@@ -41,22 +42,23 @@ export class QueueService {
 
       return response.data
     } catch (error) {
-      console.log(error)
+      console.error(error)
       throw new Error("Something went wrong")
     }
   }
 
-  static async findQueueNumber(accessToken: string) {
+  static async findQueueNumber(accessToken: string): Promise<QueueNumber | undefined> {
     try {
       const headers = {
         Authorization: `Bearer ${accessToken}`,
         "Content-Type": "application/json",
       }
 
-      const response = await api.get("/queue/number", { headers })
+      const response = await api.get<QueueNumber>("/queue/number", { headers })
 
       return response.data
-    } catch (err) {
+    } catch (error) {
+      console.error(error)
       throw new Error("Something went wrong")
     }
   }
