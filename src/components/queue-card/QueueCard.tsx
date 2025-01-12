@@ -42,6 +42,7 @@ const QueueCard: React.FC<QueueCardProps> = ({
   const { studentQueueData } = useStudentQueueData(jwtToken as string)
   const course = convertProgramEnumToCourseNameEnum(program)
   const [isInQueue, setIsInQueue] = useState(false)
+  const [isFirstLoad, setIsFirstLoad] = useState(true)
 
   const isStudentCourse = jwtCourse === course
 
@@ -95,7 +96,11 @@ const QueueCard: React.FC<QueueCardProps> = ({
     }
   }, [studentQueueData])
 
-  if (studentQueueData.isLoading)
+  useEffect(() => {
+    setIsFirstLoad(false)
+  }, [])
+
+  if (isFirstLoad && studentQueueData.isLoading)
     return (
       <Card shadow="sm" padding="lg" h={200} radius="lg" maw="22rem" w="100%">
         <div className="flex h-full w-full items-center justify-center">
