@@ -3,6 +3,7 @@ import React, { createContext, useContext, useEffect, useState } from "react"
 import { jwtDecode } from "jwt-decode"
 
 import { type CourseNameEnum } from "../types/enums/CourseNameEnum"
+import toast from "../utils/toast"
 
 interface AuthContextType {
   jwtToken: string | null
@@ -10,6 +11,7 @@ interface AuthContextType {
   setJwtAuth: (token: string) => void
   setBasicAuth: (token: string) => void
   clearAuth: () => void
+  setSubmittedCourse: (submittedCourse: CourseNameEnum) => void
   isAdmin: boolean
   isAuthenticated: boolean
   idNumber: string | undefined
@@ -23,6 +25,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [basicAuthToken, setBasicAuthToken] = useState<string | null>(localStorage.getItem("basicToken"))
   const [isAdmin, setIsAdmin] = useState<boolean>(false)
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
+  const [submittedCourse, setSubmittedCourse] = useState<CourseNameEnum | null>(null)
 
   const setJwtAuth = (token: string) => {
     localStorage.setItem("jwtToken", token)
@@ -44,6 +47,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setBasicAuthToken(null)
     setIsAuthenticated(false)
     setIsAdmin(false)
+    setSubmittedCourse(null)
   }
 
   useEffect(() => {
@@ -79,12 +83,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     ? jwtDecode<{ idNumber: string; course: CourseNameEnum }>(jwtToken)
     : { idNumber: undefined, course: undefined }
 
+  useEffect(() => {
+    if (submittedCourse && course !== submittedCourse) {
+      toast.error(`Already have a number under ${submittedCourse}.`, {
+        description: "Please leave your current queue first.",
+      })
+      clearAuth()
+    }
+  }, [course, submittedCourse])
+
   const value = {
     jwtToken,
     basicAuthToken,
     setJwtAuth,
     setBasicAuth,
     clearAuth,
+    setSubmittedCourse,
     isAuthenticated,
     isAdmin,
     idNumber,

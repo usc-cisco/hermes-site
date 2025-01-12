@@ -1,3 +1,5 @@
+import { useEffect } from "react"
+
 import CoordinatorCard from "./components/CoordinatorCard"
 import QueueCard from "./components/queue-card/QueueCard"
 import UserQueueInfoCard from "./components/user-info/UserQueueInfoCard"
@@ -9,7 +11,7 @@ import { ProgramEnum } from "./types/enums/ProgramsEnum"
 import { TeacherStatusEnum } from "./types/enums/TeacherStatusEnum"
 
 function App() {
-  const { jwtToken } = useAuth()
+  const { jwtToken, setSubmittedCourse } = useAuth()
   const { studentQueueData } = useStudentQueueData(jwtToken as string)
 
   const queues = [
@@ -29,17 +31,25 @@ function App() {
   const getQueueStatus = (courseName: CourseNameEnum) => {
     const queue = queueData.find((q) => q.coordinatorData.data?.courseName === courseName)
 
-    return { max: queue?.numberData.data?.max, current: queue?.numberData.data?.current }
+    return { max: queue?.numberData.data?.max, current: queue?.numberData.data?.current, courseName }
   }
 
-  const { max, current } = studentQueueData.data?.courseName ? getQueueStatus(studentQueueData.data?.courseName) : {}
+  const { max, current, courseName } = studentQueueData.data?.courseName
+    ? getQueueStatus(studentQueueData.data?.courseName)
+    : {}
+
+  useEffect(() => {
+    if (courseName) {
+      setSubmittedCourse(courseName)
+    }
+  }, [setSubmittedCourse, courseName])
 
   return (
     <>
       <div className="mx-8 flex flex-col items-center gap-4 py-8">
-        {studentQueueData.data && !studentQueueData.error ? (
+        {studentQueueData.data && !studentQueueData.error && courseName ? (
           <>
-            <CoordinatorCard course={CourseNameEnum.BSCS} />
+            <CoordinatorCard course={courseName} />
             <UserQueueInfoCard userNumber={studentQueueData.data?.queueNumber} current={current} total={max} />
           </>
         ) : null}
