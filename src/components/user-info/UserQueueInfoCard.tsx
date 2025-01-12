@@ -29,7 +29,14 @@ const UserQueueInfoCard: React.FC<UserQueueInfoProps> = ({ userNumber, current, 
   }
 
   return (
-    <Card shadow="sm" padding="xl" radius="lg" maw="22rem" w="100%" className="border-4 border-primary">
+    <Card
+      shadow="sm"
+      padding="xl"
+      radius="lg"
+      maw="22rem"
+      w="100%"
+      className={current === userNumber ? "border-4 border-primary" : ""}
+    >
       <Center>
         <Title size="h3" c="black" fw={600} mb="md">
           Your Information
