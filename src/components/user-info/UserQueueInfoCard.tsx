@@ -1,6 +1,6 @@
 import React from "react"
 
-import { Card, Flex, Text, Title } from "@mantine/core"
+import { Card, Center, Flex, Text, Title } from "@mantine/core"
 
 interface UserQueueInfoProps {
   userNumber: number | undefined
@@ -29,13 +29,14 @@ const UserQueueInfoCard: React.FC<UserQueueInfoProps> = ({ userNumber, current, 
   }
 
   return (
-    <Card shadow="sm" padding="lg" radius="lg" maw="22rem" w="100%" className="border-4 border-primary">
-      <Flex justify="center">
+    <Card shadow="sm" padding="xl" radius="lg" maw="22rem" w="100%" className="border-4 border-primary">
+      <Center>
         <Title size="h3" c="black" fw={600} mb="md">
           Your Information
         </Title>
-      </Flex>
-      <Flex direction="column" align="center">
+      </Center>
+
+      <Flex direction="column" align="center" className="">
         {/* User's Queue Number Info */}
         <Text size="md" c="darkGray" fw={400} mb="xs">
           Your Number
@@ -45,7 +46,7 @@ const UserQueueInfoCard: React.FC<UserQueueInfoProps> = ({ userNumber, current, 
         </Text>
 
         {/* Currently Serving and Queue Size Info  */}
-        <Flex direction="column" align="flex-start" w="75%" gap="xs" mb="xl">
+        <Flex direction="column" align="flex-start" w="90%" gap="xs">
           <Flex justify="space-between" w="100%">
             <Text size="sm" c="black">
               Currently Serving:
