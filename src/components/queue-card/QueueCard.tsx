@@ -1,16 +1,14 @@
-import React, { useEffect, useState } from "react"
+import React from "react"
 
 import { Button, Card, Flex } from "@mantine/core"
 import { Loader } from "@mantine/core"
 import { Trash2 } from "lucide-react"
 
 import { useAuth } from "../../contexts/AuthContext"
-import { useStudentQueueData } from "../../hooks/useStudentQueueData"
-import { QueueService } from "../../services/queue.service"
+import { useQueue } from "../../contexts/QueueContext"
 import { ProgramEnum } from "../../types/enums/ProgramsEnum"
 import { TeacherStatusEnum } from "../../types/enums/TeacherStatusEnum"
 import { convertProgramEnumToCourseNameEnum } from "../../utils/convertProgramEnumToCourseNameEnum"
-import toast from "../../utils/toast"
 import RevokeConfirmModal from "../user-info/RevokeConfirmModal"
 import AdminControls from "./AdminControls"
 import QueueButton from "./QueueButton"
@@ -23,9 +21,9 @@ interface QueueCardProps {
   total: number
   status: TeacherStatusEnum
   teacher: string
-  onUpdateQueue?: () => void //Optional as it will be for Admin users
-  onStatusChange?: (value: TeacherStatusEnum) => void //Function to handle status change
-  isAdmin?: boolean //Checks if current user is admin
+  onUpdateQueue?: () => void
+  onStatusChange?: (value: TeacherStatusEnum) => void
+  isAdmin?: boolean
 }
 
 const QueueCard: React.FC<QueueCardProps> = ({
@@ -38,73 +36,17 @@ const QueueCard: React.FC<QueueCardProps> = ({
   onStatusChange,
   isAdmin = false,
 }) => {
-  const { jwtToken, course: jwtCourse } = useAuth()
-  const { studentQueueData } = useStudentQueueData(jwtToken as string)
+  const { course: jwtCourse } = useAuth()
+  const { isInQueue, isFirstLoad, isLoading, hasError, handleEnqueue, handleDequeue } = useQueue()
   const course = convertProgramEnumToCourseNameEnum(program)
-  const [isInQueue, setIsInQueue] = useState(false)
-  const [isFirstLoad, setIsFirstLoad] = useState(true)
 
   const isStudentCourse = jwtCourse === course
 
   const disabled = isAdmin
-    ? status === TeacherStatusEnum.AWAY || status === TeacherStatusEnum.UNAVAILABLE // Correctly check both statuses
+    ? status === TeacherStatusEnum.AWAY || status === TeacherStatusEnum.UNAVAILABLE
     : status === TeacherStatusEnum.UNAVAILABLE
 
-  const handleEnqueue = async () => {
-    try {
-      if (!jwtToken) return
-
-      await QueueService.enqueue(course, jwtToken)
-      setIsInQueue(true)
-      toast.success("Successfully enqueued", {
-        description: "Please wait patiently before we can cater to your question",
-      })
-      setTimeout(() => {
-        window.location.reload()
-      }, 1000)
-    } catch (error) {
-      console.error("Error during enqueue:", error)
-      toast.error("An error occured", {
-        description: (error as Error).message,
-      })
-    }
-  }
-
-  const handleDequeue = async () => {
-    try {
-      if (!jwtToken) return
-
-      await QueueService.dequeue(jwtToken)
-      toast.info("Successfully left the queue", {
-        description: "You can always rejoin later.",
-      })
-      setIsInQueue(false)
-      setTimeout(() => {
-        window.location.reload()
-      }, 1000)
-    } catch (error) {
-      console.error("Error during dequeue:", error)
-      toast.error("An error occured", {
-        description: (error as Error).message,
-      })
-    }
-  }
-
-  useEffect(() => {
-    if (studentQueueData.error) {
-      return setIsInQueue(false)
-    }
-
-    if (studentQueueData?.data?.queueNumber !== undefined) {
-      setIsInQueue(studentQueueData.data.queueNumber !== null)
-    }
-  }, [studentQueueData])
-
-  useEffect(() => {
-    setIsFirstLoad(false)
-  }, [])
-
-  if (isFirstLoad && studentQueueData.isLoading)
+  if (isFirstLoad && isLoading)
     return (
       <Card shadow="sm" padding="lg" h={200} radius="lg" maw="22rem" w="100%">
         <div className="flex h-full w-full items-center justify-center">
@@ -136,11 +78,11 @@ const QueueCard: React.FC<QueueCardProps> = ({
             onUpdateQueue={onUpdateQueue}
             onStatusChange={onStatusChange}
           />
-        ) : !isInQueue && isStudentCourse ? ( // Show button only when not enqueued and isStudentCourse is true
-          <QueueButton handleClick={handleEnqueue} disabled={disabled} buttonSize="md" />
+        ) : !isInQueue && isStudentCourse ? (
+          <QueueButton handleClick={() => handleEnqueue(course)} disabled={disabled} buttonSize="md" />
         ) : null}
 
-        {isInQueue && isStudentCourse && !studentQueueData.error ? (
+        {isInQueue && isStudentCourse && !hasError ? (
           <Button
             onClick={() => {
               RevokeConfirmModal.open({ onConfirm: () => handleDequeue() })
