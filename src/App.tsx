@@ -1,6 +1,6 @@
 import { useEffect } from "react"
 
-import CoordinatorCard from "./components/CoordinatorCard"
+import CoordinatorCard from "./components/coordinator-card/CoordinatorCard"
 import QueueCard from "./components/queue-card/QueueCard"
 import UserQueueInfoCard from "./components/user-info/UserQueueInfoCard"
 import { useAuth } from "./contexts/AuthContext"
