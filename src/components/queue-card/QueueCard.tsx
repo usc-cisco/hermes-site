@@ -58,6 +58,9 @@ const QueueCard: React.FC<QueueCardProps> = ({
       toast.success("Successfully enqueued", {
         description: "Please wait patiently before we can cater to your question",
       })
+      setTimeout(() => {
+        window.location.reload()
+      }, 1000)
     } catch (error) {
       console.error("Error during enqueue:", error)
       toast.error("An error occured", {
@@ -72,9 +75,12 @@ const QueueCard: React.FC<QueueCardProps> = ({
 
       await QueueService.dequeue(jwtToken)
       toast.info("Successfully left the queue", {
-        description: "You can always rejoin later",
+        description: "You can always rejoin later.",
       })
       setIsInQueue(false)
+      setTimeout(() => {
+        window.location.reload()
+      }, 1000)
     } catch (error) {
       console.error("Error during dequeue:", error)
       toast.error("An error occured", {
