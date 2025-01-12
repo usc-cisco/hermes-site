@@ -1,11 +1,15 @@
-import { TextInput } from "@mantine/core"
+import { Button, TextInput } from "@mantine/core"
 import { useForm } from "@mantine/form"
 
 import { useAuth } from "../../contexts/AuthContext"
 import { AuthService } from "../../services/auth.service"
 
-export function AdminAuthForm({ children }: { children: React.ReactNode }) {
-  const { setJwtAuth } = useAuth()
+interface AdminAuthFormProps {
+  close: () => void
+}
+
+export function AdminAuthForm({ close }: AdminAuthFormProps) {
+  const { setBasicAuth } = useAuth()
 
   const form = useForm({
     initialValues: {
@@ -23,10 +27,11 @@ export function AdminAuthForm({ children }: { children: React.ReactNode }) {
     try {
       const response = await AuthService.adminLogin(form.values)
 
-      console.log(form.values)
-      setJwtAuth(response.token)
+      setBasicAuth(response.token)
     } catch (error) {
       console.log(error)
+    } finally {
+      close()
     }
   }
 
@@ -70,7 +75,12 @@ export function AdminAuthForm({ children }: { children: React.ReactNode }) {
           required
           mt={5}
         />
-        {children}
+        <Button fullWidth mt="xl" type="submit">
+          Sign in
+        </Button>
+        <Button fullWidth mt="sm" color="darkGray" variant="outline" onClick={close}>
+          Close
+        </Button>
       </form>
     </div>
   )

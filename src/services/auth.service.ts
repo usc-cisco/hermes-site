@@ -15,7 +15,14 @@ export class AuthService {
 
   static async adminLogin(payload: { username: string; password: string }) {
     try {
-      const response = await api.post("auth/sign-in", payload)
+      const credentials = btoa(`${payload.username}:${payload.password}`)
+
+      const headers = {
+        Authorization: `Basic ${credentials}`,
+        "Content-Type": "application/json",
+      }
+
+      const response = await api.post("auth/admin/sign-in", {}, { headers })
 
       return response.data
     } catch (error) {

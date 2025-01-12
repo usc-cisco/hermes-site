@@ -1,4 +1,4 @@
-import { Anchor, Button, Modal } from "@mantine/core"
+import { Anchor, Modal } from "@mantine/core"
 import { useDisclosure } from "@mantine/hooks"
 
 import AdminAuthForm from "./AdminAuthForm"
@@ -17,11 +17,7 @@ export default function AdminModal() {
           blur: 3,
         }}
       >
-        <AdminAuthForm>
-          <Button fullWidth mt="xl" type="submit" onClick={close}>
-            Sign in
-          </Button>
-        </AdminAuthForm>
+        <AdminAuthForm close={close} />
       </Modal>
 
       <Anchor size="sm" component="button" ta="center" onClick={open}>
