@@ -9,6 +9,10 @@ interface UserQueueInfoProps {
 }
 
 const UserQueueInfoCard: React.FC<UserQueueInfoProps> = ({ userNumber, current, total }) => {
+  if (userNumber && current && userNumber < current) {
+    return null
+  }
+
   return (
     <Card shadow="sm" padding="lg" radius="lg" maw="22rem" w="100%">
       <Flex justify="center">

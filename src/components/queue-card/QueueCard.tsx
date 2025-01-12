@@ -91,6 +91,10 @@ const QueueCard: React.FC<QueueCardProps> = ({
   }
 
   useEffect(() => {
+    if (studentQueueData.error) {
+      return setIsInQueue(false)
+    }
+
     if (studentQueueData?.data?.queueNumber !== undefined) {
       setIsInQueue(studentQueueData.data.queueNumber !== null)
     }
@@ -137,7 +141,7 @@ const QueueCard: React.FC<QueueCardProps> = ({
           <QueueButton handleClick={handleEnqueue} disabled={disabled} buttonSize="md" />
         ) : null}
 
-        {isInQueue && isStudentCourse ? (
+        {isInQueue && isStudentCourse && !studentQueueData.error ? (
           <Button
             onClick={() => {
               RevokeConfirmModal.open({ onConfirm: () => handleDequeue() })
