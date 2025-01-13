@@ -9,6 +9,8 @@ export class QueueService {
         Authorization: `Basic ${basicAuthToken}`,
       }
       const response = await api.patch(`queue/admin/${course}/number/current`, undefined, { headers })
+
+      console.log(response.data)
       return response.data
     } catch (error) {
       console.error(`Error updating queue for ${course}`, error)

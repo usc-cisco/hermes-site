@@ -2,7 +2,7 @@ import { CourseNameEnum } from "../enums/CourseNameEnum"
 
 export type QueueNumber = {
   id: number
-  studetnId: string
+  studentId: string
   courseName: CourseNameEnum
   queueNumber: number
 }
