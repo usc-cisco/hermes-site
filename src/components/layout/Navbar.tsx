@@ -9,7 +9,7 @@ export function Navbar() {
   return (
     <nav className="mb-4 bg-primary px-6 py-6">
       <div className="flex">
-        <Link to="/" className="mr-auto w-auto text-xl font-semibold text-white">
+        <Link to="/" className="mr-auto w-auto text-lg font-semibold text-white sm:text-xl">
           queue.dcism.org
         </Link>
         <div className="flex items-center gap-2 space-x-6">
