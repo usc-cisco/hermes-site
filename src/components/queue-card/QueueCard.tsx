@@ -24,6 +24,7 @@ interface QueueCardProps {
   onUpdateQueue?: () => void
   onStatusChange?: (value: TeacherStatusEnum) => void
   isAdmin?: boolean
+  className?: string
 }
 
 const QueueCard: React.FC<QueueCardProps> = ({
@@ -35,6 +36,7 @@ const QueueCard: React.FC<QueueCardProps> = ({
   onUpdateQueue,
   onStatusChange,
   isAdmin = false,
+  className,
 }) => {
   const { course: jwtCourse } = useAuth()
   const { isInQueue, isFirstLoad, isLoading, hasError, handleEnqueue, handleDequeue } = useQueue()
@@ -51,17 +53,18 @@ const QueueCard: React.FC<QueueCardProps> = ({
   return (
     <Card
       shadow="sm"
-      padding="lg"
+      padding="xl"
       radius="lg"
       maw="22rem"
       w="100%"
+      className={className}
       style={{
         outline: isAdmin && status === TeacherStatusEnum.UNAVAILABLE ? "2px solid red" : "none",
       }}
     >
       <QueueCardHeader program={program} current={current} total={total} disabled={disabled} />
 
-      <Flex direction="column" gap="xs">
+      <Flex direction="column" gap="xl" mt="md">
         <QueueStatus status={status} teacher={teacher} />
 
         {isAdmin ? (
