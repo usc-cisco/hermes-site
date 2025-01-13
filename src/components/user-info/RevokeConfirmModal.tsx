@@ -62,6 +62,7 @@ const RevokeConfirmModal = {
       },
       onConfirm: () => {
         onConfirm()
+        localStorage.removeItem("hasShownDisclaimer")
       },
     })
   },

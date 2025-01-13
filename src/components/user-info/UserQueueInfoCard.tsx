@@ -1,6 +1,9 @@
 import React from "react"
 
 import { Card, Center, Flex, Text, Title } from "@mantine/core"
+import useSound from "use-sound"
+
+import queueNotif from "/cisco-queue-notif.mp3"
 
 interface UserQueueInfoProps {
   userNumber: number | undefined
@@ -9,6 +12,8 @@ interface UserQueueInfoProps {
 }
 
 const UserQueueInfoCard: React.FC<UserQueueInfoProps> = ({ userNumber, current, total }) => {
+  const [play] = useSound(queueNotif)
+
   if (userNumber && current && userNumber < current) {
     return null
   }
@@ -24,7 +29,8 @@ const UserQueueInfoCard: React.FC<UserQueueInfoProps> = ({ userNumber, current, 
     if (currentNumber !== userNumber) {
       return currentNumber
     }
-
+    // Play the sound effect once student priority is current priority
+    play()
     return currentStudentPriority
   }
 

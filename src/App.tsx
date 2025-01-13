@@ -1,5 +1,6 @@
 import { useEffect } from "react"
 
+import DisclaimerModal from "./components/DisclaimerModal"
 import CoordinatorCard from "./components/coordinator-card/CoordinatorCard"
 import CardLoader from "./components/layout/CardLoader"
 import QueueCard from "./components/queue-card/QueueCard"
@@ -71,6 +72,12 @@ function App() {
           />
         )
       })}
+      <DisclaimerModal
+        maxPrioritySize={max}
+        currentPriority={current}
+        studentPriority={studentData?.queueNumber}
+        studentCourseName={studentData?.courseName}
+      />
     </div>
   )
 }
