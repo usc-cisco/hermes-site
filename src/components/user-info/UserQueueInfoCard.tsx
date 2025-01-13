@@ -12,7 +12,10 @@ interface UserQueueInfoProps {
 }
 
 const UserQueueInfoCard: React.FC<UserQueueInfoProps> = ({ userNumber, current, total }) => {
-  const [play] = useSound(queueNotif)
+  const [play, stop] = useSound(queueNotif)
+  function playNotification() {
+    new Audio(queueNotif).play()
+  }
 
   if (userNumber && current && userNumber < current) {
     return null
@@ -30,6 +33,7 @@ const UserQueueInfoCard: React.FC<UserQueueInfoProps> = ({ userNumber, current, 
       return currentNumber
     }
     // Play the sound effect once student priority is current priority
+    // playNotification()
     play()
     return currentStudentPriority
   }
