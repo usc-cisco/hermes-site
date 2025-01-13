@@ -21,7 +21,7 @@ export default function Auth() {
 
   if (!isAuthenticated) {
     return (
-      <div className="flex flex-col items-center gap-4">
+      <div className="my-auto flex flex-col items-center gap-4">
         <AuthForm />
       </div>
     )

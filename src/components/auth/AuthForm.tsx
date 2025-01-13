@@ -33,10 +33,10 @@ export function AuthForm() {
   }
 
   return (
-    <div className="w-full">
-      <Container size={400} my={10}>
-        <h1 className="mt-8 text-center text-4xl font-bold">Welcome!</h1>
+    <div className="my-auto w-full">
+      <Container size={600} my={10}>
         <Paper withBorder shadow="lg" p={30} mt={20} radius="md">
+          <h1 className="mb-8 text-center text-4xl font-bold">Welcome!</h1>
           <form
             onSubmit={form.onSubmit(() => {
               handleSubmit()
