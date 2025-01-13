@@ -4,7 +4,7 @@ const faqs: FAQs[] = [
   {
     id: 1,
     question: "ISMIS says I am temporarily blocked. What do I do?",
-    answer: `Fill up the unblocking form: https://tinyurl.com/ismis-unblocking-form\n
+    answer: `Fill up the unblocking form: [https://tinyurl.com/ismis-unblocking-form](https://tinyurl.com/ismis-unblocking-form)\n
   **Note:** If ISMIS got blocked by OSFA, you would have to email them for your account to be unblocked.`,
   },
   {
