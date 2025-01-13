@@ -11,7 +11,7 @@ interface CoordinatorInformationProps {
 
 export default function CoordinatorInformation({ coordinatorInfo }: CoordinatorInformationProps) {
   return (
-    <Flex justify="space-between">
+    <Flex justify="space-between" align="center">
       <Stack gap="xs">
         <Text size="sm">Name:</Text>
         <Text size="sm">Status:</Text>
