@@ -1,12 +1,12 @@
 import { Text } from "@mantine/core"
 import { modals } from "@mantine/modals"
 
-interface RevokeModalProps {
+interface DequeueConfirmModalProps {
   onConfirm: () => void
 }
 
 const DequeueConfirmModal = {
-  open: ({ onConfirm }: RevokeModalProps) => {
+  open: ({ onConfirm }: DequeueConfirmModalProps) => {
     return modals.openConfirmModal({
       title: "Remove from Queue",
       centered: true,
