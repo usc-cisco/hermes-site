@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 
-import { Button, Center, List, Modal, Space, Text } from "@mantine/core"
+import { Button, Center, Flex, List, Modal, Text } from "@mantine/core"
 import { useDisclosure } from "@mantine/hooks"
 
 import { CourseNameEnum } from "../types/enums/CourseNameEnum"
@@ -41,42 +41,46 @@ export default function DisclaimerModal({
 
   return (
     <>
-      <Modal opened={opened} onClose={handleClose} centered withCloseButton={false}>
+      <Modal opened={opened} onClose={handleClose} centered withCloseButton={false} radius="lg">
         <Center>
           <Text size="xl" fw="700">
             DISCLAIMER
           </Text>
         </Center>
-        <Space h="xl" />
+        <Flex direction="column" gap="sm">
+          <Text>
+            In order to ensure that everyone&apos;s enrollment concerns will be fairly catered to, please adhere to the
+            following rules.
+          </Text>
 
-        <Text>
-          In order to ensure that everyone&apos;s enrollment concerns will be fairly catered to, please adhere to the
-          following rules.
-        </Text>
+          <List spacing="md">
+            <List.Item>
+              Please be watchful of the queue&apos;s status to ensure that your priority number won&apos;t be skipped.{" "}
+            </List.Item>
+            <List.Item>
+              If you do not respond after your name has been called{" "}
+              <span className="font-semibold text-red-500">3 times,</span> your priority number will{" "}
+              <span className="font-semibold text-red-500">STRICTLY and AUTOMATICALLY be skipped.</span>
+            </List.Item>
+            <List.Item>
+              Students are expected to hold the responsibility of showing up when it is their turn in the queue. If you
+              have your priority number skipped due to irresponsibility,{" "}
+              <span className="font-semibold text-red-500">you will have to queue up for another priority number.</span>
+            </List.Item>
+            <List.Item>
+              Lastly, clicking the button below would mean that you have read and therefore will agree and strictly
+              abide to the list of rules and policies that we, CISCO and the Department, have displayed to you, the
+              students, through this disclaimer. With that said, CISCO and the Department will not be held responsible
+              for any priority numbers getting skipped unless a valid reason will be presented.
+            </List.Item>
+          </List>
 
-        <List>
-          <List.Item>
-            Please be watchful of the queue&apos;s status to ensure that your priority number won&apos;t be skipped.{" "}
-          </List.Item>
-          <List.Item>
-            If you do not respond after your name has been called 3 times, your priority number will STRICTLY and
-            AUTOMATICALLY be skipped.
-          </List.Item>
-          <List.Item>
-            Students are expected to hold the responsibility of showing up when it is their turn in the queue. If you
-            have your priority number skipped due to irresponsibility, you will have to queue up for another priority
-            number.
-          </List.Item>
-          <List.Item>
-            Lastly, clicking the button below would mean that you have read and therefore will agree and strictly abide
-            to the list of rules and policies that we, CISCO and the Department, have displayed to you, the students,
-            through this disclaimer. With that said, CISCO and the Department will not be held responsible for any
-            priority numbers getting skipped unless a valid reason will be presented.
-          </List.Item>
-        </List>
-        <Button variant="default" onClick={handleClose}>
-          I understood what I&apos;ve read
-        </Button>
+          <Center>
+            <Button onClick={close} radius="md" w="100%" size="lg" c="white" bg="primary">
+              I understand what I&apos;ve read
+            </Button>
+          </Center>
+        </Flex>
       </Modal>
     </>
   )
