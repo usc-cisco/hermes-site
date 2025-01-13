@@ -9,8 +9,8 @@ export function Navbar() {
   return (
     <nav className="mb-4 bg-primary px-6 py-6">
       <div className="flex">
-        <Link to="/" className="mr-auto w-auto">
-          <img className="h-6 hover:cursor-pointer" src="/cisco-logo-white.png" alt="" />
+        <Link to="/" className="mr-auto w-auto text-xl font-semibold text-white">
+          queue.dcism.org
         </Link>
         <div className="flex items-center gap-2 space-x-6">
           <Link
