@@ -1,41 +1,81 @@
-// If currentPriority === studentPriority,
-// play sound
-// display DisclaimerModal.tsx
 import React, { useEffect, useState } from "react"
 
-import { List, Text } from "@mantine/core"
-import { Button, Modal } from "@mantine/core"
+import { Button, Center, List, Modal, Space, Text } from "@mantine/core"
 import { useDisclosure } from "@mantine/hooks"
+
+import { CourseNameEnum } from "../types/enums/CourseNameEnum"
 
 type DisclaimerModalProps = {
   currentPriority?: number
   studentPriority?: number
-  maxPrioritySize: number
+  maxPrioritySize?: number
+  studentCourseName?: CourseNameEnum
 }
 
-export default function DisclaimerModal({ currentPriority, studentPriority, maxPrioritySize }: DisclaimerModalProps) {
+export default function DisclaimerModal({
+  currentPriority,
+  studentPriority,
+  studentCourseName,
+  maxPrioritySize,
+}: DisclaimerModalProps) {
   const [opened, { open, close }] = useDisclosure(false)
   const [hasShownDisclaimer, setHasShownDisclaimer] = useState(() => {
     return localStorage.getItem("hasShownDisclaimer") === "true"
   })
 
   useEffect(() => {
-    if (currentPriority === studentPriority && !hasShownDisclaimer) {
-      setHasShownDisclaimer(true)
-      localStorage.setItem("hasShownDisclaimer", "true")
+    // Sets to true once student joins a queue for the very first time
+    if (maxPrioritySize !== undefined && currentPriority === studentPriority && !hasShownDisclaimer) {
       open()
+      localStorage.setItem("hasShownDisclaimer", "true")
+      setHasShownDisclaimer(true)
     }
-  }, [currentPriority, studentPriority, open, close, maxPrioritySize, hasShownDisclaimer])
+  }, [currentPriority, studentPriority, hasShownDisclaimer, open, close, maxPrioritySize])
+
+  // Upon closing the disclaimer modal, students won't receive the disclaimer modal anymore.
+  const handleClose = () => {
+    close()
+    localStorage.setItem("hasShownDisclaimer", "true")
+    setHasShownDisclaimer(true)
+  }
 
   return (
     <>
-      <Modal opened={opened} onClose={close} title="Authentication">
-        <Text>You have joined CS queue!</Text>
-        <Text>DISCLAIMER:</Text>
-        <Text>Introduction</Text>
-        <List>Bulleted list</List>
-        <Button variant="default" onClick={close}>
-          {`I understood what I've read`}
+      <Modal opened={opened} onClose={handleClose} centered withCloseButton={false}>
+        <Center>
+          <Text size="xl" fw="700">
+            DISCLAIMER
+          </Text>
+        </Center>
+        <Space h="xl" />
+
+        <Text>
+          In order to ensure that everyone&apos;s enrollment concerns will be fairly catered to, please adhere to the
+          following rules.
+        </Text>
+
+        <List>
+          <List.Item>
+            Please be watchful of the queue&apos;s status to ensure that your priority number won&apos;t be skipped.{" "}
+          </List.Item>
+          <List.Item>
+            If you do not respond after your name has been called 3 times, your priority number will STRICTLY and
+            AUTOMATICALLY be skipped.
+          </List.Item>
+          <List.Item>
+            Students are expected to hold the responsibility of showing up when it is their turn in the queue. If you
+            have your priority number skipped due to irresponsibility, you will have to queue up for another priority
+            number.
+          </List.Item>
+          <List.Item>
+            Lastly, clicking the button below would mean that you have read and therefore will agree and strictly abide
+            to the list of rules and policies that we, CISCO and the Department, have displayed to you, the students,
+            through this disclaimer. With that said, CISCO and the Department will not be held responsible for any
+            priority numbers getting skipped unless a valid reason will be presented.
+          </List.Item>
+        </List>
+        <Button variant="default" onClick={handleClose}>
+          I understood what I&apos;ve read
         </Button>
       </Modal>
     </>

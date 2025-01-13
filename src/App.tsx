@@ -79,6 +79,7 @@ function App() {
           maxPrioritySize={max}
           currentPriority={current}
           studentPriority={studentQueueData.data?.queueNumber}
+          studentCourseName={studentQueueData.data?.courseName}
         />
       </div>
     </>
