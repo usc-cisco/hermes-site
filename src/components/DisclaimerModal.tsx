@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 
-import { Button, Center, Flex, List, Modal, Text } from "@mantine/core"
+import { Button, Center, Flex, List, Modal, Space, Text } from "@mantine/core"
 import { useDisclosure } from "@mantine/hooks"
 import useSound from "use-sound"
 
@@ -47,12 +47,12 @@ export default function DisclaimerModal({ currentPriority, studentPriority, maxP
           </Text>
         </Center>
         <Flex direction="column" gap="sm">
-          <Text>
+          <Text size="sm">
             In order to ensure that everyone&apos;s enrollment concerns will be fairly catered to, please adhere to the
             following rules.
           </Text>
 
-          <List spacing="md">
+          <List spacing="md" size="sm">
             <List.Item>
               Please be watchful of the queue&apos;s status to ensure that your priority number won&apos;t be skipped.{" "}
             </List.Item>
@@ -73,7 +73,7 @@ export default function DisclaimerModal({ currentPriority, studentPriority, maxP
               for any priority numbers getting skipped unless a valid reason will be presented.
             </List.Item>
           </List>
-
+          <Space h="sm" />
           <Center>
             <Button onClick={close} radius="md" w="100%" size="lg" c="white" bg="primary">
               I understand what I&apos;ve read
