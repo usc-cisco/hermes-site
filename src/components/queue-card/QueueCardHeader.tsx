@@ -16,20 +16,20 @@ const QueueCardHeader: React.FC<QueueCardHeaderProps> = ({ program, current, dis
 
   return (
     <>
-      <Flex justify="center">
-        <Title size="h3" c={disabled ? "darkGray" : "black"}>
+      <Flex justify="center" direction="column" align="center" mb="lg">
+        <Title size="h1" c={disabled ? "darkGray" : "#4a4c51"}>
           {programName}
-        </Title>
-      </Flex>
-      <Flex direction="column" align="center" mt="lg" mb="xs" gap="md">
+        </Title>{" "}
         <Text size="sm" c="darkGray">
           Currently serving
         </Text>
+      </Flex>
+      <Flex direction="column" align="center" gap="md">
         <Flex align="flex-end" gap="0.1rem">
-          <Text size="4rem" fw={700} c={disabled ? "darkGray" : "black"}>
+          <Text size="6rem" fw={700} c={disabled ? "darkGray" : "black"}>
             {current}
           </Text>
-          <Text c="darkGray" mb="0.2rem" fw={700}>
+          <Text c="darkGray" mb="0.6rem" fw={700}>
             / {total}
           </Text>
         </Flex>

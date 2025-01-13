@@ -4,9 +4,22 @@ import { QueueService } from "../services/queue.service"
 import { POLLING_INTERVAL } from "../types/constants/polling-interval"
 
 export const useStudentQueueData = (accessToken: string) => {
-  const studentQueueData = useSWR(`queue/number`, () => QueueService.findQueueNumber(accessToken), {
-    refreshInterval: POLLING_INTERVAL,
-  })
+  const { data, error, isLoading, mutate } = useSWR(
+    accessToken ? `queue/number` : null,
+    () => QueueService.findQueueNumber(accessToken),
+    {
+      refreshInterval: POLLING_INTERVAL,
+      revalidateOnFocus: true,
+      revalidateIfStale: true,
+    },
+  )
 
-  return { studentQueueData }
+  return {
+    studentQueueData: {
+      data,
+      error,
+      isLoading,
+    },
+    mutate,
+  }
 }

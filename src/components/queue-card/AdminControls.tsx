@@ -4,6 +4,7 @@ import { Flex, Select } from "@mantine/core"
 import { ChevronDown } from "lucide-react"
 
 import { TeacherStatusEnum } from "../../types/enums/TeacherStatusEnum"
+import DequeueConfirmModal from "./DequeueConfirmModal"
 import QueueButton from "./QueueButton"
 
 interface AdminControlsProps {
@@ -15,10 +16,18 @@ interface AdminControlsProps {
 }
 
 const AdminControls: React.FC<AdminControlsProps> = ({ status, disabled, onUpdateQueue, onStatusChange }) => {
+  let openConfirmationModal
+
+  if (onUpdateQueue) {
+    openConfirmationModal = () => {
+      DequeueConfirmModal.open({ onConfirm: () => onUpdateQueue() })
+    }
+  }
+
   return (
     <Flex direction="row" gap="xs" justify="space-between" w="100%">
       <QueueButton
-        handleClick={onUpdateQueue || (() => {})}
+        handleClick={openConfirmationModal || (() => {})}
         label="Update Queue"
         disabled={disabled}
         fullWidth={false}
