@@ -43,10 +43,8 @@ function App() {
     }
   }, [setSubmittedCourse, courseName])
 
-  console.log()
-
   return (
-    <div className="mx-8 flex flex-col items-center gap-4 py-8">
+    <div className="mx-8 flex flex-col items-center gap-4 py-12 md:py-8">
       {studentData && !studentData.error && courseName ? (
         <>
           <CoordinatorCard course={courseName} />
