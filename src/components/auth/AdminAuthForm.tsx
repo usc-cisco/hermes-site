@@ -75,7 +75,7 @@ export function AdminAuthForm({ close }: AdminAuthFormProps) {
           required
           mt={5}
         />
-        <Button fullWidth mt="xl" type="submit">
+        <Button bg="primary" fullWidth mt="xl" type="submit">
           Sign in
         </Button>
         <Button fullWidth mt="sm" color="darkGray" variant="outline" onClick={close}>

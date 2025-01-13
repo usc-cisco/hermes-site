@@ -1,6 +1,6 @@
 import React from "react"
 
-import { Card, Flex, Text, Title } from "@mantine/core"
+import { Card, Center, Flex, Text, Title } from "@mantine/core"
 
 interface UserQueueInfoProps {
   userNumber: number | undefined
@@ -13,17 +13,37 @@ const UserQueueInfoCard: React.FC<UserQueueInfoProps> = ({ userNumber, current, 
     return null
   }
 
+  // Checks if the current priority number is the student's respective priority number
+  const checkCurrentPriorityNumber = (currentNumber: number | undefined, userNumber: number | undefined) => {
+    const currentStudentPriority = (
+      <Text size="sm" fw={800} c="primary">
+        {`${userNumber} (you)`}
+      </Text>
+    )
+
+    if (currentNumber !== userNumber) {
+      return currentNumber
+    }
+
+    return currentStudentPriority
+  }
+
   return (
-    <Card shadow="sm" radius="lg" maw="22rem" w="100%" padding="xl">
-      <Flex justify="center" direction="column" align="center" mb="md">
-        <Title size="h3" c="#4a4c51" fw={600}>
+    <Card
+      shadow="sm"
+      padding="xl"
+      radius="lg"
+      maw="22rem"
+      w="100%"
+      className={current === userNumber ? "border-4 border-primary" : ""}
+    >
+      <Center>
+        <Title size="h3" c="black" fw={600} mb="md">
           Your Information
         </Title>
-        <Text size="md" c="darkGray" fw={400}>
-          Your Number
-        </Text>
-      </Flex>
-      <Flex direction="column" align="center">
+      </Center>
+
+      <Flex direction="column" align="center" className="">
         {/* User's Queue Number Info */}
 
         <Text size="6rem" fw={700} c="#002363" mb="md">
@@ -31,20 +51,20 @@ const UserQueueInfoCard: React.FC<UserQueueInfoProps> = ({ userNumber, current, 
         </Text>
 
         {/* Currently Serving and Queue Size Info  */}
-        <Flex direction="column" align="flex-start" w="50%" gap="xs">
+        <Flex direction="column" align="flex-start" w="90%" gap="xs">
           <Flex justify="space-between" w="100%">
             <Text size="sm" c="black">
               Currently Serving:
             </Text>
-            <Text size="sm" fw={500}>
-              {current ?? "???"}
+            <Text size="sm" fw={500} c="darkGray">
+              {checkCurrentPriorityNumber(current, userNumber)}
             </Text>
           </Flex>
           <Flex justify="space-between" w="100%">
             <Text size="sm" c="black">
               Queue Size:
             </Text>
-            <Text size="sm" fw={500}>
+            <Text size="sm" fw={500} c="darkGray">
               {total ?? "???"}
             </Text>
           </Flex>
