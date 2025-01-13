@@ -77,14 +77,12 @@ const QueueCard: React.FC<QueueCardProps> = ({
         <QueueStatus status={status} teacher={teacher} />
 
         {isAdmin ? (
-          <Flex direction="column" gap="md">
-            <AdminControls
-              status={status}
-              disabled={disabled}
-              onUpdateQueue={onUpdateQueue}
-              onStatusChange={onStatusChange}
-            />
-          </Flex>
+          <AdminControls
+            status={status}
+            disabled={disabled}
+            onUpdateQueue={onUpdateQueue}
+            onStatusChange={onStatusChange}
+          />
         ) : !isInQueue && isStudentCourse ? (
           <QueueButton handleClick={() => handleEnqueue(course)} disabled={disabled} buttonSize="md" />
         ) : null}
