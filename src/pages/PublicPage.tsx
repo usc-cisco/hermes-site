@@ -26,7 +26,7 @@ const PublicPage: React.FC = () => {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <nav className="mb-4 bg-primary px-6 py-6">
+      <nav className="mb-4 bg-primary px-6 py-4">
         <div className="flex">
           <Link to="/" className="mr-auto w-auto text-xl font-semibold text-white">
             queue.dcism.org

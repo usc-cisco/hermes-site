@@ -7,7 +7,7 @@ export function Navbar() {
   const { isAuthenticated, clearAuth } = useAuth()
 
   return (
-    <nav className="mb-4 bg-primary px-6 py-6">
+    <nav className="mb-4 bg-primary px-6 py-4">
       <div className="flex">
         <Link to="/" className="mr-auto w-auto text-lg font-semibold text-white sm:text-xl">
           queue.dcism.org
