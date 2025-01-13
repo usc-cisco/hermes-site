@@ -5,15 +5,15 @@ import CardLoader from "./components/layout/CardLoader"
 import QueueCard from "./components/queue-card/QueueCard"
 import UserQueueInfoCard from "./components/user-info/UserQueueInfoCard"
 import { useAuth } from "./contexts/AuthContext"
+import { useQueue } from "./contexts/QueueContext"
 import { useQueueData } from "./hooks/useQueueData"
-import { useStudentQueueData } from "./hooks/useStudentQueueData"
 import { CourseNameEnum } from "./types/enums/CourseNameEnum"
 import { ProgramEnum } from "./types/enums/ProgramsEnum"
 import { TeacherStatusEnum } from "./types/enums/TeacherStatusEnum"
 
 function App() {
-  const { jwtToken, setSubmittedCourse } = useAuth()
-  const { studentQueueData } = useStudentQueueData(jwtToken as string)
+  const { setSubmittedCourse } = useAuth()
+  const { studentData } = useQueue()
 
   const queues = [
     { program: ProgramEnum.CS, course: CourseNameEnum.BSCS },
@@ -35,9 +35,7 @@ function App() {
     return { max: queue?.numberData.data?.max, current: queue?.numberData.data?.current, courseName }
   }
 
-  const { max, current, courseName } = studentQueueData.data?.courseName
-    ? getQueueStatus(studentQueueData.data?.courseName)
-    : {}
+  const { max, current, courseName } = studentData?.courseName ? getQueueStatus(studentData.courseName) : {}
 
   useEffect(() => {
     if (courseName) {
@@ -46,36 +44,34 @@ function App() {
   }, [setSubmittedCourse, courseName])
 
   return (
-    <>
-      <div className="mx-8 flex flex-col items-center gap-4 py-12 md:py-8">
-        {studentQueueData.data && !studentQueueData.error && courseName ? (
-          <>
-            <CoordinatorCard course={courseName} />
-            <UserQueueInfoCard userNumber={studentQueueData.data?.queueNumber} current={current} total={max} />
-          </>
-        ) : null}
-        {queueData.map((data, index) => {
-          const { numberData, coordinatorData } = data
+    <div className="mx-8 flex flex-col items-center gap-4 py-12 md:py-8">
+      {studentData && !studentData.error && courseName ? (
+        <>
+          <CoordinatorCard course={courseName} />
+          <UserQueueInfoCard userNumber={studentData.queueNumber} current={current} total={max} />
+        </>
+      ) : null}
+      {queueData.map((data, index) => {
+        const { numberData, coordinatorData } = data
 
-          if (numberData.error || coordinatorData.error) return <div key={index}>Error Loading Data</div>
-          if (!numberData.data || !coordinatorData.data) return <CardLoader key={index} />
+        if (numberData.error || coordinatorData.error) return <div key={index}>Error Loading Data</div>
+        if (!numberData.data || !coordinatorData.data) return <CardLoader key={index} />
 
-          const status = coordinatorData.data.status.toUpperCase() as keyof typeof TeacherStatusEnum
-          const teacherStatus = TeacherStatusEnum[status]
+        const status = coordinatorData.data.status.toUpperCase() as keyof typeof TeacherStatusEnum
+        const teacherStatus = TeacherStatusEnum[status]
 
-          return (
-            <QueueCard
-              key={index}
-              program={queues[index].program}
-              current={numberData.data.current}
-              total={numberData.data.max}
-              status={teacherStatus}
-              teacher={coordinatorData.data.name}
-            />
-          )
-        })}
-      </div>
-    </>
+        return (
+          <QueueCard
+            key={index}
+            program={queues[index].program}
+            current={numberData.data.current}
+            total={numberData.data.max}
+            status={teacherStatus}
+            teacher={coordinatorData.data.name}
+          />
+        )
+      })}
+    </div>
   )
 }
 
