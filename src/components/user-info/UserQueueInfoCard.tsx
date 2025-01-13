@@ -3,7 +3,7 @@ import React from "react"
 import { Card, Center, Flex, Text, Title } from "@mantine/core"
 import useSound from "use-sound"
 
-import queueNotif from "../../../public/cisco-queue-notif.mp3"
+import queueNotif from "/cisco-queue-notif.mp3"
 
 interface UserQueueInfoProps {
   userNumber: number | undefined

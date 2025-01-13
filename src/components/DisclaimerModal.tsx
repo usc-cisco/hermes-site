@@ -4,8 +4,8 @@ import { Button, Center, Flex, List, Modal, Text } from "@mantine/core"
 import { useDisclosure } from "@mantine/hooks"
 import useSound from "use-sound"
 
-import queueNotif from "../../public/cisco-queue-notif.mp3"
 import { CourseNameEnum } from "../types/enums/CourseNameEnum"
+import queueNotif from "/cisco-queue-notif.mp3"
 
 type DisclaimerModalProps = {
   currentPriority?: number
