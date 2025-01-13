@@ -25,8 +25,6 @@ const QueueButton: React.FC<QueueButtonProps> = ({
       w={!fullWidth ? "50%" : ""}
       radius="md"
       size={buttonSize}
-      c={disabled ? "darkGray" : "white"}
-      bg={disabled ? "gray" : "primary"}
     >
       {label || (disabled ? "Cannot join queue" : "Join queue")}
     </Button>

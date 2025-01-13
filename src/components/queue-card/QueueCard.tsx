@@ -18,7 +18,7 @@ import QueueStatus from "./QueueStatus"
 interface QueueCardProps {
   program: ProgramEnum
   current: number
-  currentStudentId: string | null
+  currentStudentId?: string | null
   total: number
   status: TeacherStatusEnum
   teacher: string

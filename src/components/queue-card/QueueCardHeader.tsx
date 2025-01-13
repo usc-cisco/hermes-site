@@ -10,7 +10,7 @@ interface QueueCardHeaderProps {
   current: number
   total: number
   disabled: boolean
-  currentStudentId: string | null
+  currentStudentId?: string | null
   isAdmin: boolean
 }
 
@@ -36,7 +36,7 @@ const QueueCardHeader: React.FC<QueueCardHeaderProps> = ({
           <Text size="xs" c="gray.3">
             Currently serving
           </Text>
-          {isAdmin && <CurrentStudent currentStudentId={currentStudentId} />}
+          {isAdmin && currentStudentId && <CurrentStudent currentStudentId={currentStudentId} />}
         </Flex>
         <Flex align="flex-end" gap="0.1rem">
           <Text size="6rem" fw={700} c={disabled ? "darkGray" : "black"}>
