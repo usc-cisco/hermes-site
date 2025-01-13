@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect, useRef } from "react"
 
 import { Card, Center, Flex, Text, Title } from "@mantine/core"
 import useSound from "use-sound"
@@ -13,25 +13,29 @@ interface UserQueueInfoProps {
 
 const UserQueueInfoCard: React.FC<UserQueueInfoProps> = ({ userNumber, current, total }) => {
   const [play] = useSound(queueNotif)
+  const previousCurrentRef = useRef<number | undefined>()
+
+  useEffect(() => {
+    // Only play notification when current number changes TO the user's number
+    if (current === userNumber && previousCurrentRef.current !== current) {
+      play()
+    }
+    previousCurrentRef.current = current
+  }, [current, userNumber, play])
 
   if (userNumber && current && userNumber < current) {
     return null
   }
 
-  // Checks if the current priority number is the student's respective priority number
   const checkCurrentPriorityNumber = (currentNumber: number | undefined, userNumber: number | undefined) => {
-    const currentStudentPriority = (
+    if (currentNumber !== userNumber) {
+      return currentNumber
+    }
+    return (
       <Text size="sm" fw={800} c="primary">
         {`${userNumber} (you)`}
       </Text>
     )
-
-    if (currentNumber !== userNumber) {
-      return currentNumber
-    }
-    // Play the sound effect once student priority is current priority
-    play()
-    return currentStudentPriority
   }
 
   return (
@@ -48,15 +52,10 @@ const UserQueueInfoCard: React.FC<UserQueueInfoProps> = ({ userNumber, current, 
           Your Information
         </Title>
       </Center>
-
       <Flex direction="column" align="center" className="">
-        {/* User's Queue Number Info */}
-
         <Text size="6rem" fw={700} mb="md">
           {userNumber ?? "???"}
         </Text>
-
-        {/* Currently Serving and Queue Size Info  */}
         <Flex direction="column" align="flex-start" w="90%" gap="xs">
           <Flex justify="space-between" w="100%">
             <Text size="sm" c="black">
