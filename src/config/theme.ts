@@ -72,7 +72,7 @@ export const theme = createTheme({
   },
 
   headings: {
-    fontFamily: "Roboto, sans-serif",
+    fontFamily: "Poppins",
     sizes: {
       h1: { fontSize: rem(36) },
     },

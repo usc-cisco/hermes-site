@@ -51,7 +51,7 @@ const QueueCard: React.FC<QueueCardProps> = ({
   return (
     <Card
       shadow="sm"
-      padding="lg"
+      padding="xl"
       radius="lg"
       maw="22rem"
       w="100%"
@@ -61,7 +61,7 @@ const QueueCard: React.FC<QueueCardProps> = ({
     >
       <QueueCardHeader program={program} current={current} total={total} disabled={disabled} />
 
-      <Flex direction="column" gap="xs">
+      <Flex direction="column" gap="xl" mt="md">
         <QueueStatus status={status} teacher={teacher} />
 
         {isAdmin ? (
