@@ -58,9 +58,9 @@ const AdminPage: React.FC = () => {
   }
 
   return (
-    <div className="flex w-full flex-1 items-center justify-center py-8 md:py-12">
-      <div className="mx-auto w-full max-w-7xl px-4">
-        <div className="grid grid-cols-1 justify-items-center gap-4 md:grid-cols-3 md:gap-6">
+    <div className="flex w-full flex-1 items-center py-8 md:py-12">
+      <div className="mx-auto my-auto flex w-full max-w-7xl flex-1 items-center justify-center px-4">
+        <div className="grid w-full grid-cols-1 justify-items-center gap-4 md:grid-cols-3 md:gap-6">
           {queueData.map((data, index) => {
             const { numberData, coordinatorData } = data
 
@@ -75,6 +75,7 @@ const AdminPage: React.FC = () => {
                 key={index}
                 program={queues[index].program}
                 current={numberData.data.current}
+                currentStudentId={numberData.data.currentStudentId}
                 total={numberData.data.max}
                 status={teacherStatus}
                 teacher={coordinatorData.data.name}
