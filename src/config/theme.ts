@@ -14,6 +14,18 @@ export const theme = createTheme({
       "#1752F0",
       "#1752F0",
     ],
+    secondary: [
+      "#5C83F5",
+      "#5C83F5",
+      "#5C83F5",
+      "#5C83F5",
+      "#5C83F5",
+      "#5C83F5",
+      "#5C83F5",
+      "#5C83F5",
+      "#5C83F5",
+      "#5C83F5",
+    ],
     gray: [
       "#f5f5f5",
       "#e7e7e7",

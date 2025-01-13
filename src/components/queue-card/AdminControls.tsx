@@ -28,7 +28,7 @@ const AdminControls: React.FC<AdminControlsProps> = ({ status, disabled, onUpdat
     <Flex direction="row" gap="xs" justify="space-between" w="100%">
       <QueueButton
         handleClick={openConfirmationModal || (() => {})}
-        label="Update Queue"
+        label="Advance"
         disabled={disabled}
         fullWidth={false}
         buttonSize="s"

@@ -22,6 +22,7 @@ const QueueButton: React.FC<QueueButtonProps> = ({
       onClick={handleClick}
       disabled={disabled}
       fullWidth={fullWidth}
+      w={!fullWidth ? "50%" : ""}
       radius="md"
       size={buttonSize}
       c={disabled ? "darkGray" : "white"}

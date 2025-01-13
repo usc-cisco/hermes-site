@@ -18,6 +18,7 @@ import QueueStatus from "./QueueStatus"
 interface QueueCardProps {
   program: ProgramEnum
   current: number
+  currentStudentId: string | null
   total: number
   status: TeacherStatusEnum
   teacher: string
@@ -29,6 +30,7 @@ interface QueueCardProps {
 const QueueCard: React.FC<QueueCardProps> = ({
   program,
   current,
+  currentStudentId,
   total,
   status,
   teacher,
@@ -59,18 +61,27 @@ const QueueCard: React.FC<QueueCardProps> = ({
         outline: isAdmin && status === TeacherStatusEnum.UNAVAILABLE ? "2px solid red" : "none",
       }}
     >
-      <QueueCardHeader program={program} current={current} total={total} disabled={disabled} />
+      <QueueCardHeader
+        isAdmin={isAdmin}
+        program={program}
+        current={current}
+        total={total}
+        disabled={disabled}
+        currentStudentId={currentStudentId}
+      />
 
       <Flex direction="column" gap="xl" mt="md">
         <QueueStatus status={status} teacher={teacher} />
 
         {isAdmin ? (
-          <AdminControls
-            status={status}
-            disabled={disabled}
-            onUpdateQueue={onUpdateQueue}
-            onStatusChange={onStatusChange}
-          />
+          <Flex direction="column" gap="md">
+            <AdminControls
+              status={status}
+              disabled={disabled}
+              onUpdateQueue={onUpdateQueue}
+              onStatusChange={onStatusChange}
+            />
+          </Flex>
         ) : !isInQueue && isStudentCourse ? (
           <QueueButton handleClick={() => handleEnqueue(course)} disabled={disabled} buttonSize="md" />
         ) : null}
