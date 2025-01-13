@@ -11,6 +11,11 @@ interface QueueContextType {
   isFirstLoad: boolean
   isLoading: boolean
   hasError: boolean
+  studentData: {
+    queueNumber: number | undefined
+    courseName: CourseNameEnum | undefined
+    error?: Error
+  } | null
   handleEnqueue: (course: CourseNameEnum) => Promise<void>
   handleDequeue: () => Promise<void>
 }
@@ -71,7 +76,7 @@ export const QueueProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     if (studentQueueData?.data?.queueNumber !== undefined) {
       setIsInQueue(studentQueueData.data.queueNumber !== null)
     }
-  }, [studentQueueData])
+  }, [studentQueueData, jwtToken])
 
   useEffect(() => {
     setIsFirstLoad(false)
@@ -82,6 +87,13 @@ export const QueueProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     isFirstLoad,
     isLoading: studentQueueData.isLoading,
     hasError: !!studentQueueData.error,
+    studentData: studentQueueData.data
+      ? {
+          queueNumber: studentQueueData.data.queueNumber,
+          courseName: studentQueueData.data.courseName,
+          error: studentQueueData.error,
+        }
+      : null,
     handleEnqueue,
     handleDequeue,
   }
