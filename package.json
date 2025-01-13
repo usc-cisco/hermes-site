@@ -31,7 +31,8 @@
     "react-markdown": "^9.0.3",
     "react-router": "^7.1.1",
     "remark-gfm": "^4.0.0",
-    "swr": "^2.3.0"
+    "swr": "^2.3.0",
+    "use-sound": "^4.0.3"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.6.1",

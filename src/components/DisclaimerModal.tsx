@@ -2,7 +2,9 @@ import React, { useEffect, useState } from "react"
 
 import { Button, Center, Flex, List, Modal, Text } from "@mantine/core"
 import { useDisclosure } from "@mantine/hooks"
+import useSound from "use-sound"
 
+import queueNotif from "../../public/cisco-queue-notif.mp3"
 import { CourseNameEnum } from "../types/enums/CourseNameEnum"
 
 type DisclaimerModalProps = {
@@ -12,12 +14,9 @@ type DisclaimerModalProps = {
   studentCourseName?: CourseNameEnum
 }
 
-export default function DisclaimerModal({
-  currentPriority,
-  studentPriority,
-  studentCourseName,
-  maxPrioritySize,
-}: DisclaimerModalProps) {
+export default function DisclaimerModal({ currentPriority, studentPriority, maxPrioritySize }: DisclaimerModalProps) {
+  const [play] = useSound(queueNotif)
+
   const [opened, { open, close }] = useDisclosure(false)
   const [hasShownDisclaimer, setHasShownDisclaimer] = useState(() => {
     return localStorage.getItem("hasShownDisclaimer") === "true"
@@ -25,12 +24,12 @@ export default function DisclaimerModal({
 
   useEffect(() => {
     // Sets to true once student joins a queue for the very first time
-    if (maxPrioritySize !== undefined && currentPriority === studentPriority && !hasShownDisclaimer) {
+    if (maxPrioritySize !== undefined && currentPriority !== studentPriority && !hasShownDisclaimer) {
       open()
       localStorage.setItem("hasShownDisclaimer", "true")
       setHasShownDisclaimer(true)
     }
-  }, [currentPriority, studentPriority, hasShownDisclaimer, open, close, maxPrioritySize])
+  }, [currentPriority, studentPriority, hasShownDisclaimer, open, close, maxPrioritySize, play])
 
   // Upon closing the disclaimer modal, students won't receive the disclaimer modal anymore.
   const handleClose = () => {
