@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 
 import { Button, Center, Flex, List, Modal, Space, Text } from "@mantine/core"
 import { useDisclosure } from "@mantine/hooks"
@@ -53,7 +53,7 @@ export default function DisclaimerModal({ currentPriority, studentPriority, maxP
               Please be watchful of the queue&apos;s status to ensure that your priority number won&apos;t be skipped.{" "}
             </List.Item>
             <List.Item>
-              If you do not respond after your name has been called{" "}
+              If you do not respond after your priority number has been called{" "}
               <span className="font-semibold text-red-500">3 times,</span> your priority number will{" "}
               <span className="font-semibold text-red-500">STRICTLY and AUTOMATICALLY be skipped.</span>
             </List.Item>
