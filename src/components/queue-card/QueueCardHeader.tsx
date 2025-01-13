@@ -26,7 +26,7 @@ const QueueCardHeader: React.FC<QueueCardHeaderProps> = ({ program, current, dis
       </Flex>
       <Flex direction="column" align="center" gap="md">
         <Flex align="flex-end" gap="0.1rem">
-          <Text size="6rem" fw={700} c={disabled ? "darkGray" : "#002363"}>
+          <Text size="6rem" fw={700} c={disabled ? "darkGray" : "black"}>
             {current}
           </Text>
           <Text c="darkGray" mb="0.6rem" fw={700}>

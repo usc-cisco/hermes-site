@@ -46,7 +46,7 @@ const UserQueueInfoCard: React.FC<UserQueueInfoProps> = ({ userNumber, current, 
       <Flex direction="column" align="center" className="">
         {/* User's Queue Number Info */}
 
-        <Text size="6rem" fw={700} c="#002363" mb="md">
+        <Text size="6rem" fw={700} mb="md">
           {userNumber ?? "???"}
         </Text>
 

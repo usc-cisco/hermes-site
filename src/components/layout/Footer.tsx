@@ -6,19 +6,20 @@ export default function Footer() {
         src="/cisco-logo-white.png"
         alt="White transparent picture of the CISCO logo"
       />
+
       <p className="pt-2 text-center text-sm text-white">
-        © {new Date().getFullYear()}{" "}
-        <a
-          href="https://github.com/usc-cisco/hermes-site"
-          className="rounded-md underline ring-white focus:outline-none focus:ring-1 focus:ring-opacity-75"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Hermes Site
-        </a>
-      </p>
-      <p className="text-center text-sm text-white">
-        Developed by the USC Computer and Information Sciences Council. All rights reserved.
+        <span>
+          © {new Date().getFullYear()}{" "}
+          <a
+            href="https://github.com/usc-cisco/hermes-site"
+            className="rounded-md underline ring-white focus:outline-none focus:ring-1 focus:ring-opacity-75"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Project Hermes
+          </a>{" "}
+          | An Open Source Initiative by DCISM Students & CISCO{" "}
+        </span>
       </p>
     </footer>
   )
