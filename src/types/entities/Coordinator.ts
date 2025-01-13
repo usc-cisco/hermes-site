@@ -3,5 +3,4 @@ export type Coordinator = {
   name: string
   courseName: string
   status: string
-  email: string
 }
