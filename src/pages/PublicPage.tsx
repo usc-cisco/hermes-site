@@ -43,9 +43,12 @@ const PublicPage: React.FC = () => {
               {queueData.map((data, index) => {
                 const { numberData, coordinatorData } = data
 
-                if (numberData.error || coordinatorData.error) return <div key={index}>Error Loading Data</div>
-                if (!numberData.data || !coordinatorData.data) return <CardLoader key={index} />
+                // if (numberData.error || coordinatorData.error) return <div key={index}>Error Loading Data</div>
+                // if (!numberData.data || !coordinatorData.data) return <CardLoader key={index} />
 
+                // Check for .data field to prevent TS errors
+                if (numberData.isLoading || coordinatorData.isLoading || !numberData.data || !coordinatorData.data)
+                  return <CardLoader key={index} />
                 const status = coordinatorData.data.status.toUpperCase() as keyof typeof TeacherStatusEnum
                 const teacherStatus = TeacherStatusEnum[status]
 
