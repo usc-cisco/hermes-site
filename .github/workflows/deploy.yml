@@ -19,8 +19,8 @@ jobs:
           password: ${{ secrets.DCISM_PASSWORD }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            cd ${{ secrets.DCISM_DOMAIN }}
+            cd hermes-site
             git reset --hard && git clean -fd && git pull origin main
             npm ci
             npm run build
-            mv -f ./dist/* ./
+            mv -f ./dist/* ~/${{ secrets.DCISM_DOMAIN }}

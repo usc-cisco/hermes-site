@@ -11,8 +11,8 @@ SSH into the server using the instructions provided at `admin.dcism.org`.
 Clone the repository to the subdomain:
 
 ```bash
-cd {{ QUEUE_SUBDOMAIN }}
-git clone https://github.com/usc-cisco/hermes-site.git .
+git clone https://github.com/usc-cisco/hermes-site.git
+cd hermes-site
 ```
 
 > [!NOTE]
@@ -40,7 +40,7 @@ The files are, by default, stored in `dist/`, so move them to the project root
 to prevent having to go to `/dist` on the URL.
 
 ```bash
-mv -f ./dist/* ./
+mv -f ./dist/* ~/queue.dcism.org
 ```
 
 Once this setup is complete, you can proceed with the `deploy.yml` workflow.
