@@ -6,6 +6,7 @@ import { Link } from "react-router"
 import CardLoader from "../components/layout/CardLoader"
 import QueueCard from "../components/queue-card/QueueCard"
 import { useQueueData } from "../hooks/useQueueData"
+import { announcements } from "../types/constants/announcements"
 import { CourseNameEnum } from "../types/enums/CourseNameEnum"
 import { ProgramEnum } from "../types/enums/ProgramsEnum"
 import { TeacherStatusEnum } from "../types/enums/TeacherStatusEnum"
@@ -37,9 +38,9 @@ const PublicPage: React.FC = () => {
         </div>
       </nav>
       <main className="flex flex-1 flex-col items-center">
-        <div className="my-auto flex w-4/5 flex-1 flex-col items-center justify-between gap-y-12 py-8 md:py-8">
+        <div className="my-auto flex w-4/5 flex-1 flex-col items-center justify-between gap-y-8 py-8 md:py-8">
           <div className="mx-auto w-full max-w-7xl justify-between">
-            <div className="grid grid-cols-3 items-center gap-12">
+            <div className="grid grid-cols-3 items-center gap-8">
               {queueData.map((data, index) => {
                 const { numberData, coordinatorData } = data
 
@@ -66,22 +67,22 @@ const PublicPage: React.FC = () => {
               })}
             </div>
           </div>
-          {/* TODO: Shove in JSON and programmatic insert */}
           <div className="mb-4 flex w-full flex-col gap-3 rounded-lg bg-white p-4 shadow-md">
             <Text className="font-bold">Announcements</Text>
-            <ul className="ml-4">
-              <li className="flex flex-col gap-y-1">
-                <Text>January 14, 2025</Text>
-                <ul className="ml-8 list-disc text-gray-700">
-                  <li>
-                    <Text>
-                      Adjustment requests to only change schedule will <b>not</b> be catered to today. Only requests to
-                      add or remove classes will be catered to.
-                    </Text>
-                  </li>
-                </ul>
-              </li>
-            </ul>
+            {announcements.map((announcement) => (
+              <ul key={announcement.id} className="ml-4">
+                <li className="flex flex-col gap-y-1">
+                  <Text>{announcement.date.toDateString()}</Text>
+                  <ul className="ml-8 list-disc text-gray-700">
+                    {announcement.points.map((point) => (
+                      <li key={`${announcement.id}-${point}`}>
+                        <Text>{point}</Text>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              </ul>
+            ))}
           </div>
         </div>
       </main>
