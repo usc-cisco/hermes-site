@@ -40,7 +40,7 @@ The files are, by default, stored in `dist/`, so move them to the project root
 to prevent having to go to `/dist` on the URL.
 
 ```bash
-mv -f ./dist/* ~/queue.dcism.org
+rsync -avz --delete ./dist/ ~/queue.dcism.org/
 ```
 
 Once this setup is complete, you can proceed with the `deploy.yml` workflow.
