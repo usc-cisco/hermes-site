@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react"
 
+import { Text } from "@mantine/core"
 import { Link } from "react-router"
 
 import CardLoader from "../components/layout/CardLoader"
-import Footer from "../components/layout/Footer"
 import QueueCard from "../components/queue-card/QueueCard"
 import { useQueueData } from "../hooks/useQueueData"
 import { CourseNameEnum } from "../types/enums/CourseNameEnum"
@@ -36,10 +36,10 @@ const PublicPage: React.FC = () => {
           </div>
         </div>
       </nav>
-      <main className="flex flex-1 items-center">
-        <div className="my-auto flex w-full flex-1 items-center justify-center py-8 md:py-12">
-          <div className="mx-auto w-full max-w-7xl px-4">
-            <div className="grid grid-cols-3 items-center gap-32">
+      <main className="flex flex-1 flex-col items-center">
+        <div className="my-auto flex w-4/5 flex-1 flex-col items-center justify-between gap-y-12 py-8 md:py-8">
+          <div className="mx-auto w-full max-w-7xl justify-between">
+            <div className="grid grid-cols-3 items-center gap-12">
               {queueData.map((data, index) => {
                 const { numberData, coordinatorData } = data
 
@@ -60,15 +60,32 @@ const PublicPage: React.FC = () => {
                     total={numberData.data.max}
                     status={teacherStatus}
                     teacher={coordinatorData.data.name}
-                    className="scale-125 pb-12 shadow-black"
+                    className="scale-115 pb-12 shadow-black"
                   />
                 )
               })}
             </div>
           </div>
+          {/* TODO: Shove in JSON and programmatic insert */}
+          <div className="mb-4 flex w-full flex-col gap-3 rounded-lg bg-white p-4 shadow-md">
+            <Text className="font-bold">Announcements</Text>
+            <ul className="ml-4">
+              <li className="flex flex-col gap-y-1">
+                <Text>January 14, 2025</Text>
+                <ul className="ml-8 list-disc text-gray-700">
+                  <li>
+                    <Text>
+                      Adjustment requests to only change schedule will <b>not</b> be catered to today. Only requests to
+                      add or remove classes will be catered to.
+                    </Text>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
         </div>
       </main>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   )
 }
