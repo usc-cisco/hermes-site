@@ -23,4 +23,4 @@ jobs:
             git reset --hard && git clean -fd && git pull origin main
             npm ci
             npm run build
-            mv -f ./dist/* ~/${{ secrets.DCISM_DOMAIN }}
+            rsync -arz --delete ./dist/ ~/${{ secrets.DCISM_DOMAIN }}/
