@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react"
 
+import { Text } from "@mantine/core"
 import { Link } from "react-router"
 
 import CardLoader from "../components/layout/CardLoader"
-import Footer from "../components/layout/Footer"
 import QueueCard from "../components/queue-card/QueueCard"
 import { useQueueData } from "../hooks/useQueueData"
+import { announcements } from "../types/constants/announcements"
 import { CourseNameEnum } from "../types/enums/CourseNameEnum"
 import { ProgramEnum } from "../types/enums/ProgramsEnum"
 import { TeacherStatusEnum } from "../types/enums/TeacherStatusEnum"
@@ -36,16 +37,19 @@ const PublicPage: React.FC = () => {
           </div>
         </div>
       </nav>
-      <main className="flex flex-1 items-center">
-        <div className="my-auto flex w-full flex-1 items-center justify-center py-8 md:py-12">
-          <div className="mx-auto w-full max-w-7xl px-4">
-            <div className="grid grid-cols-3 items-center gap-32">
+      <main className="flex flex-1 flex-col items-center">
+        <div className="my-auto flex w-4/5 max-w-7xl flex-col items-center justify-between gap-y-12 py-8 md:py-8">
+          <div className="mx-auto w-full justify-between">
+            <div className="grid grid-cols-3 items-center gap-8">
               {queueData.map((data, index) => {
                 const { numberData, coordinatorData } = data
 
-                if (numberData.error || coordinatorData.error) return <div key={index}>Error Loading Data</div>
-                if (!numberData.data || !coordinatorData.data) return <CardLoader key={index} />
+                // if (numberData.error || coordinatorData.error) return <div key={index}>Error Loading Data</div>
+                // if (!numberData.data || !coordinatorData.data) return <CardLoader key={index} />
 
+                // Check for .data field to prevent TS errors
+                if (numberData.isLoading || coordinatorData.isLoading || !numberData.data || !coordinatorData.data)
+                  return <CardLoader key={index} />
                 const status = coordinatorData.data.status.toUpperCase() as keyof typeof TeacherStatusEnum
                 const teacherStatus = TeacherStatusEnum[status]
 
@@ -57,15 +61,32 @@ const PublicPage: React.FC = () => {
                     total={numberData.data.max}
                     status={teacherStatus}
                     teacher={coordinatorData.data.name}
-                    className="scale-125 pb-12 shadow-black"
+                    className="scale-115 pb-12 shadow-black"
                   />
                 )
               })}
             </div>
           </div>
+          <div className="mb-4 flex w-full flex-col gap-3 rounded-lg bg-white p-4 shadow-md">
+            <Text className="font-bold">Announcements</Text>
+            {announcements.map((announcement) => (
+              <ul key={announcement.id} className="ml-4">
+                <li className="flex flex-col gap-y-1">
+                  <Text>{announcement.date.toDateString()}</Text>
+                  <ul className="ml-8 list-disc text-gray-700">
+                    {announcement.points.map((point) => (
+                      <li key={`${announcement.id}-${point}`}>
+                        <Text>{point}</Text>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              </ul>
+            ))}
+          </div>
         </div>
       </main>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   )
 }
