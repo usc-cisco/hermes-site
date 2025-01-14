@@ -3,27 +3,31 @@ import React, { useEffect, useRef } from "react"
 import { Card, Center, Flex, Text, Title } from "@mantine/core"
 import useSound from "use-sound"
 
+import { useAuth } from "../../contexts/AuthContext"
 import { useQueue } from "../../contexts/QueueContext"
+import { CourseNameEnum } from "../../types/enums/CourseNameEnum"
 import queueNotif from "/cisco-queue-notif.mp3"
 
 interface UserQueueInfoProps {
   userNumber: number | undefined
   current: number | undefined
   total: number | undefined
+  course: CourseNameEnum
 }
 
-const UserQueueInfoCard: React.FC<UserQueueInfoProps> = ({ userNumber, current, total }) => {
+const UserQueueInfoCard: React.FC<UserQueueInfoProps> = ({ userNumber, current, total, course }) => {
   const [play] = useSound(queueNotif)
   const previousCurrentRef = useRef<number | undefined>()
+  const { submittedCourse } = useAuth()
   const { isInQueue } = useQueue()
 
   useEffect(() => {
     // Only play notification when current number changes TO the user's number
-    if (isInQueue && current === userNumber && previousCurrentRef.current !== current) {
+    if (isInQueue && current === userNumber && previousCurrentRef.current !== current && submittedCourse === course) {
       play()
     }
     previousCurrentRef.current = current
-  }, [current, userNumber, play, isInQueue])
+  }, [current, userNumber, play, isInQueue, course, submittedCourse])
 
   if (userNumber && current && userNumber < current) {
     return null
