@@ -11,6 +11,7 @@ interface AuthContextType {
   setJwtAuth: (token: string) => void
   setBasicAuth: (token: string) => void
   clearAuth: () => void
+  submittedCourse: CourseNameEnum | null
   setSubmittedCourse: (submittedCourse: CourseNameEnum) => void
   isAdmin: boolean
   isAuthenticated: boolean
@@ -98,6 +99,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setJwtAuth,
     setBasicAuth,
     clearAuth,
+    submittedCourse,
     setSubmittedCourse,
     isAuthenticated,
     isAdmin,

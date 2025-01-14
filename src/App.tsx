@@ -49,7 +49,7 @@ function App() {
       {studentData && !studentData.error && courseName ? (
         <>
           <CoordinatorCard course={courseName} />
-          <UserQueueInfoCard userNumber={studentData.queueNumber} current={current} total={max} />
+          <UserQueueInfoCard userNumber={studentData.queueNumber} current={current} total={max} course={courseName} />
         </>
       ) : null}
       {queueData.map((data, index) => {
