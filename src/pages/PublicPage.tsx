@@ -63,29 +63,25 @@ const PublicPage: React.FC = () => {
       </nav>
       <main className="flex flex-1 flex-col items-center">
         <div className="my-auto flex w-4/5 max-w-7xl flex-col items-center justify-between gap-y-12 py-8 md:py-8">
-          <div className="mx-auto w-full justify-between">
-            <div className="grid grid-cols-3 items-center gap-8">
-              {queueData.map((data, index) => {
-                const { numberData, coordinatorData } = data
-
+          <div className="space-between flex w-full items-center gap-8">
+            {queueData.map((data, index) => {
+              const { numberData, coordinatorData } = data
                 if (numberData.isLoading || coordinatorData.isLoading || !numberData.data || !coordinatorData.data)
                   return <CardLoader key={index} />
                 const status = coordinatorData.data.status.toUpperCase() as keyof typeof TeacherStatusEnum
                 const teacherStatus = TeacherStatusEnum[status]
-
-                return (
-                  <QueueCard
-                    key={index}
-                    program={queues[index].program}
-                    current={numberData.data.current}
-                    total={numberData.data.max}
-                    status={teacherStatus}
-                    teacher={coordinatorData.data.name}
-                    className="scale-115 pb-12 shadow-black"
-                  />
-                )
-              })}
-            </div>
+              return (
+                <QueueCard
+                  key={index}
+                  program={queues[index].program}
+                  current={numberData.data.current}
+                  total={numberData.data.max}
+                  status={teacherStatus}
+                  teacher={coordinatorData.data.name}
+                  className="scale-115 pb-12 shadow-black"
+                />
+              )
+            })}
           </div>
           <div className="mb-4 flex w-full flex-col gap-3 rounded-lg bg-white p-4 shadow-md">
             <Text className="font-bold">Announcements</Text>
