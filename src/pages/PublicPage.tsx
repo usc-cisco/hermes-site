@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 
 import { Text } from "@mantine/core"
 import { Link } from "react-router"
+import useSound from "use-sound"
 
 import CardLoader from "../components/layout/CardLoader"
 import QueueCard from "../components/queue-card/QueueCard"
@@ -10,8 +11,10 @@ import { announcements } from "../types/constants/announcements"
 import { CourseNameEnum } from "../types/enums/CourseNameEnum"
 import { ProgramEnum } from "../types/enums/ProgramsEnum"
 import { TeacherStatusEnum } from "../types/enums/TeacherStatusEnum"
+import publicPageAlarm from "/public-page-alarm.mp3"
 
 const PublicPage: React.FC = () => {
+  const [play] = useSound(publicPageAlarm)
   const queues = [
     { program: ProgramEnum.CS, course: CourseNameEnum.BSCS },
     { program: ProgramEnum.IT, course: CourseNameEnum.BSIT },
@@ -22,6 +25,27 @@ const PublicPage: React.FC = () => {
   const csQueueData = useQueueData(CourseNameEnum.BSCS)
   const itQueueData = useQueueData(CourseNameEnum.BSIT)
   const isQueueData = useQueueData(CourseNameEnum.BSIS)
+
+  // Add effect to monitor changes in queue data
+  useEffect(() => {
+    // Only play sound if data is available and not in loading state
+    if (!csQueueData.numberData.isLoading && csQueueData.numberData.data) {
+      play()
+    }
+  }, [csQueueData.numberData.data?.currentStudentId, play])
+
+  useEffect(() => {
+    if (!itQueueData.numberData.isLoading && itQueueData.numberData.data) {
+      play()
+    }
+  }, [itQueueData.numberData.data?.currentStudentId, play])
+
+  useEffect(() => {
+    if (!isQueueData.numberData.isLoading && isQueueData.numberData.data) {
+      play()
+    }
+  }, [isQueueData.numberData.data?.currentStudentId, play])
+
   // Combine the data into an array after the hooks are called
   const queueData = [csQueueData, itQueueData, isQueueData]
 
@@ -42,16 +66,10 @@ const PublicPage: React.FC = () => {
           <div className="space-between flex w-full items-center gap-8">
             {queueData.map((data, index) => {
               const { numberData, coordinatorData } = data
-
-              // if (numberData.error || coordinatorData.error) return <div key={index}>Error Loading Data</div>
-              // if (!numberData.data || !coordinatorData.data) return <CardLoader key={index} />
-
-              // Check for .data field to prevent TS errors
-              if (numberData.isLoading || coordinatorData.isLoading || !numberData.data || !coordinatorData.data)
-                return <CardLoader key={index} />
-              const status = coordinatorData.data.status.toUpperCase() as keyof typeof TeacherStatusEnum
-              const teacherStatus = TeacherStatusEnum[status]
-
+                if (numberData.isLoading || coordinatorData.isLoading || !numberData.data || !coordinatorData.data)
+                  return <CardLoader key={index} />
+                const status = coordinatorData.data.status.toUpperCase() as keyof typeof TeacherStatusEnum
+                const teacherStatus = TeacherStatusEnum[status]
               return (
                 <QueueCard
                   key={index}
@@ -84,16 +102,12 @@ const PublicPage: React.FC = () => {
           </div>
         </div>
       </main>
-      {/* <Footer /> */}
     </div>
   )
 }
 
 export default PublicPage
 
-/**
- * Not being exported since it's only used here.
- */
 const Timer: React.FC = () => {
   const [time, setTime] = useState(new Date())
 
