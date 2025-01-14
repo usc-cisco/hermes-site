@@ -29,22 +29,22 @@ const PublicPage: React.FC = () => {
   // Add effect to monitor changes in queue data
   useEffect(() => {
     // Only play sound if data is available and not in loading state
-    if (!csQueueData.numberData.isLoading && csQueueData.numberData.data) {
+    if (!csQueueData.numberData.isLoading && csQueueData.numberData.data && csQueueData.numberData.data.current !== 0) {
       play()
     }
-  }, [csQueueData.numberData.data?.currentStudentId, play])
+  }, [csQueueData.numberData.data?.current, play])
 
   useEffect(() => {
-    if (!itQueueData.numberData.isLoading && itQueueData.numberData.data) {
+    if (!itQueueData.numberData.isLoading && itQueueData.numberData.data && itQueueData.numberData.data.current !== 0) {
       play()
     }
-  }, [itQueueData.numberData.data?.currentStudentId, play])
+  }, [itQueueData.numberData.data?.current, play])
 
   useEffect(() => {
-    if (!isQueueData.numberData.isLoading && isQueueData.numberData.data) {
+    if (!isQueueData.numberData.isLoading && isQueueData.numberData.data && isQueueData.numberData.data.current !== 0) {
       play()
     }
-  }, [isQueueData.numberData.data?.currentStudentId, play])
+  }, [isQueueData.numberData.data?.current, play])
 
   // Combine the data into an array after the hooks are called
   const queueData = [csQueueData, itQueueData, isQueueData]
@@ -63,21 +63,25 @@ const PublicPage: React.FC = () => {
       </nav>
       <main className="flex flex-1 flex-col items-center">
         <div className="my-auto flex w-4/5 max-w-7xl flex-col items-center justify-between gap-y-12 py-8 md:py-8">
-          <div className="space-between flex w-full items-center gap-8">
+          <div className="flex w-full items-center justify-around gap-8">
             {queueData.map((data, index) => {
               const { numberData, coordinatorData } = data
-                if (numberData.isLoading || coordinatorData.isLoading || !numberData.data || !coordinatorData.data)
-                  return <CardLoader key={index} />
-                const status = coordinatorData.data.status.toUpperCase() as keyof typeof TeacherStatusEnum
-                const teacherStatus = TeacherStatusEnum[status]
+              if (numberData.isLoading || coordinatorData.isLoading || !numberData.data || !coordinatorData.data)
+                return <CardLoader key={index} />
+              const status = coordinatorData.data.status.toUpperCase() as keyof typeof TeacherStatusEnum
+              const teacherStatus = TeacherStatusEnum[status]
               return (
                 <QueueCard
+                  isShowingCurrentName={true}
                   key={index}
                   program={queues[index].program}
                   current={numberData.data.current}
                   total={numberData.data.max}
                   status={teacherStatus}
                   teacher={coordinatorData.data.name}
+                  currentStudent={
+                    numberData.data.queuedStudents.length ? numberData.data.queuedStudents[0].student : null
+                  }
                   className="scale-115 pb-12 shadow-black"
                 />
               )

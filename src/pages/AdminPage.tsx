@@ -75,7 +75,9 @@ const AdminPage: React.FC = () => {
                 key={index}
                 program={queues[index].program}
                 current={numberData.data.current}
-                currentStudentId={numberData.data.currentStudentId}
+                currentStudent={
+                  (numberData.data.queuedStudents.length && numberData.data.queuedStudents[0].student) || null
+                }
                 total={numberData.data.max}
                 status={teacherStatus}
                 teacher={coordinatorData.data.name}

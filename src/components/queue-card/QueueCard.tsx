@@ -5,6 +5,7 @@ import { Trash2 } from "lucide-react"
 
 import { useAuth } from "../../contexts/AuthContext"
 import { useQueue } from "../../contexts/QueueContext"
+import { Student } from "../../types/entities/Student"
 import { ProgramEnum } from "../../types/enums/ProgramsEnum"
 import { TeacherStatusEnum } from "../../types/enums/TeacherStatusEnum"
 import { convertProgramEnumToCourseNameEnum } from "../../utils/convertProgramEnumToCourseNameEnum"
@@ -18,7 +19,7 @@ import QueueStatus from "./QueueStatus"
 interface QueueCardProps {
   program: ProgramEnum
   current: number
-  currentStudentId?: string | null
+  currentStudent?: Student | null
   total: number
   status: TeacherStatusEnum
   teacher: string
@@ -26,12 +27,13 @@ interface QueueCardProps {
   onStatusChange?: (value: TeacherStatusEnum) => void
   isAdmin?: boolean
   className?: string
+  isShowingCurrentName?: boolean
 }
 
 const QueueCard: React.FC<QueueCardProps> = ({
   program,
   current,
-  currentStudentId,
+  currentStudent,
   total,
   status,
   teacher,
@@ -39,6 +41,7 @@ const QueueCard: React.FC<QueueCardProps> = ({
   onStatusChange,
   isAdmin = false,
   className,
+  isShowingCurrentName = false,
 }) => {
   const { course: jwtCourse } = useAuth()
   const { isInQueue, isFirstLoad, isLoading, hasError, handleEnqueue, handleDequeue } = useQueue()
@@ -70,10 +73,11 @@ const QueueCard: React.FC<QueueCardProps> = ({
         current={current}
         total={total}
         disabled={disabled}
-        currentStudentId={currentStudentId}
+        currentStudent={currentStudent}
+        isShowingCurrentName={isShowingCurrentName}
       />
 
-      <Flex direction="column" gap="xl" mt="md">
+      <Flex direction="column" gap="xl" mt="auto">
         <QueueStatus status={status} teacher={teacher} />
 
         {isAdmin ? (
