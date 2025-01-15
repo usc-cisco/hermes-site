@@ -49,9 +49,13 @@ const QueueCard: React.FC<QueueCardProps> = ({
 
   const isStudentCourse = jwtCourse === course
 
-  const disabled = isAdmin
-    ? status === TeacherStatusEnum.AWAY || status === TeacherStatusEnum.UNAVAILABLE
+  const isHeaderDisabled = isAdmin
+    ? [TeacherStatusEnum.AWAY, TeacherStatusEnum.UNAVAILABLE].includes(status)
     : status === TeacherStatusEnum.UNAVAILABLE
+
+  const isAdminControlsDisabled = status === TeacherStatusEnum.UNAVAILABLE
+
+  const isEnqueueDisabled = [TeacherStatusEnum.CUTOFF, TeacherStatusEnum.UNAVAILABLE].includes(status)
 
   if (isFirstLoad && isLoading) return <CardLoader />
 
@@ -72,7 +76,7 @@ const QueueCard: React.FC<QueueCardProps> = ({
         program={program}
         current={current}
         total={total}
-        disabled={disabled}
+        disabled={isHeaderDisabled}
         currentStudent={currentStudent}
         isShowingCurrentName={isShowingCurrentName}
       />
@@ -83,12 +87,12 @@ const QueueCard: React.FC<QueueCardProps> = ({
         {isAdmin ? (
           <AdminControls
             status={status}
-            disabled={disabled}
+            disabled={isAdminControlsDisabled}
             onUpdateQueue={onUpdateQueue}
             onStatusChange={onStatusChange}
           />
         ) : !isInQueue && isStudentCourse ? (
-          <QueueButton handleClick={() => handleEnqueue(course)} disabled={disabled} buttonSize="md" />
+          <QueueButton handleClick={() => handleEnqueue(course)} disabled={isEnqueueDisabled} buttonSize="md" />
         ) : null}
 
         {isInQueue && isStudentCourse && !hasError ? (

@@ -9,6 +9,8 @@ export const resolveStatusEnum = (status: string) => {
       return TeacherStatusEnum.AWAY
     case "unavailable":
       return TeacherStatusEnum.UNAVAILABLE
+    case "cutoff":
+      return TeacherStatusEnum.CUTOFF
     default:
       return TeacherStatusEnum.UNAVAILABLE
   }
