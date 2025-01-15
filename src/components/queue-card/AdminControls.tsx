@@ -39,15 +39,16 @@ const AdminControls: React.FC<AdminControlsProps> = ({ status, disabled, onUpdat
           { value: TeacherStatusEnum.AVAILABLE.toString(), label: "Available" },
           { value: TeacherStatusEnum.AWAY.toString(), label: "Away" },
           { value: TeacherStatusEnum.UNAVAILABLE.toString(), label: "Unavailable" },
+          { value: TeacherStatusEnum.CUTOFF.toString(), label: "Cutoff" },
         ]}
         onChange={(value) => {
           if (onStatusChange && value) {
-            //Converts the string value back to TeacherStatusEnum
+            // Converts the string value back to TeacherStatusEnum
             const statusValue = parseInt(value as string) as TeacherStatusEnum
             onStatusChange(statusValue)
           }
         }}
-        value={status.toString()} //Ensures the value is a string
+        value={status.toString()} // Ensures the value is a string
         radius="md"
         style={{ width: "150px", height: "40px" }}
         rightSection={

@@ -44,6 +44,13 @@ const QueueStatus: React.FC<StatusProps> = ({ status, teacher }) => {
         disabled: true,
       }
       break
+    case TeacherStatusEnum.CUTOFF:
+      s = {
+        ...s,
+        label: "Cutoff",
+        color: "purple",
+      }
+      break
   }
 
   return (
