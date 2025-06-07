@@ -24,7 +24,7 @@ const faqs: FAQs[] = [
   
   ### **Math Program Coordinator (BSAppMath and MSMath)**
   👨‍🏫 Katrina Belleza Fuentes\n
-  ✉️ kebelleza@usc.edu.ph`,
+  ✉️ [kebelleza@usc.edu.ph](mailto:kebelleza@usc.edu.ph)`,
   },
   {
     id: 3,
