@@ -11,8 +11,8 @@ const faqs: FAQs[] = [
     id: 2,
     question: "Who can I contact if I have questions regarding enrollment?",
     answer: `### **CS Program Coordinator**\n
-  👨‍🏫 Doriz Roa\n
-  ✉️ drroa@usc.edu.ph
+  👨‍🏫 Archival Sebial\n
+  ✉️ ajsebial@usc.edu.ph
   
   ### **IS/ICT Program Coordinator**
   👨‍🏫 Glenn B. Pepito\n
