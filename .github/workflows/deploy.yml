@@ -7,20 +7,25 @@ on:
       - main
 
 jobs:
-  build:
-    name: Build
+  deploy:
+    name: Deploy
     runs-on: ubuntu-latest
     steps:
-      - name: Clone and Build
-        uses: appleboy/ssh-action@v1.2.0
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Dependencies & Build
+        run: |
+          npm ci
+          npm run build
+
+      - name: Upload dist folder via SCP
+        uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.DCISM_HOST }}
           username: ${{ secrets.DCISM_EMAIL }}
           password: ${{ secrets.DCISM_PASSWORD }}
           port: ${{ secrets.SSH_PORT }}
-          script: |
-            cd hermes-site
-            git reset --hard && git clean -fd && git pull origin main
-            npm ci
-            npm run build
-            rsync -avz --delete ./dist/ ~/${{ secrets.DCISM_DOMAIN }}/
+          source: "dist/*"
+          target: "~/${{ secrets.DCISM_DOMAIN }}/"
+          overwrite: true
