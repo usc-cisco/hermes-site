@@ -30,6 +30,7 @@ jobs:
           source: "./dist/*"
           target: "~/${{ secrets.TEMP_DOMAIN }}/"
           overwrite: true
+          strip_components: 1
 
       - name: Test
         uses: appleboy/ssh-action@v1.2.0
@@ -39,6 +40,6 @@ jobs:
           password: ${{ secrets.TEMP_PASSWORD }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            cd hermes-site
+            cd ${{ secrets.TEMP_DOMAIN }}
             ls 
             cat .htaccess
