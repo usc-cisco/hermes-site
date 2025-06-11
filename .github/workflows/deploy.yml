@@ -31,6 +31,18 @@ jobs:
           overwrite: true
           strip_components: 1
 
+          - name: Add .htaccess to root domain
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.DCISM_HOST }}
+          username: ${{ secrets.DCISM_EMAIL }}
+          password: ${{ secrets.DCISM_PASSWORD }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            cd ${{ secrets.DCISM_DOMAIN }}
+            ls 
+            cat .env
+
       # - name: Add .htaccess to root domain
       #   uses: appleboy/ssh-action@v1.2.0
       #   with:
