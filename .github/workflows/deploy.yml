@@ -16,7 +16,7 @@ jobs:
 
       - name: Install Dependencies & Build
         run: |
-          npm ci
+          npm install
           npm run build
 
       - name: Upload dist folder via SCP
@@ -26,6 +26,7 @@ jobs:
           username: ${{ secrets.DCISM_EMAIL }}
           password: ${{ secrets.DCISM_PASSWORD }}
           port: ${{ secrets.SSH_PORT }}
-          source: "dist/*"
+          source: "./dist/*"
           target: "~/${{ secrets.DCISM_DOMAIN }}/"
           overwrite: true
+          strip_components: 1
