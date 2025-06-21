@@ -15,8 +15,8 @@ const faqs: FAQs[] = [
   ✉️ [ajsebial@usc.edu.ph](mailto:ajsebial@usc.edu.ph)
   
   ### **IS/ICT Program Coordinator**
-  👨‍🏫 Glenn B. Pepito\n
-  ✉️ [gbpepito@usc.edu.ph](mailto:gbpepito@usc.edu.ph)
+  👨‍🏫 Christian V. Maderazo\n
+  ✉️ [cvmaderazo@usc.edu.ph](mailto:cvmaderazo@usc.edu.ph)
   
   ### **IT and PN Program Coordinator**
   👨‍🏫 Gran G. Sabandal\n
