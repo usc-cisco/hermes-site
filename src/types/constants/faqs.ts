@@ -11,16 +11,16 @@ const faqs: FAQs[] = [
     id: 2,
     question: "Who can I contact if I have questions regarding enrollment?",
     answer: `### **CS Program Coordinator**\n
-  👨‍🏫 Archival Sebial\n
-  ✉️ [ajsebial@usc.edu.ph](mailto:ajsebial@usc.edu.ph)
+  👨‍🏫 Doriz Roa\n
+  ✉️ [drroa@usc.edu.ph](mailto:drroa@usc.edu.ph)
   
   ### **IS/ICT Program Coordinator**
   👨‍🏫 Christian V. Maderazo\n
   ✉️ [cvmaderazo@usc.edu.ph](mailto:cvmaderazo@usc.edu.ph)
   
-  ### **IT and PN Program Coordinator**
-  👨‍🏫 Gran G. Sabandal\n
-  ✉️ [ggsabandal@usc.edu.ph](mailto:ggsabandal@usc.edu.ph)
+  ### **IT Program Coordinator**
+  👨‍🏫 Christine Bandalan\n
+  ✉️ [cdbandalan@usc.edu.ph](mailto:cdbandalan@usc.edu.ph)
   
   ### **Math Program Coordinator (BSAppMath and MSMath)**
   👨‍🏫 Katrina Belleza Fuentes\n
