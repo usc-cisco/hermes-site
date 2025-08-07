@@ -168,15 +168,19 @@ const AdminPage: React.FC = () => {
                     required
                   />
                 </div>
+                <Button onClick={handleAddStudent} w={"100%"} radius="md">
+                  Add Student
+                </Button>
                 <Button
                   onClick={() => {
-                    handleAddStudent()
                     setShowModal(false)
+                    setNewStudent({ idNumber: "", name: "" })
                   }}
                   w={"100%"}
                   radius="md"
+                  className="mt-2 bg-neutral-300 hover:bg-neutral-400"
                 >
-                  Add Student
+                  Cancel
                 </Button>
               </form>
             </div>
