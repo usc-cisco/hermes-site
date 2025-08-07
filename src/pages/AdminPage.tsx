@@ -1,4 +1,6 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
+
+import { Button } from "@mantine/core"
 
 import CardLoader from "../components/layout/CardLoader"
 import QueueCard from "../components/queue-card/QueueCard"
@@ -6,12 +8,20 @@ import { useAuth } from "../contexts/AuthContext"
 import { useQueueData } from "../hooks/useQueueData"
 import { useQueueUpdate } from "../hooks/useQueueUpdate"
 import { useStatusUpdate } from "../hooks/useStatusUpdate"
+import { StudentService } from "../services/student.service"
 import { CourseNameEnum } from "../types/enums/CourseNameEnum"
 import { ProgramEnum } from "../types/enums/ProgramsEnum"
 import { TeacherStatusEnum } from "../types/enums/TeacherStatusEnum"
+import toast from "../utils/toast"
 
 const AdminPage: React.FC = () => {
   const { basicAuthToken } = useAuth() // Get the basic auth token from AuthContext
+  const [username, setUsername] = useState<string>("")
+  const [showModal, setShowModal] = useState<boolean>(false)
+  const [newStudent, setNewStudent] = useState<{ idNumber: string; name: string }>({
+    idNumber: "",
+    name: "",
+  })
 
   const queues = [
     { program: ProgramEnum.CS, course: CourseNameEnum.BSCS },
@@ -57,8 +67,43 @@ const AdminPage: React.FC = () => {
     }
   }
 
+  const handleAddStudent = async () => {
+    if (!basicAuthToken) {
+      console.log("Authorization token is missing.")
+      return
+    }
+
+    if (!newStudent.idNumber || !newStudent.name) {
+      toast.error("Please fill in all fields.")
+      return
+    }
+
+    try {
+      const response = await StudentService.addStudent(newStudent.idNumber, newStudent.name, basicAuthToken)
+
+      if (response.error) {
+        toast.error(response.error)
+        return
+      }
+
+      toast.success("Student added successfully!")
+    } catch (error) {
+      console.error("Error adding student:", error)
+      toast.error("Failed to add student. Please try again.")
+    } finally {
+      setNewStudent({ idNumber: "", name: "" }) // Reset the form
+      setShowModal(false) // Close the modal after adding the student
+    }
+  }
+
+  useEffect(() => {
+    if (basicAuthToken) {
+      setUsername(atob(basicAuthToken).split(":")[0]) // Decode the basic auth token to get the username
+    }
+  }, [basicAuthToken])
+
   return (
-    <div className="flex w-full flex-1 items-center py-8 md:py-12">
+    <div className="flex w-full flex-1 flex-col items-center py-8 md:py-12">
       <div className="mx-auto my-auto flex w-full max-w-7xl flex-1 items-center justify-center px-4">
         <div className="grid w-full grid-cols-1 justify-items-center gap-4 md:grid-cols-3 md:gap-6">
           {queueData.map((data, index) => {
@@ -89,6 +134,55 @@ const AdminPage: React.FC = () => {
           })}
         </div>
       </div>
+      {username === "cisco" && (
+        <>
+          <div className="mt-8 flex flex-col items-center justify-center gap-2">
+            <p className="text-sm">Student not in the database?</p>
+            <Button onClick={() => setShowModal(true)} w={"100%"} radius="md">
+              Add student
+            </Button>
+          </div>
+
+          {/* Add User Modal */}
+          {showModal && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+              <form className="rounded bg-white p-6 shadow-lg">
+                <h2 className="mb-4 text-lg font-semibold">Add Student</h2>
+                <div className="mb-4">
+                  <label className="mb-1 block text-sm font-medium">ID Number</label>
+                  <input
+                    type="text"
+                    value={newStudent.idNumber}
+                    onChange={(e) => setNewStudent({ ...newStudent, idNumber: e.target.value })}
+                    className="w-full rounded border p-2"
+                    required
+                  />
+                </div>
+                <div className="mb-4">
+                  <label className="mb-1 block text-sm font-medium">Full Name</label>
+                  <input
+                    type="text"
+                    value={newStudent.name}
+                    onChange={(e) => setNewStudent({ ...newStudent, name: e.target.value })}
+                    className="w-full rounded border p-2"
+                    required
+                  />
+                </div>
+                <Button
+                  onClick={() => {
+                    handleAddStudent()
+                    setShowModal(false)
+                  }}
+                  w={"100%"}
+                  radius="md"
+                >
+                  Add Student
+                </Button>
+              </form>
+            </div>
+          )}
+        </>
+      )}
     </div>
   )
 }
