@@ -168,9 +168,11 @@ const AdminPage: React.FC = () => {
                     required
                   />
                 </div>
+
                 <Button onClick={handleAddStudent} w={"100%"} radius="md">
                   Add Student
                 </Button>
+                
                 <Button
                   onClick={() => {
                     setShowModal(false)
