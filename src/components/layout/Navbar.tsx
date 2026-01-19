@@ -4,7 +4,7 @@ import { Link } from "react-router"
 import { useAuth } from "../../contexts/AuthContext"
 
 export function Navbar() {
-  const { isAuthenticated, clearAuth } = useAuth()
+  const { isAuthenticated, isAdmin, clearAuth } = useAuth()
 
   return (
     <nav className="mb-4 bg-primary px-6 py-4">
@@ -19,6 +19,14 @@ export function Navbar() {
           >
             FAQs
           </Link>
+          {isAdmin && (
+            <Link
+              className="rounded-md leading-none text-white ring-white focus:outline-none focus:ring-1 focus:ring-opacity-75"
+              to="/admin"
+            >
+              Admin
+            </Link>
+          )}
           {isAuthenticated && (
             <button title="Sign out" onClick={() => clearAuth()}>
               <LogOut className="size-4 text-white" />

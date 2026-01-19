@@ -64,4 +64,27 @@ export class QueueService {
       throw new Error("Something went wrong")
     }
   }
+
+  static async addStudentToQueue(
+    course: CourseNameEnum,
+    studentId: string,
+    basicAuthToken: string,
+  ): Promise<{ success?: boolean; error?: string }> {
+    try {
+      const headers = {
+        Authorization: `Basic ${basicAuthToken}`,
+        "Content-Type": "application/json",
+      }
+
+      const response = await api.post(`queue/admin/${course}/number`, { idNumber: studentId }, { headers })
+
+      return response.data
+    } catch (error) {
+      console.error(`Error adding student to queue for ${course}`, error)
+      if (error instanceof Error) {
+        return { error: error.message }
+      }
+      return { error: "Failed to add student to queue" }
+    }
+  }
 }

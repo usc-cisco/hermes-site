@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react"
 
-import { Button } from "@mantine/core"
+import { Button, Flex, Loader, Modal, Text, TextInput } from "@mantine/core"
+import { useDisclosure } from "@mantine/hooks"
+import { UserPlus } from "lucide-react"
 
 import CardLoader from "../components/layout/CardLoader"
 import QueueCard from "../components/queue-card/QueueCard"
@@ -8,6 +10,7 @@ import { useAuth } from "../contexts/AuthContext"
 import { useQueueData } from "../hooks/useQueueData"
 import { useQueueUpdate } from "../hooks/useQueueUpdate"
 import { useStatusUpdate } from "../hooks/useStatusUpdate"
+import { QueueService } from "../services/queue.service"
 import { StudentService } from "../services/student.service"
 import { CourseNameEnum } from "../types/enums/CourseNameEnum"
 import { ProgramEnum } from "../types/enums/ProgramsEnum"
@@ -15,13 +18,69 @@ import { TeacherStatusEnum } from "../types/enums/TeacherStatusEnum"
 import toast from "../utils/toast"
 
 const AdminPage: React.FC = () => {
-  const { basicAuthToken } = useAuth() // Get the basic auth token from AuthContext
-  const [username, setUsername] = useState<string>("")
-  const [showModal, setShowModal] = useState<boolean>(false)
+  const { basicAuthToken, isCisco } = useAuth()
+  const [addStudentModalOpened, { open: openAddStudentModal, close: closeAddStudentModal }] = useDisclosure(false)
+  const [addToQueueModalOpened, { open: openAddToQueueModal, close: closeAddToQueueModal }] = useDisclosure(false)
   const [newStudent, setNewStudent] = useState<{ idNumber: string; name: string }>({
     idNumber: "",
     name: "",
   })
+  const [queueStudent, setQueueStudent] = useState<{ idNumber: string; course: CourseNameEnum | null }>({
+    idNumber: "",
+    course: null,
+  })
+  const [studentSearchResult, setStudentSearchResult] = useState<{
+    student: { id: string; name: string } | null
+    loading: boolean
+    error: string | null
+  }>({
+    student: null,
+    loading: false,
+    error: null,
+  })
+
+  const openAddToQueueModalForCourse = (course: CourseNameEnum) => {
+    setQueueStudent({ idNumber: "", course })
+    setStudentSearchResult({ student: null, loading: false, error: null })
+    openAddToQueueModal()
+  }
+
+  // Debounced student search
+  useEffect(() => {
+    if (!addToQueueModalOpened || !queueStudent.idNumber || !basicAuthToken) {
+      setStudentSearchResult({ student: null, loading: false, error: null })
+      return
+    }
+
+    const idNumber = queueStudent.idNumber.trim()
+    if (idNumber.length === 0) {
+      setStudentSearchResult({ student: null, loading: false, error: null })
+      return
+    }
+
+    // Debounce: wait 500ms after user stops typing
+    const timeoutId = setTimeout(async () => {
+      setStudentSearchResult({ student: null, loading: true, error: null })
+
+      try {
+        const result = await StudentService.getStudentById(idNumber, basicAuthToken)
+
+        console.log(result, result.student?.name)
+        if (result.error) {
+          setStudentSearchResult({ student: null, loading: false, error: result.error })
+        } else if (result.student) {
+          setStudentSearchResult({ student: result.student, loading: false, error: null })
+        } else {
+          setStudentSearchResult({ student: null, loading: false, error: "Student not found" })
+        }
+      } catch (error) {
+        console.error("Error searching for student:", error)
+        setStudentSearchResult({ student: null, loading: false, error: "Failed to search for student" })
+      }
+    }, 500)
+
+    return () => clearTimeout(timeoutId)
+  }, [queueStudent.idNumber, addToQueueModalOpened, basicAuthToken])
 
   const queues = [
     { program: ProgramEnum.CS, course: CourseNameEnum.BSCS },
@@ -40,36 +99,49 @@ const AdminPage: React.FC = () => {
   const queueData = [csQueueData, itQueueData, isQueueData]
 
   const handleQueueUpdate = async (course: CourseNameEnum) => {
-    console.log("update queue route:")
-
     if (basicAuthToken) {
-      // Check if the token is not null
       const result = await updateQueue(course, basicAuthToken)
       if (!result.success) {
-        console.log("Failed to update queue. Please try again")
+        toast.error("Failed to update queue. Please try again")
       } else {
-        console.log(`Queue for ${course} updated successfully!`)
+        toast.success(`Queue for ${course} updated successfully!`)
       }
     } else {
-      console.log("Authorization token is missing.")
+      toast.error("Authorization token is missing.")
+    }
+  }
+
+  const getStatusLabel = (status: TeacherStatusEnum): string => {
+    switch (status) {
+      case TeacherStatusEnum.AVAILABLE:
+        return "Available"
+      case TeacherStatusEnum.AWAY:
+        return "Away"
+      case TeacherStatusEnum.UNAVAILABLE:
+        return "Unavailable"
+      case TeacherStatusEnum.CUTOFF:
+        return "Cutoff"
+      default:
+        return "Unknown"
     }
   }
 
   const handleStatusUpdate = async (course: CourseNameEnum, newStatus: TeacherStatusEnum) => {
     if (basicAuthToken) {
-      // Check if the token is not null
       const result = await updateStatus(course, newStatus, basicAuthToken)
       if (!result.success) {
-        console.log("Failed to update status. Please try again")
+        toast.error("Failed to update status. Please try again")
+      } else {
+        toast.success(`Status updated to ${getStatusLabel(newStatus)}`)
       }
     } else {
-      console.log("Authorization token is missing.")
+      toast.error("Authorization token is missing.")
     }
   }
 
   const handleAddStudent = async () => {
     if (!basicAuthToken) {
-      console.log("Authorization token is missing.")
+      toast.error("Authorization token is missing.")
       return
     }
 
@@ -87,20 +159,47 @@ const AdminPage: React.FC = () => {
       }
 
       toast.success("Student added successfully!")
+      setNewStudent({ idNumber: "", name: "" })
+      closeAddStudentModal()
     } catch (error) {
       console.error("Error adding student:", error)
       toast.error("Failed to add student. Please try again.")
-    } finally {
-      setNewStudent({ idNumber: "", name: "" }) // Reset the form
-      setShowModal(false) // Close the modal after adding the student
     }
   }
 
-  useEffect(() => {
-    if (basicAuthToken) {
-      setUsername(atob(basicAuthToken).split(":")[0]) // Decode the basic auth token to get the username
+  const handleAddStudentToQueue = async () => {
+    if (!basicAuthToken) {
+      toast.error("Authorization token is missing.")
+      return
     }
-  }, [basicAuthToken])
+
+    if (!queueStudent.idNumber || !queueStudent.course) {
+      toast.error("Please fill in all fields.")
+      return
+    }
+
+    if (!studentSearchResult.student) {
+      toast.error("Student not found in database. Please add student first.")
+      return
+    }
+
+    try {
+      const result = await QueueService.addStudentToQueue(queueStudent.course, queueStudent.idNumber, basicAuthToken)
+
+      if (result.error) {
+        toast.error(result.error)
+        return
+      }
+
+      toast.success(`Student added to ${queueStudent.course} queue successfully!`)
+      setQueueStudent({ idNumber: "", course: null })
+      setStudentSearchResult({ student: null, loading: false, error: null })
+      closeAddToQueueModal()
+    } catch (error) {
+      console.error("Error adding student to queue:", error)
+      toast.error("Failed to add student to queue. Please try again.")
+    }
+  }
 
   return (
     <div className="flex w-full flex-1 flex-col items-center py-8 md:py-12">
@@ -126,69 +225,126 @@ const AdminPage: React.FC = () => {
                 total={numberData.data.max}
                 status={teacherStatus}
                 teacher={coordinatorData.data.name}
-                onUpdateQueue={() => handleQueueUpdate(queues[index].course)} // Call handleQueueUpdate
+                onUpdateQueue={() => handleQueueUpdate(queues[index].course)}
                 onStatusChange={(newStatus) => handleStatusUpdate(queues[index].course, newStatus)}
                 isAdmin={true}
+                onAddStudentToQueue={isCisco ? () => openAddToQueueModalForCourse(queues[index].course) : undefined}
               />
             )
           })}
         </div>
       </div>
-      {username === "cisco" && (
-        <>
-          <div className="mt-8 flex flex-col items-center justify-center gap-2">
-            <p className="text-sm">Student not in the database?</p>
-            <Button onClick={() => setShowModal(true)} w={"100%"} radius="md">
-              Add student
+      {isCisco && (
+        <div className="mt-8 flex w-full max-w-7xl flex-col items-center gap-4 px-4">
+          <Button leftSection={<UserPlus size={16} />} onClick={openAddStudentModal} radius="md" bg="primary">
+            Add Student to Database
+          </Button>
+        </div>
+      )}
+
+      {/* Add Student to Database Modal */}
+      <Modal opened={addStudentModalOpened} onClose={closeAddStudentModal} title="Add Student to Database" centered>
+        <Flex direction="column" gap="md">
+          <TextInput
+            label="ID Number"
+            placeholder="Enter student ID number"
+            value={newStudent.idNumber}
+            onChange={(e) => setNewStudent({ ...newStudent, idNumber: e.target.value })}
+            required
+          />
+          <TextInput
+            label="Full Name"
+            placeholder="Enter student full name"
+            value={newStudent.name}
+            onChange={(e) => setNewStudent({ ...newStudent, name: e.target.value })}
+            required
+          />
+          <Flex gap="sm" mt="md">
+            <Button onClick={handleAddStudent} fullWidth radius="md" bg="primary">
+              Add Student
             </Button>
-          </div>
+            <Button
+              onClick={() => {
+                closeAddStudentModal()
+                setNewStudent({ idNumber: "", name: "" })
+              }}
+              fullWidth
+              radius="md"
+              variant="outline"
+            >
+              Cancel
+            </Button>
+          </Flex>
+        </Flex>
+      </Modal>
 
-          {/* Add User Modal */}
-          {showModal && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-              <form className="rounded bg-white p-6 shadow-lg">
-                <h2 className="mb-4 text-lg font-semibold">Add Student</h2>
-                <div className="mb-4">
-                  <label className="mb-1 block text-sm font-medium">ID Number</label>
-                  <input
-                    type="text"
-                    value={newStudent.idNumber}
-                    onChange={(e) => setNewStudent({ ...newStudent, idNumber: e.target.value })}
-                    className="w-full rounded border p-2"
-                    required
-                  />
-                </div>
-                <div className="mb-4">
-                  <label className="mb-1 block text-sm font-medium">Full Name</label>
-                  <input
-                    type="text"
-                    value={newStudent.name}
-                    onChange={(e) => setNewStudent({ ...newStudent, name: e.target.value })}
-                    className="w-full rounded border p-2"
-                    required
-                  />
-                </div>
+      {/* Add Student to Queue Modal */}
+      <Modal
+        opened={addToQueueModalOpened}
+        onClose={() => {
+          closeAddToQueueModal()
+          setQueueStudent({ idNumber: "", course: null })
+          setStudentSearchResult({ student: null, loading: false, error: null })
+        }}
+        title={`Add Student to ${queueStudent.course} Queue`}
+        centered
+      >
+        <Flex direction="column" gap="md">
+          <TextInput
+            label="Student ID Number"
+            placeholder="Enter student ID number"
+            value={queueStudent.idNumber}
+            onChange={(e) => setQueueStudent({ ...queueStudent, idNumber: e.target.value })}
+            required
+          />
 
-                <Button onClick={handleAddStudent} w={"100%"} radius="md">
-                  Add Student
-                </Button>
-                
-                <Button
-                  onClick={() => {
-                    setShowModal(false)
-                    setNewStudent({ idNumber: "", name: "" })
-                  }}
-                  w={"100%"}
-                  radius="md"
-                  className="mt-2 bg-neutral-300 hover:bg-neutral-400"
-                >
-                  Cancel
-                </Button>
-              </form>
+          {/* Student Search Result Display */}
+          {queueStudent.idNumber.trim().length > 0 && (
+            <div className="-mt-2">
+              {studentSearchResult.student ? (
+                <Text size="xs" c="dimmed" fw={500} className="uppercase">
+                  STUDENT: {studentSearchResult.student.name}
+                </Text>
+              ) : studentSearchResult.error ? (
+                <Text size="xs" c="red" fw={500} className="uppercase">
+                  STUDENT NOT FOUND
+                </Text>
+              ) : (
+                <Flex align="center" gap="xs">
+                  <Loader size="xs" />
+                  <Text size="xs" c="dimmed" fw={500}>
+                    Searching...
+                  </Text>
+                </Flex>
+              )}
             </div>
           )}
-        </>
-      )}
+
+          <Flex gap="sm" mt="md">
+            <Button
+              onClick={handleAddStudentToQueue}
+              fullWidth
+              radius="md"
+              bg="primary"
+              disabled={!studentSearchResult.student || studentSearchResult.loading}
+            >
+              Add to Queue
+            </Button>
+            <Button
+              onClick={() => {
+                closeAddToQueueModal()
+                setQueueStudent({ idNumber: "", course: null })
+                setStudentSearchResult({ student: null, loading: false, error: null })
+              }}
+              fullWidth
+              radius="md"
+              variant="outline"
+            >
+              Cancel
+            </Button>
+          </Flex>
+        </Flex>
+      </Modal>
     </div>
   )
 }

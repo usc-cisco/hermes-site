@@ -14,6 +14,7 @@ interface AuthContextType {
   submittedCourse: CourseNameEnum | null
   setSubmittedCourse: (submittedCourse: CourseNameEnum) => void
   isAdmin: boolean
+  isCisco: boolean
   isAuthenticated: boolean
   idNumber: string | undefined
   course: CourseNameEnum | undefined
@@ -27,6 +28,19 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isAdmin, setIsAdmin] = useState<boolean>(false)
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
   const [submittedCourse, setSubmittedCourse] = useState<CourseNameEnum | null>(null)
+
+  const getBasicAuthUsername = (): string | null => {
+    if (basicAuthToken) {
+      try {
+        return atob(basicAuthToken).split(":")[0]
+      } catch {
+        return null
+      }
+    }
+    return null
+  }
+
+  const isCisco = getBasicAuthUsername() === "cisco"
 
   const setJwtAuth = (token: string) => {
     localStorage.setItem("jwtToken", token)
@@ -103,6 +117,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setSubmittedCourse,
     isAuthenticated,
     isAdmin,
+    isCisco,
     idNumber,
     course,
   }

@@ -1,7 +1,7 @@
 import React from "react"
 
-import { Button, Card, Flex } from "@mantine/core"
-import { Trash2 } from "lucide-react"
+import { Button, Card, Flex, Text } from "@mantine/core"
+import { Info, Plus, Trash2 } from "lucide-react"
 
 import { useAuth } from "../../contexts/AuthContext"
 import { useQueue } from "../../contexts/QueueContext"
@@ -28,6 +28,7 @@ interface QueueCardProps {
   isAdmin?: boolean
   className?: string
   isShowingCurrentName?: boolean
+  onAddStudentToQueue?: () => void
 }
 
 const QueueCard: React.FC<QueueCardProps> = ({
@@ -42,6 +43,7 @@ const QueueCard: React.FC<QueueCardProps> = ({
   isAdmin = false,
   className,
   isShowingCurrentName = false,
+  onAddStudentToQueue,
 }) => {
   const { course: jwtCourse } = useAuth()
   const { isInQueue, isFirstLoad, isLoading, hasError, handleEnqueue, handleDequeue } = useQueue()
@@ -85,14 +87,37 @@ const QueueCard: React.FC<QueueCardProps> = ({
         <QueueStatus status={status} teacher={teacher} />
 
         {isAdmin ? (
-          <AdminControls
-            status={status}
-            disabled={isAdminControlsDisabled}
-            onUpdateQueue={onUpdateQueue}
-            onStatusChange={onStatusChange}
-          />
+          <Flex direction="column" gap="xs" justify="space-between" w="100%">
+            <AdminControls
+              status={status}
+              disabled={isAdminControlsDisabled}
+              onUpdateQueue={onUpdateQueue}
+              onStatusChange={onStatusChange}
+            />
+            {onAddStudentToQueue && (
+              <Button
+                leftSection={<Plus size={16} />}
+                onClick={onAddStudentToQueue}
+                radius="md"
+                size="md"
+                bg="primary"
+                fullWidth
+              >
+                Add Student to Queue
+              </Button>
+            )}
+          </Flex>
         ) : !isInQueue && isStudentCourse ? (
-          <QueueButton handleClick={() => handleEnqueue(course)} disabled={isEnqueueDisabled} buttonSize="md" />
+          <>
+            {/* TODO: Remove button in production */}
+            <QueueButton handleClick={() => handleEnqueue(course)} disabled={isEnqueueDisabled} buttonSize="md" />
+            <Flex align="flex-start" gap="xs">
+              <Info size={14} className="mt-0.5" />
+              <Text size="xs" c="dimmed" ta="center" fw={500} className="w-full">
+                Please ask a CISCO officer to add you to the queue
+              </Text>
+            </Flex>
+          </>
         ) : null}
 
         {isInQueue && isStudentCourse && !hasError ? (
