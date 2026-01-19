@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react"
 
-import { Text } from "@mantine/core"
+import { Flex, Loader, Text } from "@mantine/core"
 import { Link } from "react-router"
 import useSound from "use-sound"
 
 import CardLoader from "../components/layout/CardLoader"
 import QueueCard from "../components/queue-card/QueueCard"
 import { useQueueData } from "../hooks/useQueueData"
-import { announcements } from "../types/constants/announcements"
+import { AnnouncementService } from "../services/announcement.service"
+import { Announcement } from "../types/entities/Announcement"
 import { CourseNameEnum } from "../types/enums/CourseNameEnum"
 import { ProgramEnum } from "../types/enums/ProgramsEnum"
 import { TeacherStatusEnum } from "../types/enums/TeacherStatusEnum"
@@ -15,6 +16,8 @@ import publicPageAlarm from "/public-page-alarm.mp3"
 
 const PublicPage: React.FC = () => {
   const [play] = useSound(publicPageAlarm)
+  const [announcements, setAnnouncements] = useState<Announcement[]>([])
+  const [announcementsLoading, setAnnouncementsLoading] = useState<boolean>(true)
   const queues = [
     { program: ProgramEnum.CS, course: CourseNameEnum.BSCS },
     { program: ProgramEnum.IT, course: CourseNameEnum.BSIT },
@@ -45,6 +48,24 @@ const PublicPage: React.FC = () => {
       play()
     }
   }, [isQueueData.numberData.data?.current, play])
+
+  // Fetch announcements
+  useEffect(() => {
+    const fetchAnnouncements = async () => {
+      try {
+        setAnnouncementsLoading(true)
+        const data = await AnnouncementService.getAnnouncements()
+        setAnnouncements(data)
+      } catch (error) {
+        console.error("Error fetching announcements:", error)
+        setAnnouncements([])
+      } finally {
+        setAnnouncementsLoading(false)
+      }
+    }
+
+    fetchAnnouncements()
+  }, [])
 
   // Combine the data into an array after the hooks are called
   const queueData = [csQueueData, itQueueData, isQueueData]
@@ -89,20 +110,32 @@ const PublicPage: React.FC = () => {
           </div>
           <div className="mb-4 flex w-full flex-col gap-3 rounded-lg bg-white p-4 shadow-md">
             <Text className="font-bold">Announcements</Text>
-            {announcements.map((announcement) => (
-              <ul key={announcement.id} className="ml-4">
-                <li className="flex flex-col gap-y-1">
-                  <Text>{announcement.date.toDateString()}</Text>
-                  <ul className="ml-8 list-disc text-gray-700">
-                    {announcement.points.map((point) => (
-                      <li key={`${announcement.id}-${point}`}>
-                        <Text>{point}</Text>
+            {announcementsLoading ? (
+              <Flex align="center" justify="center" py="md">
+                <Loader size="sm" />
+              </Flex>
+            ) : announcements.length === 0 ? (
+              <Text size="sm" c="dimmed">
+                No announcements at this time.
+              </Text>
+            ) : (
+              announcements.map((announcement) => (
+                <ul key={announcement.id} className="ml-4">
+                  <li className="flex flex-col gap-y-1">
+                    <Text>
+                      {announcement.date instanceof Date
+                        ? announcement.date.toDateString()
+                        : new Date(announcement.date).toDateString()}
+                    </Text>
+                    <ul className="ml-8 list-disc text-gray-700">
+                      <li key={`${announcement.id}`}>
+                        <Text>{announcement.text}</Text>
                       </li>
-                    ))}
-                  </ul>
-                </li>
-              </ul>
-            ))}
+                    </ul>
+                  </li>
+                </ul>
+              ))
+            )}
           </div>
         </div>
       </main>

@@ -1,5 +1,5 @@
 export type Announcement = {
   id: number
-  date: Date
-  points: string[]
+  date: Date | string
+  text: string[]
 }

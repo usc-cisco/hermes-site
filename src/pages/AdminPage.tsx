@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react"
 
-import { Button, Flex, Loader, Modal, Text, TextInput } from "@mantine/core"
+import { Button, Flex, Loader, Modal, Text, TextInput, Textarea } from "@mantine/core"
 import { useDisclosure } from "@mantine/hooks"
-import { UserPlus } from "lucide-react"
+import { Megaphone, UserPlus } from "lucide-react"
 
 import CardLoader from "../components/layout/CardLoader"
 import QueueCard from "../components/queue-card/QueueCard"
@@ -10,6 +10,7 @@ import { useAuth } from "../contexts/AuthContext"
 import { useQueueData } from "../hooks/useQueueData"
 import { useQueueUpdate } from "../hooks/useQueueUpdate"
 import { useStatusUpdate } from "../hooks/useStatusUpdate"
+import { AnnouncementService } from "../services/announcement.service"
 import { QueueService } from "../services/queue.service"
 import { StudentService } from "../services/student.service"
 import { CourseNameEnum } from "../types/enums/CourseNameEnum"
@@ -21,6 +22,9 @@ const AdminPage: React.FC = () => {
   const { basicAuthToken, isCisco } = useAuth()
   const [addStudentModalOpened, { open: openAddStudentModal, close: closeAddStudentModal }] = useDisclosure(false)
   const [addToQueueModalOpened, { open: openAddToQueueModal, close: closeAddToQueueModal }] = useDisclosure(false)
+  const [addAnnouncementModalOpened, { open: openAddAnnouncementModal, close: closeAddAnnouncementModal }] =
+    useDisclosure(false)
+  const [announcementText, setAnnouncementText] = useState<string>("")
   const [newStudent, setNewStudent] = useState<{ idNumber: string; name: string }>({
     idNumber: "",
     name: "",
@@ -201,6 +205,34 @@ const AdminPage: React.FC = () => {
     }
   }
 
+  const handleAddAnnouncement = async () => {
+    if (!basicAuthToken) {
+      toast.error("Authorization token is missing.")
+      return
+    }
+
+    if (!announcementText.trim()) {
+      toast.error("Please enter an announcement.")
+      return
+    }
+
+    try {
+      const result = await AnnouncementService.addAnnouncement(announcementText.trim(), basicAuthToken)
+
+      if (result.error) {
+        toast.error(result.error)
+        return
+      }
+
+      toast.success("Announcement added successfully!")
+      setAnnouncementText("")
+      closeAddAnnouncementModal()
+    } catch (error) {
+      console.error("Error adding announcement:", error)
+      toast.error("Failed to add announcement. Please try again.")
+    }
+  }
+
   return (
     <div className="flex w-full flex-1 flex-col items-center py-8 md:py-12">
       <div className="mx-auto my-auto flex w-full max-w-7xl flex-1 items-center justify-center px-4">
@@ -236,9 +268,14 @@ const AdminPage: React.FC = () => {
       </div>
       {isCisco && (
         <div className="mt-8 flex w-full max-w-7xl flex-col items-center gap-4 px-4">
-          <Button leftSection={<UserPlus size={16} />} onClick={openAddStudentModal} radius="md" bg="primary">
-            Add Student to Database
-          </Button>
+          <Flex gap="md" wrap="wrap" justify="center">
+            <Button leftSection={<UserPlus size={16} />} onClick={openAddStudentModal} radius="md" bg="primary">
+              Add Student to Database
+            </Button>
+            <Button leftSection={<Megaphone size={16} />} onClick={openAddAnnouncementModal} radius="md" bg="primary">
+              Add Announcement
+            </Button>
+          </Flex>
         </div>
       )}
 
@@ -335,6 +372,45 @@ const AdminPage: React.FC = () => {
                 closeAddToQueueModal()
                 setQueueStudent({ idNumber: "", course: null })
                 setStudentSearchResult({ student: null, loading: false, error: null })
+              }}
+              fullWidth
+              radius="md"
+              variant="outline"
+            >
+              Cancel
+            </Button>
+          </Flex>
+        </Flex>
+      </Modal>
+
+      {/* Add Announcement Modal */}
+      <Modal
+        opened={addAnnouncementModalOpened}
+        onClose={() => {
+          closeAddAnnouncementModal()
+          setAnnouncementText("")
+        }}
+        title="Add Announcement"
+        centered
+      >
+        <Flex direction="column" gap="md">
+          <Textarea
+            label="Announcement"
+            placeholder="Enter announcement text. Each announcement is its own bullet point."
+            value={announcementText}
+            onChange={(e) => setAnnouncementText(e.target.value)}
+            required
+            minRows={4}
+            autosize
+          />
+          <Flex gap="sm" mt="md">
+            <Button onClick={handleAddAnnouncement} fullWidth radius="md" bg="primary">
+              Add Announcement
+            </Button>
+            <Button
+              onClick={() => {
+                closeAddAnnouncementModal()
+                setAnnouncementText("")
               }}
               fullWidth
               radius="md"
