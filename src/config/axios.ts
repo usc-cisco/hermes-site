@@ -1,11 +1,12 @@
 import axios from "axios"
 
+const baseURL = import.meta.env.VITE_BASE_URL ?? "https://hermes.dcism.org"
+
 export const api = axios.create({
   withCredentials: true,
-  baseURL: "https://hermes.dcism.org",
+  baseURL,
   headers: {
     "Content-Type": "application/json",
-    // Add any required headers here
   },
 })
 
