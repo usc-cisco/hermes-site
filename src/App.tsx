@@ -1,5 +1,7 @@
 import { useEffect } from "react"
 
+import { Alert, Text } from "@mantine/core"
+
 import DisclaimerModal from "./components/DisclaimerModal"
 import CoordinatorCard from "./components/coordinator-card/CoordinatorCard"
 import CardLoader from "./components/layout/CardLoader"
@@ -13,8 +15,8 @@ import { ProgramEnum } from "./types/enums/ProgramsEnum"
 import { TeacherStatusEnum } from "./types/enums/TeacherStatusEnum"
 
 function App() {
-  const { setSubmittedCourse } = useAuth()
-  const { studentData } = useQueue()
+  const { setSubmittedCourse, isAuthenticated } = useAuth()
+  const { studentData, isInQueue, isLoading } = useQueue()
 
   const queues = [
     { program: ProgramEnum.CS, course: CourseNameEnum.BSCS },
@@ -46,6 +48,23 @@ function App() {
 
   return (
     <div className="mx-8 flex flex-col items-center gap-4 py-4 md:py-8">
+      {isAuthenticated && !isInQueue && !isLoading && (
+        <Alert
+          w="100%"
+          maw="22rem"
+          style={{
+            outline: "2px solid red",
+            backgroundColor: "white",
+          }}
+          title={
+            <Text size="sm" fw={600} c="black">
+              You have not been added to any queues yet
+            </Text>
+          }
+        >
+          <Text size="sm">Please ask a CISCO officer to add you to a queue.</Text>
+        </Alert>
+      )}
       {studentData && !studentData.error && courseName ? (
         <>
           <CoordinatorCard course={courseName} />
