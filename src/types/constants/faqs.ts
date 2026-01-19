@@ -1,4 +1,5 @@
 import { FAQs } from "../entities/FAQ"
+import { CS_COORDINATOR, IS_COORDINATOR, IT_COORDINATOR, MATH_COORDINATOR } from "./coordinator"
 
 const faqs: FAQs[] = [
   {
@@ -11,20 +12,20 @@ const faqs: FAQs[] = [
     id: 2,
     question: "Who can I contact if I have questions regarding enrollment?",
     answer: `### **CS Program Coordinator**\n
-  👨‍🏫 Doriz Roa\n
-  ✉️ [drroa@usc.edu.ph](mailto:drroa@usc.edu.ph)
+  👨‍🏫 ${CS_COORDINATOR.name}\n
+  ✉️ ${CS_COORDINATOR.email}
   
   ### **IS/ICT Program Coordinator**
-  👨‍🏫 Christian V. Maderazo\n
-  ✉️ [cvmaderazo@usc.edu.ph](mailto:cvmaderazo@usc.edu.ph)
+  👨‍🏫 ${IS_COORDINATOR.name}\n
+  ✉️ ${IS_COORDINATOR.email}
   
   ### **IT Program Coordinator**
-  👨‍🏫 Christine Bandalan\n
-  ✉️ [cdbandalan@usc.edu.ph](mailto:cdbandalan@usc.edu.ph)
+  👨‍🏫 ${IT_COORDINATOR.name}\n
+  ✉️ ${IT_COORDINATOR.email}
   
   ### **Math Program Coordinator (BSAppMath and MSMath)**
-  👨‍🏫 Katrina Belleza Fuentes\n
-  ✉️ [kebelleza@usc.edu.ph](mailto:kebelleza@usc.edu.ph)`,
+  👨‍🏫 ${MATH_COORDINATOR.name}\n
+  ✉️ ${MATH_COORDINATOR.email}`,
   },
   {
     id: 3,
