@@ -12,7 +12,6 @@ import { convertProgramEnumToCourseNameEnum } from "../../utils/convertProgramEn
 import CardLoader from "../layout/CardLoader"
 import RevokeConfirmModal from "../user-info/RevokeConfirmModal"
 import AdminControls from "./AdminControls"
-import QueueButton from "./QueueButton"
 import QueueCardHeader from "./QueueCardHeader"
 import QueueStatus from "./QueueStatus"
 
@@ -110,8 +109,6 @@ const QueueCard: React.FC<QueueCardProps> = ({
           </Flex>
         ) : !isInQueue && isStudentCourse ? (
           <>
-            {/* TODO: Remove button in production */}
-            <QueueButton handleClick={() => handleEnqueue(course)} disabled={isEnqueueDisabled} buttonSize="md" />
             <Flex align="flex-start" gap="xs">
               <Info size={14} className="mt-0.5" />
               <Text size="xs" c="dimmed" ta="center" fw={500} className="w-full">
