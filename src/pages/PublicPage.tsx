@@ -70,6 +70,26 @@ const PublicPage: React.FC = () => {
   // Combine the data into an array after the hooks are called
   const queueData = [csQueueData, itQueueData, isQueueData]
 
+  // Group announcements by date
+  const groupedAnnouncements = announcements.reduce(
+    (acc, announcement) => {
+      const date = announcement.date instanceof Date ? announcement.date : new Date(announcement.date)
+      const dateKey = date.toDateString()
+
+      if (!acc[dateKey]) {
+        acc[dateKey] = []
+      }
+      acc[dateKey].push(announcement)
+      return acc
+    },
+    {} as Record<string, typeof announcements>,
+  )
+
+  // Sort dates in descending order (newest first)
+  const sortedDates = Object.keys(groupedAnnouncements).sort((a, b) => {
+    return new Date(b).getTime() - new Date(a).getTime()
+  })
+
   return (
     <div className="flex min-h-screen flex-col">
       <nav className="mb-4 bg-primary px-6 py-4">
@@ -119,21 +139,19 @@ const PublicPage: React.FC = () => {
                 No announcements at this time.
               </Text>
             ) : (
-              announcements.map((announcement) => (
-                <ul key={announcement.id} className="ml-4">
-                  <li className="flex flex-col gap-y-1">
-                    <Text>
-                      {announcement.date instanceof Date
-                        ? announcement.date.toDateString()
-                        : new Date(announcement.date).toDateString()}
-                    </Text>
-                    <ul className="ml-8 list-disc text-gray-700">
-                      <li key={`${announcement.id}`}>
-                        <Text>{announcement.text}</Text>
+              sortedDates.map((dateKey) => (
+                <div key={dateKey} className="flex flex-col gap-y-1">
+                  <Text fw={600}>{dateKey}</Text>
+                  <ul className="ml-8 list-disc text-gray-700">
+                    {groupedAnnouncements[dateKey].map((announcement) => (
+                      <li key={announcement.id}>
+                        <Text>
+                          {Array.isArray(announcement.text) ? announcement.text.join(" ") : announcement.text}
+                        </Text>
                       </li>
-                    </ul>
-                  </li>
-                </ul>
+                    ))}
+                  </ul>
+                </div>
               ))
             )}
           </div>

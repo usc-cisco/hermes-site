@@ -70,7 +70,7 @@ const QueueCard: React.FC<QueueCardProps> = ({
       className={className}
       style={{
         outline: isAdmin && status === TeacherStatusEnum.UNAVAILABLE ? "2px solid red" : "none",
-        minHeight: "22rem",
+        minHeight: "20rem",
       }}
     >
       <QueueCardHeader
