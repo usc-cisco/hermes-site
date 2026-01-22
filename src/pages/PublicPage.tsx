@@ -139,19 +139,21 @@ const PublicPage: React.FC = () => {
                 No announcements at this time.
               </Text>
             ) : (
-              sortedDates.map((dateKey) => (
-                <div key={dateKey} className="flex flex-col gap-y-1">
-                  <Text fw={600}>{dateKey}</Text>
-                  <ul className="ml-8 list-disc text-gray-700">
-                    {groupedAnnouncements[dateKey].map((announcement) => (
-                      <li key={announcement.id}>
-                        <Text>
-                          {Array.isArray(announcement.text) ? announcement.text.join(" ") : announcement.text}
-                        </Text>
+              announcements.map((announcement) => (
+                <ul key={announcement.id} className="ml-4">
+                  <li className="flex flex-col gap-y-1">
+                    <Text>
+                      {announcement.date instanceof Date
+                        ? announcement.date.toDateString()
+                        : new Date(announcement.date).toDateString()}
+                    </Text>
+                    <ul className="ml-8 list-disc text-gray-700">
+                      <li key={`${announcement.id}`}>
+                        <Text>{announcement.text}</Text>
                       </li>
-                    ))}
-                  </ul>
-                </div>
+                    </ul>
+                  </li>
+                </ul>
               ))
             )}
           </div>
