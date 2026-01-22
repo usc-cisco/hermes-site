@@ -1,7 +1,7 @@
 import React from "react"
 
 import { Button, Card, Flex, Text } from "@mantine/core"
-import { Info, Plus, Trash2 } from "lucide-react"
+import { Info } from "lucide-react"
 
 import { useAuth } from "../../contexts/AuthContext"
 import { useQueue } from "../../contexts/QueueContext"
@@ -10,7 +10,6 @@ import { ProgramEnum } from "../../types/enums/ProgramsEnum"
 import { TeacherStatusEnum } from "../../types/enums/TeacherStatusEnum"
 import { convertProgramEnumToCourseNameEnum } from "../../utils/convertProgramEnumToCourseNameEnum"
 import CardLoader from "../layout/CardLoader"
-import RevokeConfirmModal from "../user-info/RevokeConfirmModal"
 import AdminControls from "./AdminControls"
 import QueueCardHeader from "./QueueCardHeader"
 import QueueStatus from "./QueueStatus"
@@ -28,6 +27,7 @@ interface QueueCardProps {
   className?: string
   isShowingCurrentName?: boolean
   onAddStudentToQueue?: () => void
+  onDequeueStudent?: () => void
 }
 
 const QueueCard: React.FC<QueueCardProps> = ({
@@ -43,9 +43,10 @@ const QueueCard: React.FC<QueueCardProps> = ({
   className,
   isShowingCurrentName = false,
   onAddStudentToQueue,
+  onDequeueStudent,
 }) => {
   const { course: jwtCourse } = useAuth()
-  const { isInQueue, isFirstLoad, isLoading, hasError, handleEnqueue, handleDequeue } = useQueue()
+  const { isInQueue, isFirstLoad, isLoading, hasError } = useQueue()
   const course = convertProgramEnumToCourseNameEnum(program)
 
   const isStudentCourse = jwtCourse === course
@@ -55,8 +56,6 @@ const QueueCard: React.FC<QueueCardProps> = ({
     : status === TeacherStatusEnum.UNAVAILABLE
 
   const isAdminControlsDisabled = status === TeacherStatusEnum.UNAVAILABLE
-
-  const isEnqueueDisabled = [TeacherStatusEnum.CUTOFF, TeacherStatusEnum.UNAVAILABLE].includes(status)
 
   if (isFirstLoad && isLoading) return <CardLoader />
 
@@ -94,18 +93,18 @@ const QueueCard: React.FC<QueueCardProps> = ({
               onUpdateQueue={onUpdateQueue}
               onStatusChange={onStatusChange}
             />
-            {onAddStudentToQueue && (
-              <Button
-                leftSection={<Plus size={16} />}
-                onClick={onAddStudentToQueue}
-                radius="md"
-                size="md"
-                bg="primary"
-                fullWidth
-              >
-                Add Student to Queue
-              </Button>
-            )}
+            <div className="flex flex-row gap-2">
+              {onAddStudentToQueue && (
+                <Button onClick={onAddStudentToQueue} radius="md" size="md" bg="primary" fullWidth>
+                  Enqueue
+                </Button>
+              )}
+              {onDequeueStudent && (
+                <Button onClick={onDequeueStudent} radius="md" size="md" bg="red" fullWidth>
+                  Remove
+                </Button>
+              )}
+            </div>
           </Flex>
         ) : !isInQueue && isStudentCourse ? (
           <>
@@ -116,21 +115,13 @@ const QueueCard: React.FC<QueueCardProps> = ({
               </Text>
             </Flex>
           </>
-        ) : null}
-
-        {isInQueue && isStudentCourse && !hasError ? (
-          <Button
-            onClick={() => {
-              RevokeConfirmModal.open({ onConfirm: () => handleDequeue() })
-            }}
-            radius="md"
-            size="md"
-            c="white"
-            bg="red"
-            leftSection={<Trash2 size={16} />}
-          >
-            Leave queue
-          </Button>
+        ) : isInQueue && isStudentCourse && !hasError ? (
+          <Flex align="flex-start" gap="xs">
+            <Info size={14} className="mt-0.5" />
+            <Text size="xs" c="dimmed" ta="center" fw={500} className="w-full">
+              Please ask a CISCO officer to remove you from the queue
+            </Text>
+          </Flex>
         ) : null}
       </Flex>
     </Card>

@@ -22,9 +22,20 @@ const AdminPage: React.FC = () => {
   const { basicAuthToken, isCisco } = useAuth()
   const [addStudentModalOpened, { open: openAddStudentModal, close: closeAddStudentModal }] = useDisclosure(false)
   const [addToQueueModalOpened, { open: openAddToQueueModal, close: closeAddToQueueModal }] = useDisclosure(false)
+  const [dequeueModalOpened, { open: openDequeueModal, close: closeDequeueModal }] = useDisclosure(false)
   const [addAnnouncementModalOpened, { open: openAddAnnouncementModal, close: closeAddAnnouncementModal }] =
     useDisclosure(false)
   const [announcementText, setAnnouncementText] = useState<string>("")
+  const [dequeueStudentId, setDequeueStudentId] = useState<string>("")
+  const [dequeueStudentSearchResult, setDequeueStudentSearchResult] = useState<{
+    student: { id: string; name: string } | null
+    loading: boolean
+    error: string | null
+  }>({
+    student: null,
+    loading: false,
+    error: null,
+  })
   const [newStudent, setNewStudent] = useState<{ idNumber: string; name: string }>({
     idNumber: "",
     name: "",
@@ -85,6 +96,42 @@ const AdminPage: React.FC = () => {
 
     return () => clearTimeout(timeoutId)
   }, [queueStudent.idNumber, addToQueueModalOpened, basicAuthToken])
+
+  // Debounced student search for dequeue modal
+  useEffect(() => {
+    if (!dequeueModalOpened || !dequeueStudentId || !basicAuthToken) {
+      setDequeueStudentSearchResult({ student: null, loading: false, error: null })
+      return
+    }
+
+    const idNumber = dequeueStudentId.trim()
+    if (idNumber.length === 0) {
+      setDequeueStudentSearchResult({ student: null, loading: false, error: null })
+      return
+    }
+
+    // Debounce: wait 500ms after user stops typing
+    const timeoutId = setTimeout(async () => {
+      setDequeueStudentSearchResult({ student: null, loading: true, error: null })
+
+      try {
+        const result = await StudentService.getStudentById(idNumber, basicAuthToken)
+
+        if (result.error) {
+          setDequeueStudentSearchResult({ student: null, loading: false, error: result.error })
+        } else if (result.student) {
+          setDequeueStudentSearchResult({ student: result.student, loading: false, error: null })
+        } else {
+          setDequeueStudentSearchResult({ student: null, loading: false, error: "Student not found" })
+        }
+      } catch (error) {
+        console.error("Error searching for student:", error)
+        setDequeueStudentSearchResult({ student: null, loading: false, error: "Failed to search for student" })
+      }
+    }, 500)
+
+    return () => clearTimeout(timeoutId)
+  }, [dequeueStudentId, dequeueModalOpened, basicAuthToken])
 
   const queues = [
     { program: ProgramEnum.CS, course: CourseNameEnum.BSCS },
@@ -205,6 +252,40 @@ const AdminPage: React.FC = () => {
     }
   }
 
+  const handleDequeueStudent = async () => {
+    if (!basicAuthToken) {
+      toast.error("Authorization token is missing.")
+      return
+    }
+
+    if (!dequeueStudentId.trim()) {
+      toast.error("Please enter a student ID number.")
+      return
+    }
+
+    if (!dequeueStudentSearchResult.student) {
+      toast.error("Student not found in database. Please verify the ID number.")
+      return
+    }
+
+    try {
+      const result = await QueueService.dequeueStudentById(dequeueStudentId.trim(), basicAuthToken)
+
+      if (result.error) {
+        toast.error(result.error)
+        return
+      }
+
+      toast.success("Student removed from queue successfully!")
+      setDequeueStudentId("")
+      setDequeueStudentSearchResult({ student: null, loading: false, error: null })
+      closeDequeueModal()
+    } catch (error) {
+      console.error("Error dequeuing student:", error)
+      toast.error("Failed to remove student from queue. Please try again.")
+    }
+  }
+
   const handleAddAnnouncement = async () => {
     if (!basicAuthToken) {
       toast.error("Authorization token is missing.")
@@ -261,6 +342,7 @@ const AdminPage: React.FC = () => {
                 onStatusChange={(newStatus) => handleStatusUpdate(queues[index].course, newStatus)}
                 isAdmin={true}
                 onAddStudentToQueue={isCisco ? () => openAddToQueueModalForCourse(queues[index].course) : undefined}
+                onDequeueStudent={isCisco ? openDequeueModal : undefined}
               />
             )
           })}
@@ -365,7 +447,7 @@ const AdminPage: React.FC = () => {
               bg="primary"
               disabled={!studentSearchResult.student || studentSearchResult.loading}
             >
-              Add to Queue
+              Enqueue
             </Button>
             <Button
               onClick={() => {
@@ -411,6 +493,74 @@ const AdminPage: React.FC = () => {
               onClick={() => {
                 closeAddAnnouncementModal()
                 setAnnouncementText("")
+              }}
+              fullWidth
+              radius="md"
+              variant="outline"
+            >
+              Cancel
+            </Button>
+          </Flex>
+        </Flex>
+      </Modal>
+
+      {/* Dequeue Student Modal */}
+      <Modal
+        opened={dequeueModalOpened}
+        onClose={() => {
+          closeDequeueModal()
+          setDequeueStudentId("")
+          setDequeueStudentSearchResult({ student: null, loading: false, error: null })
+        }}
+        title="Remove Student from Queue"
+        centered
+      >
+        <Flex direction="column" gap="md">
+          <TextInput
+            label="Student ID Number"
+            placeholder="Enter student ID number"
+            value={dequeueStudentId}
+            onChange={(e) => setDequeueStudentId(e.target.value)}
+            required
+          />
+
+          {/* Student Search Result Display */}
+          {dequeueStudentId.trim().length > 0 && (
+            <div className="-mt-2">
+              {dequeueStudentSearchResult.student ? (
+                <Text size="xs" c="dimmed" fw={500} className="uppercase">
+                  STUDENT: {dequeueStudentSearchResult.student.name}
+                </Text>
+              ) : dequeueStudentSearchResult.error ? (
+                <Text size="xs" c="red" fw={500} className="uppercase">
+                  STUDENT NOT FOUND
+                </Text>
+              ) : (
+                <Flex align="center" gap="xs">
+                  <Loader size="xs" />
+                  <Text size="xs" c="dimmed" fw={500}>
+                    Searching...
+                  </Text>
+                </Flex>
+              )}
+            </div>
+          )}
+
+          <Flex gap="sm" mt="md">
+            <Button
+              onClick={handleDequeueStudent}
+              fullWidth
+              radius="md"
+              bg="red"
+              disabled={!dequeueStudentSearchResult.student || dequeueStudentSearchResult.loading}
+            >
+              Remove
+            </Button>
+            <Button
+              onClick={() => {
+                closeDequeueModal()
+                setDequeueStudentId("")
+                setDequeueStudentSearchResult({ student: null, loading: false, error: null })
               }}
               fullWidth
               radius="md"

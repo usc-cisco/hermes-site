@@ -87,4 +87,26 @@ export class QueueService {
       return { error: "Failed to add student to queue" }
     }
   }
+
+  static async dequeueStudentById(
+    studentId: string,
+    basicAuthToken: string,
+  ): Promise<{ success?: boolean; error?: string }> {
+    try {
+      const headers = {
+        Authorization: `Basic ${basicAuthToken}`,
+        "Content-Type": "application/json",
+      }
+
+      const response = await api.delete(`queue/admin/number`, { headers, data: { idNumber: studentId } })
+
+      return response.data
+    } catch (error) {
+      console.error(`Error dequeuing student with ID ${studentId}`, error)
+      if (error instanceof Error) {
+        return { error: error.message }
+      }
+      return { error: "Failed to dequeue student" }
+    }
+  }
 }
