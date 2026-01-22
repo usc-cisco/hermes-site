@@ -46,4 +46,22 @@ export class AnnouncementService {
       return { error: error instanceof Error ? error.message : "Failed to add announcement" }
     }
   }
+
+  static async deleteAnnouncement(id: number, basicAuthToken: string): Promise<{ success?: boolean; error?: string }> {
+    try {
+      const response = await api.delete(`announcement/admin/${id}`, {
+        headers: {
+          Authorization: `Basic ${basicAuthToken}`,
+        },
+      })
+
+      return response.data
+    } catch (error) {
+      console.error("Error deleting announcement:", error)
+      if (error instanceof AxiosError && error.response) {
+        return { error: error.response.data.error || "Failed to delete announcement" }
+      }
+      return { error: error instanceof Error ? error.message : "Failed to delete announcement" }
+    }
+  }
 }

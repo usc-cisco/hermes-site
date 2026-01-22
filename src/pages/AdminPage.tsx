@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react"
 
-import { Button, Flex, Loader, Modal, Text, TextInput, Textarea } from "@mantine/core"
+import { Button, Card, Flex, Loader, Modal, Text, TextInput, Textarea } from "@mantine/core"
 import { useDisclosure } from "@mantine/hooks"
-import { Megaphone, UserPlus } from "lucide-react"
+import { Megaphone, Trash2, UserPlus } from "lucide-react"
 
+import DeleteAnnouncementConfirmModal from "../components/announcement/DeleteAnnouncementConfirmModal"
 import CardLoader from "../components/layout/CardLoader"
 import QueueCard from "../components/queue-card/QueueCard"
 import { useAuth } from "../contexts/AuthContext"
@@ -13,6 +14,7 @@ import { useStatusUpdate } from "../hooks/useStatusUpdate"
 import { AnnouncementService } from "../services/announcement.service"
 import { QueueService } from "../services/queue.service"
 import { StudentService } from "../services/student.service"
+import { Announcement } from "../types/entities/Announcement"
 import { CourseNameEnum } from "../types/enums/CourseNameEnum"
 import { ProgramEnum } from "../types/enums/ProgramsEnum"
 import { TeacherStatusEnum } from "../types/enums/TeacherStatusEnum"
@@ -26,6 +28,8 @@ const AdminPage: React.FC = () => {
   const [addAnnouncementModalOpened, { open: openAddAnnouncementModal, close: closeAddAnnouncementModal }] =
     useDisclosure(false)
   const [announcementText, setAnnouncementText] = useState<string>("")
+  const [announcements, setAnnouncements] = useState<Announcement[]>([])
+  const [announcementsLoading, setAnnouncementsLoading] = useState<boolean>(true)
   const [dequeueStudentId, setDequeueStudentId] = useState<string>("")
   const [dequeueStudentSearchResult, setDequeueStudentSearchResult] = useState<{
     student: { id: string; name: string } | null
@@ -132,6 +136,26 @@ const AdminPage: React.FC = () => {
 
     return () => clearTimeout(timeoutId)
   }, [dequeueStudentId, dequeueModalOpened, basicAuthToken])
+
+  // Fetch announcements
+  useEffect(() => {
+    const fetchAnnouncements = async () => {
+      try {
+        setAnnouncementsLoading(true)
+        const data = await AnnouncementService.getAnnouncements()
+        setAnnouncements(data)
+      } catch (error) {
+        console.error("Error fetching announcements:", error)
+        setAnnouncements([])
+      } finally {
+        setAnnouncementsLoading(false)
+      }
+    }
+
+    if (isCisco) {
+      fetchAnnouncements()
+    }
+  }, [isCisco])
 
   const queues = [
     { program: ProgramEnum.CS, course: CourseNameEnum.BSCS },
@@ -308,10 +332,43 @@ const AdminPage: React.FC = () => {
       toast.success("Announcement added successfully!")
       setAnnouncementText("")
       closeAddAnnouncementModal()
+      // Refresh announcements
+      const data = await AnnouncementService.getAnnouncements()
+      setAnnouncements(data)
     } catch (error) {
       console.error("Error adding announcement:", error)
       toast.error("Failed to add announcement. Please try again.")
     }
+  }
+
+  const handleDeleteAnnouncement = async (id: number) => {
+    if (!basicAuthToken) {
+      toast.error("Authorization token is missing.")
+      return
+    }
+
+    try {
+      const result = await AnnouncementService.deleteAnnouncement(id, basicAuthToken)
+
+      if (result.error) {
+        toast.error(result.error)
+        return
+      }
+
+      toast.success("Announcement deleted successfully!")
+      // Refresh announcements
+      const data = await AnnouncementService.getAnnouncements()
+      setAnnouncements(data)
+    } catch (error) {
+      console.error("Error deleting announcement:", error)
+      toast.error("Failed to delete announcement. Please try again.")
+    }
+  }
+
+  const openDeleteAnnouncementModal = (id: number) => {
+    DeleteAnnouncementConfirmModal.open({
+      onConfirm: () => handleDeleteAnnouncement(id),
+    })
   }
 
   return (
@@ -358,6 +415,50 @@ const AdminPage: React.FC = () => {
               Add Announcement
             </Button>
           </Flex>
+
+          {/* Announcements Management */}
+          <Card shadow="sm" padding="md" radius="lg" w="100%" maw="1200px" mt="md">
+            <Text size="lg" fw={600} mb="md">
+              Manage Announcements
+            </Text>
+            {announcementsLoading ? (
+              <Flex align="center" justify="center" py="md">
+                <Loader size="sm" />
+              </Flex>
+            ) : announcements.length === 0 ? (
+              <Text size="sm" c="dimmed">
+                No announcements at this time.
+              </Text>
+            ) : (
+              <Flex direction="column" gap="md">
+                {announcements.map((announcement) => (
+                  <Card key={announcement.id} padding="sm" radius="md" style={{ backgroundColor: "#f9f9f9" }}>
+                    <Flex justify="space-between" align="flex-start" gap="md">
+                      <Flex direction="column" gap="xs" style={{ flex: 1 }}>
+                        <Text size="xs" c="dimmed">
+                          {announcement.date instanceof Date
+                            ? announcement.date.toDateString()
+                            : new Date(announcement.date).toDateString()}
+                        </Text>
+                        <Text size="sm">
+                          {Array.isArray(announcement.text) ? announcement.text.join(" ") : announcement.text}
+                        </Text>
+                      </Flex>
+                      <Button
+                        size="xs"
+                        variant="subtle"
+                        color="red"
+                        leftSection={<Trash2 size={14} />}
+                        onClick={() => openDeleteAnnouncementModal(announcement.id)}
+                      >
+                        Delete
+                      </Button>
+                    </Flex>
+                  </Card>
+                ))}
+              </Flex>
+            )}
+          </Card>
         </div>
       )}
 
