@@ -35,8 +35,9 @@ export function AuthForm() {
   return (
     <div className="my-auto w-full">
       <Container size={600} my={10}>
-        <Paper withBorder shadow="lg" p={30} mt={20} radius="md">
-          <h1 className="mb-8 text-center text-4xl font-bold">Welcome!</h1>
+        <Paper withBorder shadow="lg" p={30} mt={20} w={400} radius="lg">
+          <h1 className="mb-2 text-4xl font-bold">Welcome!</h1>
+          <p className="mb-6 text-sm text-gray-500">Enter your student ID to get started.</p>
           <form
             onSubmit={form.onSubmit(() => {
               handleSubmit()
@@ -69,8 +70,8 @@ export function AuthForm() {
               rightSection={<ChevronDown size={14} color="black" />}
             />
 
-            <Button fullWidth mt="xl" type="submit" bg="primary">
-              Sign in
+            <Button fullWidth mt="xl" type="submit" bg="black">
+              Sign In
             </Button>
           </form>
           <div className="mt-3 flex w-full items-center justify-center">

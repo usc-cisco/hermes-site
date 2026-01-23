@@ -29,7 +29,7 @@ export function Navbar() {
           </Link>
           {isAdmin && (
             <Link
-              className="rounded-md leading-none text-white ring-white focus:outline-none focus:ring-1 focus:ring-opacity-75"
+              className="rounded-md leading-none text-black ring-white focus:outline-none focus:ring-1 focus:ring-opacity-75"
               to="/admin"
             >
               Admin
@@ -37,7 +37,7 @@ export function Navbar() {
           )}
           {isAuthenticated && (
             <button title="Sign out" onClick={() => clearAuth()}>
-              <LogOut className="size-4 text-white" />
+              <LogOut className="size-4 text-red-600" />
             </button>
           )}
         </div>
