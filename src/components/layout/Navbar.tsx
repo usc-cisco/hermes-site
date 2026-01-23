@@ -22,7 +22,7 @@ export function Navbar() {
         </div>
         <div className="ml-auto flex items-center gap-2 space-x-6">
           <Link
-            className="rounded-full border-2 border-black bg-black px-6 py-3 leading-none text-white transition-colors hover:bg-transparent hover:text-black focus:outline-none focus:ring-1 focus:ring-white focus:ring-opacity-75"
+            className="rounded-full border-2 border-primary bg-primary px-6 py-3 leading-none text-white transition-colors hover:bg-transparent hover:text-primary focus:outline-none focus:ring-1 focus:ring-white focus:ring-opacity-75"
             to="/faq"
           >
             FAQs
