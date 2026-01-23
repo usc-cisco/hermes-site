@@ -17,21 +17,45 @@ export default function FAQ() {
   ))
 
   return (
-    <section className="m-4 sm:mx-4 md:py-4 lg:mx-20">
-      <div className="rounded-lg bg-white py-8">
-        <h1 className="py-2 text-center text-6xl font-bold leading-tight">FAQs</h1>
-        <Accordion
-          styles={{
-            root: {
-              paddingInline: "30px",
-              borderRadius: "12px",
-              overflow: "hidden",
-            },
-          }}
-        >
-          {items}
-        </Accordion>
-      </div>
-    </section>
+    <div className="relative min-h-screen bg-white">
+      {/* Repeating logo background pattern */}
+      <div
+        className="pointer-events-none fixed inset-0 z-0 animate-[drift_8s_linear_infinite] opacity-[0.03]"
+        style={{
+          backgroundImage: "url('/logo-primary.svg')",
+          backgroundSize: "150px 150px",
+          backgroundRepeat: "repeat",
+          willChange: "background-position",
+        }}
+      />
+      <style>
+        {`
+          @keyframes drift {
+            from {
+              background-position: 0 0;
+            }
+            to {
+              background-position: 150px -150px;
+            }
+          }
+        `}
+      </style>
+      <section className="relative z-10 m-4 sm:mx-4 md:py-4 lg:mx-20">
+        <div className="rounded-xl bg-white py-8 shadow-lg">
+          <h1 className="py-2 text-center text-6xl font-bold leading-tight">FAQs</h1>
+          <Accordion
+            styles={{
+              root: {
+                paddingInline: "30px",
+                borderRadius: "12px",
+                overflow: "hidden",
+              },
+            }}
+          >
+            {items}
+          </Accordion>
+        </div>
+      </section>
+    </div>
   )
 }

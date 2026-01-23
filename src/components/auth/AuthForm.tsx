@@ -35,8 +35,19 @@ export function AuthForm() {
   return (
     <div className="my-auto w-full">
       <Container size={600} my={10}>
-        <Paper withBorder shadow="lg" p={30} mt={20} w={400} radius="lg">
-          <h1 className="mb-2 text-4xl font-bold">Welcome!</h1>
+        <Paper
+          p={30}
+          mt={20}
+          radius="xl"
+          style={{
+            background: "rgba(255, 255, 255, 0.8)",
+            backdropFilter: "blur(20px) saturate(180%)",
+            WebkitBackdropFilter: "blur(20px) saturate(180%)",
+            border: "1px solid rgba(255, 255, 255, 0.3)",
+            boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.25)",
+          }}
+        >
+          <h1 className="mb-2 text-4xl font-bold text-primary">Welcome!</h1>
           <p className="mb-6 text-sm text-gray-500">Enter your student ID to get started.</p>
           <form
             onSubmit={form.onSubmit(() => {
@@ -67,10 +78,10 @@ export function AuthForm() {
               onChange={(value) => form.setFieldValue("course", value as CourseNameEnum)}
               error={form.errors.course && "Invalid Course"}
               data={[CourseNameEnum.BSCS, CourseNameEnum.BSIT, CourseNameEnum.BSIS]}
-              rightSection={<ChevronDown size={14} color="black" />}
+              rightSection={<ChevronDown size={14} className="text-primary" />}
             />
 
-            <Button fullWidth mt="xl" type="submit" bg="black">
+            <Button fullWidth mt="xl" type="submit" bg="primary">
               Sign In
             </Button>
           </form>

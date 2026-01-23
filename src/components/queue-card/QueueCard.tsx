@@ -61,15 +61,20 @@ const QueueCard: React.FC<QueueCardProps> = ({
 
   return (
     <Card
-      shadow="sm"
+      shadow="none"
       padding="xl"
-      radius="lg"
+      radius="xl"
       maw="22rem"
       w="100%"
       className={className}
       style={{
         outline: isAdmin && status === TeacherStatusEnum.UNAVAILABLE ? "2px solid red" : "none",
         minHeight: "22rem",
+        background: "rgba(255, 255, 255, 0.8)",
+        backdropFilter: "blur(20px) saturate(180%)",
+        WebkitBackdropFilter: "blur(20px) saturate(180%)",
+        border: "1px solid rgba(255, 255, 255, 0.3)",
+        boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.25)",
       }}
     >
       <QueueCardHeader

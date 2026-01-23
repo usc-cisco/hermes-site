@@ -47,56 +47,83 @@ function App() {
   }, [setSubmittedCourse, courseName])
 
   return (
-    <div className="mx-8 flex flex-col items-center gap-4 py-4 md:py-8">
-      {isAuthenticated && !isInQueue && !isLoading && (
-        <Alert
-          w="100%"
-          maw="22rem"
-          style={{
-            outline: "2px solid red",
-            backgroundColor: "white",
-          }}
-          title={
-            <Text size="sm" fw={600} c="black">
-              You have not been added to any queues yet
-            </Text>
-          }
-        >
-          <Text size="sm">Please ask a CISCO officer to add you to a queue.</Text>
-        </Alert>
-      )}
-      {studentData && !studentData.error && courseName ? (
-        <>
-          <CoordinatorCard course={courseName} />
-          <UserQueueInfoCard userNumber={studentData.queueNumber} current={current} total={max} course={courseName} />
-        </>
-      ) : null}
-      {queueData.map((data, index) => {
-        const { numberData, coordinatorData } = data
-
-        if (numberData.error || coordinatorData.error) return <div key={index}>Error Loading Data</div>
-        if (!numberData.data || !coordinatorData.data) return <CardLoader key={index} />
-
-        const status = coordinatorData.data.status.toUpperCase() as keyof typeof TeacherStatusEnum
-        const teacherStatus = TeacherStatusEnum[status]
-
-        return (
-          <QueueCard
-            key={index}
-            program={queues[index].program}
-            current={numberData.data.current}
-            total={numberData.data.max}
-            status={teacherStatus}
-            teacher={coordinatorData.data.name}
-          />
-        )
-      })}
-      <DisclaimerModal
-        maxPrioritySize={max}
-        currentPriority={current}
-        studentPriority={studentData?.queueNumber}
-        studentCourseName={studentData?.courseName}
+    <div className="relative z-10 flex min-h-screen w-full flex-1 flex-col items-center bg-white">
+      {/* Repeating logo background pattern */}
+      <div
+        className="pointer-events-none fixed inset-0 z-0 animate-[drift_8s_linear_infinite] opacity-[0.03]"
+        style={{
+          backgroundImage: "url('/logo-primary.svg')",
+          backgroundSize: "150px 150px",
+          backgroundRepeat: "repeat",
+          willChange: "background-position",
+        }}
       />
+      <style>
+        {`
+          @keyframes drift {
+            from {
+              background-position: 0 0;
+            }
+            to {
+              background-position: 150px -150px;
+            }
+          }
+        `}
+      </style>
+      <div className="relative z-10 mx-8 flex flex-col items-center gap-4 py-4 md:py-8">
+        {isAuthenticated && !isInQueue && !isLoading && (
+          <Alert
+            w="100%"
+            maw="22rem"
+            p="lg"
+            style={{
+              borderRadius: "16px",
+              backgroundColor: "red",
+            }}
+            title={
+              <Text size="sm" fw={600} c="white">
+                You are not in queue.
+              </Text>
+            }
+          >
+            <Text size="sm" c="white">
+              Please ask a CISCO officer to add you to a queue.
+            </Text>
+          </Alert>
+        )}
+        {studentData && !studentData.error && courseName ? (
+          <>
+            <CoordinatorCard course={courseName} />
+            <UserQueueInfoCard userNumber={studentData.queueNumber} current={current} total={max} course={courseName} />
+          </>
+        ) : null}
+        {queueData.map((data, index) => {
+          const { numberData, coordinatorData } = data
+
+          if (numberData.error || coordinatorData.error) return <div key={index}>Error Loading Data</div>
+          if (!numberData.data || !coordinatorData.data) return <CardLoader key={index} />
+
+          const status = coordinatorData.data.status.toUpperCase() as keyof typeof TeacherStatusEnum
+          const teacherStatus = TeacherStatusEnum[status]
+
+          return (
+            <QueueCard
+              key={index}
+              program={queues[index].program}
+              current={numberData.data.current}
+              total={numberData.data.max}
+              status={teacherStatus}
+              teacher={coordinatorData.data.name}
+            />
+          )
+        })}
+        <DisclaimerModal
+          maxPrioritySize={max}
+          currentPriority={current}
+          studentPriority={studentData?.queueNumber}
+          studentCourseName={studentData?.courseName}
+        />
+      </div>
     </div>
   )
 }

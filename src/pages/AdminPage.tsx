@@ -374,8 +374,30 @@ const AdminPage: React.FC = () => {
   }
 
   return (
-    <div className="flex w-full flex-1 flex-col items-center py-8 md:py-12">
-      <div className="mx-auto my-auto flex w-full max-w-7xl flex-1 items-center justify-center px-4">
+    <div className="relative z-10 flex min-h-screen w-full flex-1 flex-col items-center bg-white py-8 md:py-12">
+      {/* Repeating logo background pattern */}
+      <div
+        className="pointer-events-none fixed inset-0 z-0 animate-[drift_8s_linear_infinite] opacity-[0.03]"
+        style={{
+          backgroundImage: "url('/logo-primary.svg')",
+          backgroundSize: "150px 150px",
+          backgroundRepeat: "repeat",
+          willChange: "background-position",
+        }}
+      />
+      <style>
+        {`
+          @keyframes drift {
+            from {
+              background-position: 0 0;
+            }
+            to {
+              background-position: 150px -150px;
+            }
+          }
+        `}
+      </style>
+      <div className="relative z-10 mx-auto my-auto flex w-full max-w-7xl flex-1 items-center justify-center px-4">
         <div className="grid w-full grid-cols-1 justify-items-center gap-4 md:grid-cols-3 md:gap-6">
           {queueData.map((data, index) => {
             const { numberData, coordinatorData } = data
@@ -413,7 +435,7 @@ const AdminPage: React.FC = () => {
         </div>
       </div>
       {isCisco && (
-        <div className="mt-8 flex w-full max-w-7xl flex-col items-center gap-4 px-4">
+        <div className="relative z-10 mt-8 flex w-full max-w-7xl flex-col items-center gap-4 px-4">
           <Flex gap="md" wrap="wrap" justify="center">
             <Button leftSection={<UserPlus size={16} />} onClick={openAddStudentModal} radius="md" bg="primary">
               Add Student to Database

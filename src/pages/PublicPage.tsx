@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react"
 
 import { Flex, Loader, Text } from "@mantine/core"
-import { Link } from "react-router"
 import useSound from "use-sound"
 
 import CardLoader from "../components/layout/CardLoader"
@@ -18,6 +17,7 @@ const PublicPage: React.FC = () => {
   const [play] = useSound(publicPageAlarm)
   const [announcements, setAnnouncements] = useState<Announcement[]>([])
   const [announcementsLoading, setAnnouncementsLoading] = useState<boolean>(true)
+  const [showTagline, setShowTagline] = useState(false)
   const queues = [
     { program: ProgramEnum.CS, course: CourseNameEnum.BSCS },
     { program: ProgramEnum.IT, course: CourseNameEnum.BSIT },
@@ -48,6 +48,24 @@ const PublicPage: React.FC = () => {
       play()
     }
   }, [isQueueData.numberData.data?.current, play])
+
+  // Tagline visibility cycling
+  useEffect(() => {
+    const showTaglineMessage = () => {
+      setShowTagline(true)
+      setTimeout(() => setShowTagline(false), 15000) // Show for 5 seconds
+    }
+
+    // Show initially after 3 seconds
+    const initialTimeout = setTimeout(showTaglineMessage, 3000)
+    // Then cycle every 30 seconds
+    const interval = setInterval(showTaglineMessage, 30000)
+
+    return () => {
+      clearTimeout(initialTimeout)
+      clearInterval(interval)
+    }
+  }, [])
 
   // Fetch announcements
   useEffect(() => {
@@ -91,19 +109,58 @@ const PublicPage: React.FC = () => {
   })
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <nav className="mb-4 bg-primary px-6 py-4">
-        <div className="flex">
-          <Link to="/" className="mr-auto w-auto text-xl font-semibold text-white">
-            queue.dcism.org
-          </Link>
-          <div className="flex items-center gap-2 space-x-6">
-            <Timer />
-          </div>
-        </div>
-      </nav>
-      <main className="flex flex-1 flex-col items-center">
+    <div className="relative flex min-h-screen flex-col bg-white">
+      {/* Repeating logo background pattern */}
+      <div
+        className="pointer-events-none fixed inset-0 z-0 animate-[drift_8s_linear_infinite] opacity-[0.03]"
+        style={{
+          backgroundImage: "url('/logo-primary.svg')",
+          backgroundSize: "150px 150px",
+          backgroundRepeat: "repeat",
+          willChange: "background-position",
+        }}
+      />
+      <style>
+        {`
+          @keyframes drift {
+            from {
+              background-position: 0 0;
+            }
+            to {
+              background-position: 150px -150px;
+            }
+          }
+          @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+          }
+          @keyframes fadeOut {
+            from { opacity: 1; transform: translateY(0); }
+            to { opacity: 0; transform: translateY(-10px); }
+          }
+        `}
+      </style>
+      {/* Tagline message */}
+      <div
+        className={`pointer-events-none fixed bottom-6 left-0 right-0 z-20 text-center text-sm text-primary ${
+          showTagline ? "animate-[fadeIn_0.5s_ease-out_forwards]" : "animate-[fadeOut_0.5s_ease-out_forwards]"
+        }`}
+        style={{ opacity: 0 }}
+      >
+        Project Hermes is an Open Source Initiative by DCISM Students &amp; CISCO.
+      </div>
+      <main className="relative z-10 flex flex-1 flex-col items-center">
         <div className="my-auto flex w-4/5 max-w-7xl flex-col items-center justify-between gap-y-12 py-8 md:py-8">
+          <div className="flex flex-col items-center gap-4 text-center">
+            <Timer />
+            <div className="flex items-center gap-3">
+              <img src="/logo-primary.svg" alt="Hermes Logo" className="h-8 w-auto" />
+              <div className="flex items-center gap-2">
+                <span className="text-2xl font-bold text-primary">HERMES</span>
+                <span className="text-lg text-primary/60">| queue.dcism.org</span>
+              </div>
+            </div>
+          </div>
           <div className="flex w-full items-center justify-around gap-8">
             {queueData.map((data, index) => {
               const { numberData, coordinatorData } = data
@@ -128,7 +185,16 @@ const PublicPage: React.FC = () => {
               )
             })}
           </div>
-          <div className="mb-4 flex w-full flex-col gap-3 rounded-lg bg-white p-4 shadow-md">
+          <div
+            className="mb-4 flex w-full flex-col gap-3 rounded-xl p-6"
+            style={{
+              background: "rgba(255, 255, 255, 0.8)",
+              backdropFilter: "blur(20px) saturate(180%)",
+              WebkitBackdropFilter: "blur(20px) saturate(180%)",
+              border: "1px solid rgba(255, 255, 255, 0.3)",
+              boxShadow: "0 8px 32px 0 rgba(31, 38, 135, 0.25)",
+            }}
+          >
             <Text className="font-bold">Announcements</Text>
             {announcementsLoading ? (
               <Flex align="center" justify="center" py="md">
@@ -176,5 +242,5 @@ const Timer: React.FC = () => {
     return () => clearInterval(interval)
   }, [])
 
-  return <div className="text-xl font-semibold text-white">{time.toLocaleTimeString()}</div>
+  return <div className="text-7xl font-bold text-primary">{time.toLocaleTimeString()}</div>
 }
