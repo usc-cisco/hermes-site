@@ -8,11 +8,13 @@ export function Navbar() {
 
   return (
     <nav className="mb-4 bg-primary px-6 py-4">
-      <div className="flex">
-        <Link to="/" className="mr-auto w-auto text-lg font-semibold text-white sm:text-xl">
-          queue.dcism.org
+      <div className="flex items-center gap-2">
+        <Link to="/" className="flex items-center text-lg font-semibold text-white sm:text-xl">
+          <img src="/logo-white.svg" alt="Hermes Logo" className="mr-2 inline h-6 w-auto" />
+          HERMES
         </Link>
-        <div className="flex items-center gap-2 space-x-6">
+        <span className="text-sm text-gray-400">| queue.dcism.org</span>
+        <div className="ml-auto flex items-center gap-2 space-x-6">
           <Link
             className="rounded-md leading-none text-white ring-white focus:outline-none focus:ring-1 focus:ring-opacity-75"
             to="/faq"
