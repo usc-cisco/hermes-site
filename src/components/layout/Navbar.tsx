@@ -22,7 +22,6 @@ export function Navbar() {
             | queue.dcism.org
           </span>
         </div>
-
         <div className="ml-auto flex items-center gap-2 space-x-6">
           <Link
             className="rounded-full border-2 border-black bg-black px-6 py-3 leading-none text-white transition-colors hover:bg-transparent hover:text-black focus:outline-none focus:ring-1 focus:ring-white focus:ring-opacity-75"
