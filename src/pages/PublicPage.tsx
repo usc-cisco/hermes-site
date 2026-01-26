@@ -112,7 +112,7 @@ const PublicPage: React.FC = () => {
     <div className="relative flex min-h-screen flex-col bg-white">
       {/* Repeating logo background pattern */}
       <div
-        className="pointer-events-none fixed inset-0 z-0 animate-[drift_8s_linear_infinite] opacity-[0.03]"
+        className="pointer-events-none fixed inset-0 z-0 animate-[drift_8s_linear_infinite] opacity-[0.05]"
         style={{
           backgroundImage: "url('/logo-primary.svg')",
           backgroundSize: "150px 150px",

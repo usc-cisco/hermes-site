@@ -377,7 +377,7 @@ const AdminPage: React.FC = () => {
     <div className="relative z-10 flex min-h-screen w-full flex-1 flex-col items-center bg-white py-8 md:py-12">
       {/* Repeating logo background pattern */}
       <div
-        className="pointer-events-none fixed inset-0 z-0 animate-[drift_8s_linear_infinite] opacity-[0.03]"
+        className="pointer-events-none fixed inset-0 z-0 animate-[drift_8s_linear_infinite] opacity-[0.05]"
         style={{
           backgroundImage: "url('/logo-primary.svg')",
           backgroundSize: "150px 150px",

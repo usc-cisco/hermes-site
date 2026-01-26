@@ -24,7 +24,7 @@ export default function Auth() {
       <div className="fixed inset-0 z-0 flex flex-col bg-white lg:flex-row">
         {/* Repeating logo background pattern */}
         <div
-          className="pointer-events-none absolute inset-0 animate-[drift_8s_linear_infinite] opacity-[0.03]"
+          className="pointer-events-none absolute inset-0 animate-[drift_8s_linear_infinite] opacity-[0.05]"
           style={{
             backgroundImage: "url('/logo-primary.svg')",
             backgroundSize: "150px 150px",
