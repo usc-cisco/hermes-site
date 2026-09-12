@@ -77,7 +77,7 @@ export function AuthForm() {
               value={form.values.course}
               onChange={(value) => form.setFieldValue("course", value as CourseNameEnum)}
               error={form.errors.course && "Invalid Course"}
-              data={[CourseNameEnum.BSCS, CourseNameEnum.BSIT, CourseNameEnum.BSIS]}
+              data={[CourseNameEnum.BSCS, CourseNameEnum.BSIT, CourseNameEnum.BSIS, CourseNameEnum.BSDS]}
               rightSection={<ChevronDown size={14} className="text-primary" />}
             />
 

@@ -9,5 +9,7 @@ export const convertProgramEnumToCourseNameEnum = (program: ProgramEnum) => {
       return CourseNameEnum.BSIT
     case ProgramEnum.IS:
       return CourseNameEnum.BSIS
+    case ProgramEnum.DS:
+      return CourseNameEnum.BSDS
   }
 }
