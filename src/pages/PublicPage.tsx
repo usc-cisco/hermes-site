@@ -22,12 +22,14 @@ const PublicPage: React.FC = () => {
     { program: ProgramEnum.CS, course: CourseNameEnum.BSCS },
     { program: ProgramEnum.IT, course: CourseNameEnum.BSIT },
     { program: ProgramEnum.IS, course: CourseNameEnum.BSIS },
+    { program: ProgramEnum.DS, course: CourseNameEnum.BSDS },
   ]
 
   // Call hooks individually at the top level
   const csQueueData = useQueueData(CourseNameEnum.BSCS)
   const itQueueData = useQueueData(CourseNameEnum.BSIT)
   const isQueueData = useQueueData(CourseNameEnum.BSIS)
+  const dsQueueData = useQueueData(CourseNameEnum.BSDS)
 
   // Add effect to monitor changes in queue data
   useEffect(() => {
@@ -48,6 +50,12 @@ const PublicPage: React.FC = () => {
       play()
     }
   }, [isQueueData.numberData.data?.current, play])
+
+  useEffect(() => {
+    if (!dsQueueData.numberData.isLoading && dsQueueData.numberData.data && dsQueueData.numberData.data.current !== 0) {
+      play()
+    }
+  }, [dsQueueData.numberData.data?.current, play])
 
   // Tagline visibility cycling
   useEffect(() => {
@@ -86,7 +94,7 @@ const PublicPage: React.FC = () => {
   }, [])
 
   // Combine the data into an array after the hooks are called
-  const queueData = [csQueueData, itQueueData, isQueueData]
+  const queueData = [csQueueData, itQueueData, isQueueData, dsQueueData]
 
   // Group announcements by date
   const groupedAnnouncements = announcements.reduce(
