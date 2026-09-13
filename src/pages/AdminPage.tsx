@@ -162,17 +162,19 @@ const AdminPage: React.FC = () => {
     { program: ProgramEnum.CS, course: CourseNameEnum.BSCS },
     { program: ProgramEnum.IT, course: CourseNameEnum.BSIT },
     { program: ProgramEnum.IS, course: CourseNameEnum.BSIS },
+    { program: ProgramEnum.DS, course: CourseNameEnum.BSDS },
   ]
 
   // Call hooks individually at the top level
   const csQueueData = useQueueData(CourseNameEnum.BSCS)
   const itQueueData = useQueueData(CourseNameEnum.BSIT)
   const isQueueData = useQueueData(CourseNameEnum.BSIS)
+  const dsQueueData = useQueueData(CourseNameEnum.BSDS)
   const { updateStatus } = useStatusUpdate()
   const { updateQueue } = useQueueUpdate()
 
   // Combine the data into an array after the hooks are called
-  const queueData = [csQueueData, itQueueData, isQueueData]
+  const queueData = [csQueueData, itQueueData, isQueueData, dsQueueData]
 
   const handleQueueUpdate = async (course: CourseNameEnum, studentId: string) => {
     if (basicAuthToken) {
